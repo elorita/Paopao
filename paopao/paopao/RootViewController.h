@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "JKSideSlipView.h"
 
-@interface ViewController : UIViewController
+@interface RootViewController : UIViewController
 {
     JKSideSlipView *_sideSlipView;
 }
-- (IBAction)switchTouched:(id)sender;
 
 @end
 

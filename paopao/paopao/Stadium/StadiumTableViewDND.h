@@ -18,7 +18,7 @@
 
 @end
 
-@interface StadiumTableViewCellDND : NSObject<CustomTableViewDataSource, CustomTableViewDelegate>
+@interface StadiumTableViewDND : NSObject<CustomTableViewDataSource, CustomTableViewDelegate>
 
 @property (weak, nonatomic) id<StadiumOuterDelegate> delegate;
 

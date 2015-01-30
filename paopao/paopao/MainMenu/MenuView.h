@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 typedef void (^didSelectRowAtIndexPath)(id cell, NSIndexPath *indexPath);
 
+@protocol MenuViewDelegate <NSObject>
+
+@required
+- (void)onLogin;
+
+@end
+
 @interface MenuView : UIView<UITableViewDelegate,UITableViewDataSource>
 {
     didSelectRowAtIndexPath _didSelectRowAtIndexPath;
@@ -16,5 +23,6 @@ typedef void (^didSelectRowAtIndexPath)(id cell, NSIndexPath *indexPath);
 +(instancetype)menuView;
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (nonatomic, strong) NSArray *items;
+@property (nonatomic, strong) id<MenuViewDelegate> delegate;
 -(void)didSelectRowAtIndexPath:(void (^)(id cell, NSIndexPath *indexPath))didSelectRowAtIndexPath;
 @end

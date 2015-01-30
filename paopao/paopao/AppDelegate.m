@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <AVOSCloud/AVOSCloud.h>
+#import "RootViewController.h"
 
 //AVOSCloud's app id and app key
 #define AVOSCloudAppID  @"ztxdtfdpjrzbsu3serlcvbdvyk0pfscj0uq4abwpnzzq0xjt"
@@ -25,6 +26,15 @@
     [AVOSCloud setApplicationId:@"ud3ao2b6rnw5xihu3aahls5npw6b6egm8mprynt9mwhdnhy1"
                       clientKey:@"yuslkj2voplq7sb02k524oj3f3j7zlzawg6tt09rxsqlctnp"];
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.viewController = [[RootViewController alloc] init];
+    self.navgationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+    self.window.rootViewController = self.navgationController;
+    self.navgationController.navigationBarHidden = YES;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
