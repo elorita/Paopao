@@ -7,17 +7,23 @@
 //
 
 #import "RootViewController.h"
-#import "MenuView.h"
 #import <AVOSCloud/AVOSCloud.h>
-#import "CommonMainMenu.h"
+#import "SidebarViewController.h"
 #import "Defines.h"
+#import "SignInDelegate.h"
+#import "LoginViewController.h"
+#import "UserHomeViewController.h"
+#import "StadiumView.h"
 
-@interface RootViewController () <CommonMainMenuDelegate> {
-    CommonMenu *mainMenu;
+@interface RootViewController () <SignInDelegate, SidebarViewDelegate> { //<CommonMainMenuDelegate> {
     UIView *navigationBar;
     UIScrollView *scrollView;
     UILabel *titleLabel;
+    UIView *currentActiveView;
 }
+
+@property (nonatomic, strong) SidebarViewController* sidebarVC;
+@property (nonatomic, strong) StadiumView *stadiumView;
 
 @end
 
@@ -34,16 +40,40 @@
         [self.view addSubview:scrollView];
     }
     
-    if (mainMenu == nil) {
-        mainMenu = [[CommonMenu alloc] initWithRootController:self];
-        mainMenu.delegate = self;
-        [self.view addSubview:mainMenu.sideSlipView];
-    }
+//    if (mainMenu == nil) {
+//        mainMenu = [[CommonMenu alloc] initWithRootController:self];
+//        mainMenu.delegate = self;
+//        [self.view addSubview:mainMenu.sideSlipView];
+//    }
+    // 左侧边栏开始
+    UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
+    [panGesture delaysTouchesBegan];
+    [self.view addGestureRecognizer:panGesture];
+    
+    self.sidebarVC = [[SidebarViewController alloc] init];
+    [self.sidebarVC setBgRGB:0x000000];
+    NSArray *items = @[@{@"title":@"场馆",@"imagenormal":@"stadium_normal.png",@"imagehighlight":@"stadium_highlight.png"},
+                   @{@"title":@"团队",@"imagenormal":@"team_normal.png",@"imagehighlight":@"team_highlight.png"},
+                   @{@"title":@"教练",@"imagenormal":@"coach_normal.png",@"imagehighlight":@"coach_highlight.png"},
+                   @{@"title":@"赛事",@"imagenormal":@"competition_normal.png",@"imagehighlight":@"competition_highlight.png"},
+                   @{@"title":@"资讯",@"imagenormal":@"news_normal.png",@"imagehighlight":@"news_highlight.png"},
+                   @{@"title":@"设置",@"imagenormal":@"setting_normal.png",@"imagehighlight":@"setting_highlight.png"}];
+    [self.sidebarVC setItems:items];
+    self.sidebarVC.signInDelegate = self;
+    self.sidebarVC.delegate = self;
+    [self.view addSubview:self.sidebarVC.view];
+    self.sidebarVC.view.frame  = self.view.bounds;
+    // 左侧边栏结束
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)panDetected:(UIPanGestureRecognizer*)recoginzer
+{
+    [self.sidebarVC panDetected:recoginzer];
 }
 
 - (void)initNavigationBar {
@@ -73,7 +103,7 @@
 }
 
 - (void)doPopMainMenu:(id)sender {
-    [self->mainMenu.sideSlipView show];
+    [self.sidebarVC showHideSidebar];
 }
 
 #pragma mark CommonMainMenuDelegate
@@ -82,6 +112,44 @@
     [lastView removeFromSuperview];
     
     [self->titleLabel setText:title];
+}
+
+#pragma mark SidebarViewDelegate
+- (void)menuItemSelectedOnIndex:(NSInteger)index {
+    UIView *newView = nil;
+    NSString *title = nil;
+    switch (index) {
+        case 0:
+            if (_stadiumView == nil) {
+                CGRect frame = [[UIScreen mainScreen] bounds];
+                _stadiumView = [[StadiumView alloc] initWithFrame:frame withController:self];
+            }
+            newView = _stadiumView;
+            title = @"找场馆";
+            break;
+            
+        default:
+            break;
+    }
+
+    if (currentActiveView != newView) {
+        [self ShowView:newView withTitle:title withRemoveLastView:currentActiveView];
+        //                [currentActiveView removeFromSuperview];
+        //                [rootController.view addSubview:newView];
+        //                [rootController.view sendSubviewToBack:newView];
+        currentActiveView = newView;
+    }
+}
+
+#pragma mark SignInDelegate
+- (void)onLogin {
+    LoginViewController *controller = [[LoginViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)onUserHome {
+    UserHomeViewController *userHomeVC = [[UserHomeViewController alloc] init];
+    [self.navigationController pushViewController:userHomeVC animated:YES];
 }
 
 @end

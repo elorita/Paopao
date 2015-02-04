@@ -9,12 +9,18 @@
 #import "AppDelegate.h"
 #import <AVOSCloud/AVOSCloud.h>
 #import "RootViewController.h"
+#import "Defines.h"
+#import "AVSubclassesHelper.h"
+#import <CoreLocation/CoreLocation.h>
+#import "ShareInstances.h"
 
 //AVOSCloud's app id and app key
 #define AVOSCloudAppID  @"ztxdtfdpjrzbsu3serlcvbdvyk0pfscj0uq4abwpnzzq0xjt"
 #define AVOSCloudAppKey @"3b42n9qeca6zh58r1fcd91rbblfgz24ro4boz502rl7ldms2"
 
-@interface AppDelegate ()
+@interface AppDelegate () <CLLocationManagerDelegate>
+
+@property (nonatomic, strong) CLLocationManager *locationManage;
 
 @end
 
@@ -26,6 +32,22 @@
     [AVOSCloud setApplicationId:@"ud3ao2b6rnw5xihu3aahls5npw6b6egm8mprynt9mwhdnhy1"
                       clientKey:@"yuslkj2voplq7sb02k524oj3f3j7zlzawg6tt09rxsqlctnp"];
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    [AVSubclassesHelper RegisterSubclasses];
+    
+    if([CLLocationManager locationServicesEnabled]){
+        self.locationManage = [[CLLocationManager alloc] init];
+        self.locationManage.delegate = self;
+        self.locationManage.distanceFilter = 200;
+        self.locationManage.desiredAccuracy = kCLLocationAccuracyBestForNavigation;//kCLLocationAccuracyBest;
+        if (SYSTEM_VERSION >= 8.0) {
+            //使用期间
+            [self.locationManage requestWhenInUseAuthorization];
+            //始终
+            //or [self.locationManage requestAlwaysAuthorization]
+        }
+        [self.locationManage startUpdatingLocation];
+    }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -54,10 +76,32 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_APPRESIGNACTIVE object:self];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+            if ([self.locationManage respondsToSelector:@selector(requestAlwaysAuthorization)])
+            {
+                [self.locationManage requestWhenInUseAuthorization];
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation *currentLocation = [locations lastObject];
+    
+    [ShareInstances setCurrentLocation:currentLocation];
+
 }
 
 @end

@@ -11,6 +11,8 @@
 
 @interface StadiumTableViewCell : UITableViewCell
 
++ (NSInteger)StadiumCellHeight;
+
 - (void) setStadium:(Stadium *)stadium;
 
 @end

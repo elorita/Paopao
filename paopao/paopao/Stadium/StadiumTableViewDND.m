@@ -24,8 +24,9 @@
     static NSString *vCellIdentify = @"resellCell";
     StadiumTableViewCell *vCell = [aTableView dequeueReusableCellWithIdentifier:vCellIdentify];
     if (vCell == nil) {
-        vCell = [[[NSBundle mainBundle] loadNibNamed:@"StadiumTableViewCell" owner:self options:nil] lastObject];
-        //vCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        //vCell = [[[NSBundle mainBundle] loadNibNamed:@"StadiumTableViewCell" owner:self options:nil] lastObject];
+        vCell = [[StadiumTableViewCell alloc] init];
+        vCell.selectionStyle = UITableViewCellSelectionStyleNone;
         //vCell.delegate = self;
     }
     
@@ -39,11 +40,12 @@
 #pragma mark CustomTableViewDelegate
 
 -(float)heightForRowAthIndexPath:(UITableView *)aTableView IndexPath:(NSIndexPath *)aIndexPath FromView:(CustomTableView *)aView{
-    StadiumTableViewCell *vCell = [[[NSBundle mainBundle] loadNibNamed:@"StadiumTableViewCell" owner:self options:nil] lastObject];
-    if(aIndexPath.row < _loadedCount)
-        return vCell.frame.size.height;
-    else
-        return 75;
+//    StadiumTableViewCell *vCell = [[[NSBundle mainBundle] loadNibNamed:@"StadiumTableViewCell" owner:self options:nil] lastObject];
+//    if(aIndexPath.row < _loadedCount)
+//        return vCell.frame.size.height;
+//    else
+//        return 75;
+    return [StadiumTableViewCell StadiumCellHeight];
 }
 
 -(void)didSelectedRowAthIndexPath:(UITableView *)aTableView IndexPath:(NSIndexPath *)aIndexPath FromView:(CustomTableView *)aView{

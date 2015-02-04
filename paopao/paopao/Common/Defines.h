@@ -12,8 +12,14 @@
 
 #endif
 
-#define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
+#define SYSTEM_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
 
+//事件notification定义
+#define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
+#define KNOTIFICATION_APPRESIGNACTIVE @"appResignActive"
+
+
+//UI定义
 #define STATU_BAR_HEIGHT 20
 #define NAVIGATION_BAR_HEIGHT 44
 
@@ -23,7 +29,7 @@
 #define NAVIGATION_RBUTTON_MARGIN_RIGHT 5
 #define NAVIGATION_BUTTON_RESPONSE_WIDTH 120
 
-#define NAVIGATION_TITLE_WIDTH 80
+#define NAVIGATION_TITLE_WIDTH 120
 #define NAVIGATION_TITLE_HEIGHT 44
 
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]

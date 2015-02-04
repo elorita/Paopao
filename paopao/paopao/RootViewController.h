@@ -7,12 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JKSideSlipView.h"
 
 @interface RootViewController : UIViewController
-{
-    JKSideSlipView *_sideSlipView;
-}
 
 @end
 

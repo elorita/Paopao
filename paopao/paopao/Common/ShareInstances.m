@@ -12,6 +12,8 @@
 static UIImage *currentUserHeadPortrait;
 static UIImage *currentUserHeadPortraitThumbnail;
 
+static CLLocation *lastLocation;
+
 @implementation ShareInstances
 
 + (void)setCurrentUserHeadPortraitWithUserName:(NSString *)username {
@@ -68,6 +70,14 @@ static UIImage *currentUserHeadPortraitThumbnail;
     UIGraphicsEndImageContext();
     // 返回新的改变大小后的图片
     return scaledImage;
+}
+
++ (void)setCurrentLocation:(CLLocation *)location {
+    lastLocation = location;
+}
+
++ (CLLocation *)getLastLocation {
+    return lastLocation;
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface ShareInstances : NSObject
 
@@ -18,5 +19,8 @@
 
 + (void)setCurrentUserHeadPortraitThumbnail:(UIImage *)headPortrait;
 + (UIImage *)getCurrentUserHeadPortraitThumbnail;
+
++ (void)setCurrentLocation:(CLLocation *)location;
++ (CLLocation *)getLastLocation;
 
 @end

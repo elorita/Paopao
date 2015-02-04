@@ -1,13 +1,12 @@
 //
-//  MenuView.m
-//  JKSideSlipView
+//  UserSummaryView.m
+//  paopao
 //
-//  Created by Jakey on 15/1/10.
-//  Copyright (c) 2015年 www.skyfox.org. All rights reserved.
+//  Created by TsaoLipeng on 15/2/3.
+//  Copyright (c) 2015年 TsaoLipeng. All rights reserved.
 //
 
-#import "MenuView.h"
-#import "MenuCell.h"
+#import "UserSummaryView.h"
 #import <AVOSCloud/AVOSCloud.h>
 #import "ShareInstances.h"
 #import "Defines.h"
@@ -15,76 +14,23 @@
 static UIImage *headPortraitCache;
 static NSInteger welcomeLabelHeight = 60;
 
-@interface MenuView ()
+@interface UserSummaryView ()
 
 @property (nonatomic, strong) UIImageView *portraitImageView;
 
 @end
 
-@implementation MenuView {
+@implementation UserSummaryView{
     NSMutableArray *cells;
     UILabel *welcomeLabel;
 }
 
-+(instancetype)menuView
-{
-    MenuView *result = nil;
-
-    NSArray* nibView =  [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil];
-    for (id object in nibView)
-    {
-        if ([object isKindOfClass:[self class]])
-        {
-            result = object;
-            break;
-        }
-    }
-    return result;
-}
-
-- (void)awakeFromNib {
-    _myTableView.separatorStyle = UITableViewCellSelectionStyleNone;
+- (instancetype)init {
+    self = [super init];
     [self initUserStatu];
-}
-
--(void)didSelectRowAtIndexPath:(void (^)(id cell, NSIndexPath *indexPath))didSelectRowAtIndexPath{
-    _didSelectRowAtIndexPath = [didSelectRowAtIndexPath copy];
-}
-
--(void)setItems:(NSArray *)items{
-    _items = items;
-}
-
-
-#pragma -mark tableView Delegates
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_items count];
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_didSelectRowAtIndexPath) {
-        MenuCell *cell = (MenuCell *)[tableView cellForRowAtIndexPath:indexPath];
-        _didSelectRowAtIndexPath(cell,indexPath);
-    }
-    //[self.myTableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.myTableView registerNib:[UINib nibWithNibName:@"MenuCell" bundle:nil] forCellReuseIdentifier:@"MenuCell"];
-    MenuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MenuCell"];
-    cell.tag = indexPath.row;
-    if (cells == nil)
-        cells = [NSMutableArray array];
-    [cells addObject:cell];
-    cell.label.text = [self.items[indexPath.row] objectForKey:@"title"];
-    cell.normalImage = [UIImage imageNamed:[self.items[indexPath.row] objectForKey:@"imagenormal"]];
-    cell.highlightImage = [UIImage imageNamed:[self.items[indexPath.row] objectForKey:@"imagehighlight"]];
-    return cell;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
+    [self setBackgroundColor:MAIN_COLOR];
+    return self;
 }
 
 - (void)refreshSignStatu {
@@ -174,8 +120,14 @@ static NSInteger welcomeLabelHeight = 60;
 }
 
 - (void)doLogin {
-    if ([_delegate respondsToSelector:@selector(onLogin)])
-        [_delegate onLogin];
+    if ([AVUser currentUser] != nil) {
+        if ([_delegate respondsToSelector:@selector(onUserHome)])
+            [_delegate onUserHome];
+    } else {
+        if ([_delegate respondsToSelector:@selector(onLogin)])
+            [_delegate onLogin];
+    }
 }
+
 
 @end
