@@ -7,7 +7,6 @@
 //
 
 #import "ShareInstances.h"
-#import <AVOSCloud/AVOSCloud.h>
 
 static UIImage *currentUserHeadPortrait;
 static UIImage *currentUserHeadPortraitThumbnail;
@@ -78,6 +77,13 @@ static CLLocation *lastLocation;
 
 + (CLLocation *)getLastLocation {
     return lastLocation;
+}
+
++ (AVGeoPoint *)getLastGeoPoint {
+    AVGeoPoint *point = [[AVGeoPoint alloc] init];
+    point.latitude = lastLocation.coordinate.latitude;
+    point.longitude = lastLocation.coordinate.longitude;
+    return point;
 }
 
 @end

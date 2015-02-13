@@ -8,6 +8,7 @@
 
 #import <AVOSCloud/AVOSCloud.h>
 #import "StadiumType.h"
+#import "District.h"
 
 @interface Stadium : AVObject<AVSubclassing>
 
@@ -18,5 +19,9 @@
 @property (nonatomic, strong) NSString *telNo;
 @property (nonatomic, strong) AVFile *image;
 @property (nonatomic, strong) AVGeoPoint *location;
+@property (nonatomic) NSInteger professionalRating;
+@property (nonatomic) NSInteger userRating;
+@property (nonatomic) NSInteger userRatingCount;
+@property (nonatomic, strong) District *district;
 
 @end

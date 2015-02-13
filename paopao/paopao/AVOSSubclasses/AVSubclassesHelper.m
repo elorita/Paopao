@@ -17,6 +17,7 @@
     [Stadium registerSubclass];
     [StadiumType registerSubclass];
     [StadiumSpecification registerSubclass];
+    [District registerSubclass];
 }
 
 @end

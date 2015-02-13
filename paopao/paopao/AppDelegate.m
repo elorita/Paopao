@@ -11,16 +11,14 @@
 #import "RootViewController.h"
 #import "Defines.h"
 #import "AVSubclassesHelper.h"
-#import <CoreLocation/CoreLocation.h>
 #import "ShareInstances.h"
+#import "CustomLocationManager.h"
 
 //AVOSCloud's app id and app key
 #define AVOSCloudAppID  @"ztxdtfdpjrzbsu3serlcvbdvyk0pfscj0uq4abwpnzzq0xjt"
 #define AVOSCloudAppKey @"3b42n9qeca6zh58r1fcd91rbblfgz24ro4boz502rl7ldms2"
 
-@interface AppDelegate () <CLLocationManagerDelegate>
-
-@property (nonatomic, strong) CLLocationManager *locationManage;
+@interface AppDelegate ()
 
 @end
 
@@ -35,19 +33,7 @@
     
     [AVSubclassesHelper RegisterSubclasses];
     
-    if([CLLocationManager locationServicesEnabled]){
-        self.locationManage = [[CLLocationManager alloc] init];
-        self.locationManage.delegate = self;
-        self.locationManage.distanceFilter = 200;
-        self.locationManage.desiredAccuracy = kCLLocationAccuracyBestForNavigation;//kCLLocationAccuracyBest;
-        if (SYSTEM_VERSION >= 8.0) {
-            //使用期间
-            [self.locationManage requestWhenInUseAuthorization];
-            //始终
-            //or [self.locationManage requestAlwaysAuthorization]
-        }
-        [self.locationManage startUpdatingLocation];
-    }
+    [[CustomeLocationManager defaultManager] updateLocation];//访问一次
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -81,27 +67,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
-{
-    switch (status) {
-        case kCLAuthorizationStatusNotDetermined:
-            if ([self.locationManage respondsToSelector:@selector(requestAlwaysAuthorization)])
-            {
-                [self.locationManage requestWhenInUseAuthorization];
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation *currentLocation = [locations lastObject];
-    
-    [ShareInstances setCurrentLocation:currentLocation];
-
 }
 
 @end

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <AVOSCloud/AVOSCloud.h>
 
 @interface ShareInstances : NSObject
 
@@ -22,5 +23,6 @@
 
 + (void)setCurrentLocation:(CLLocation *)location;
 + (CLLocation *)getLastLocation;
++ (AVGeoPoint *)getLastGeoPoint;
 
 @end

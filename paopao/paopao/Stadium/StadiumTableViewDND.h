@@ -10,6 +10,7 @@
 #import "CustomTableView.h"
 #import "StadiumTableViewCell.h"
 #import "Stadium.h"
+#import "Defines.h"
 
 @protocol StadiumOuterDelegate <NSObject>
 
@@ -20,6 +21,9 @@
 
 @interface StadiumTableViewDND : NSObject<CustomTableViewDataSource, CustomTableViewDelegate>
 
+@property (nonatomic, strong) NSString *filtratedStadiumTypeOid;
+@property (nonatomic, strong) NSString *filtratedDistrictOid;
+@property (nonatomic) DataOrderType orderType;
 @property (weak, nonatomic) id<StadiumOuterDelegate> delegate;
 
 @end

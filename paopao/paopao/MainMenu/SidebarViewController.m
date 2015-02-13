@@ -9,6 +9,8 @@
 #import "SidebarViewController.h"
 #import "MenuCell.h"
 #import "UserSummaryView.h"
+#import "LocationView.h"
+#import "UIView+XD.h"
 
 @interface SidebarViewController ()<UITableViewDelegate, UITableViewDataSource, SignInDelegate>
 
@@ -33,7 +35,8 @@
     self.menuTableView.dataSource = self;
     [self.contentView addSubview:self.menuTableView];
     
-    [self.view setAlpha:0.98];
+    LocationView *locationView = [[LocationView alloc] initWithFrame:CGRectMake(0, self.contentView.height - [LocationView getViewHeight], self.contentView.width, [LocationView getViewHeight])];
+    [self.contentView addSubview:locationView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,6 +58,15 @@
     userSummaryView.delegate = self;
     return userSummaryView;
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+//    return 144;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+//    LocationView *locationView = [[LocationView alloc] init];
+//    return locationView;
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

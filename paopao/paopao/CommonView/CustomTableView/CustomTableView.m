@@ -17,7 +17,8 @@
     if (self) {
         // Initialization code
         if (_homeTableView == nil) {
-            _homeTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+            CGRect frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+            _homeTableView = [[UITableView alloc] initWithFrame:frame];
             _homeTableView.delegate = self;
             _homeTableView.dataSource = self;
             [_homeTableView setBackgroundColor:[UIColor clearColor]];
@@ -33,7 +34,6 @@
 
 #pragma mark 创建下拉刷新Header
 -(void)createRefreshHeaderView{
-    
 	if (_refreshHeaderView == nil) {
 		
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:_homeTableView.frame];
@@ -49,7 +49,7 @@
 #pragma mark 其他辅助功能
 #pragma mark 强制列表刷新
 -(void)forceToFreshData{
-    [_homeTableView setContentOffset:CGPointMake(_homeTableView.contentOffset.x,  - 66) animated:YES];
+    [_homeTableView setContentOffset:CGPointMake(_homeTableView.contentOffset.x, -66) animated:YES];
     double delayInSeconds = .2;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -142,8 +142,8 @@
 	
 	//  model should call this when its done loading
 	_reloading = NO;
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.homeTableView];
     [self.homeTableView reloadData];
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.homeTableView];
 }
 
 

@@ -8,6 +8,7 @@
 
 #import "StadiumTableViewDND.h"
 #import <AVOSCloud/AVOSCloud.h>
+#import "ShareInstances.h"
 
 #define COUNT_PER_LOADING 10
 
@@ -40,12 +41,10 @@
 #pragma mark CustomTableViewDelegate
 
 -(float)heightForRowAthIndexPath:(UITableView *)aTableView IndexPath:(NSIndexPath *)aIndexPath FromView:(CustomTableView *)aView{
-//    StadiumTableViewCell *vCell = [[[NSBundle mainBundle] loadNibNamed:@"StadiumTableViewCell" owner:self options:nil] lastObject];
-//    if(aIndexPath.row < _loadedCount)
-//        return vCell.frame.size.height;
-//    else
-//        return 75;
-    return [StadiumTableViewCell StadiumCellHeight];
+    if(aIndexPath.row < _loadedCount)
+        return [StadiumTableViewCell StadiumCellHeight];
+    else
+        return 50;
 }
 
 -(void)didSelectedRowAthIndexPath:(UITableView *)aTableView IndexPath:(NSIndexPath *)aIndexPath FromView:(CustomTableView *)aView{
@@ -58,7 +57,31 @@
 //从AVCloud查询数据并刷新界面
 - (void)QueryFromAVCloudAndFillView:(CustomTableView *)aView afterClearAll:(BOOL)isAfterClearAll withComplete:(void(^)())complete{
     AVQuery *query = [Stadium query];
-    [query orderByDescending:@"updateAt"];
+    
+    if (_filtratedStadiumTypeOid && ![_filtratedStadiumTypeOid isEqualToString:@""])
+        [query whereKey:@"type" equalTo:[Stadium objectWithoutDataWithObjectId:_filtratedStadiumTypeOid]];
+    if (_filtratedDistrictOid && ![_filtratedDistrictOid isEqualToString:@""])
+        [query whereKey:@"district" equalTo:[District objectWithoutDataWithObjectId:_filtratedDistrictOid]];
+    
+    switch (_orderType) {
+        case dotDefault:
+            [query orderByDescending:@"updateAt"];
+            break;
+        case dotCanOrder:
+            break;
+        case dotNear:
+            [query whereKey:@"location" nearGeoPoint:[ShareInstances getLastGeoPoint]];
+            break;
+        case dotCheap:
+            break;
+        case dotPopularity:
+            break;
+        case dotEvaluation:
+            [query orderByDescending:@"professionalRating"];
+        default:
+            break;
+    }
+    
     query.limit = COUNT_PER_LOADING;
     query.cachePolicy = kPFCachePolicyNetworkElseCache;
     query.maxCacheAge = 3600*24*7;//缓存一周时间
