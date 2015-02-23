@@ -10,6 +10,10 @@
 #import "Stadium.h"
 #import "StadiumType.h"
 #import "StadiumSpecification.h"
+#import "sportField.h"
+#import "SpecialDay.h"
+#import "ReservationOrder.h"
+#import "ReservationSuborder.h"
 
 @implementation AVSubclassesHelper
 
@@ -18,6 +22,10 @@
     [StadiumType registerSubclass];
     [StadiumSpecification registerSubclass];
     [District registerSubclass];
+    [SportField registerSubclass];
+    [SpecialDay registerSubclass];
+    [ReservationOrder registerSubclass];
+    [ReservationSuborder registerSubclass];
 }
 
 @end

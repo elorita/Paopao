@@ -41,7 +41,10 @@ install_resource()
       ;;
   esac
 }
-
+          install_resource "Pingpp/lib/Channels/AlipaySDK.bundle"
+                    install_resource "Pingpp/lib/Channels/BaiduWalletSDKBundle.bundle"
+                    install_resource "Pingpp/lib/Pingpp.bundle"
+          
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then
   rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${INSTALL_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

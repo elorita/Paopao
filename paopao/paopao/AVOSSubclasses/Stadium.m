@@ -10,7 +10,7 @@
 
 @implementation Stadium
 
-@synthesize description, name, portrait, type, telNo, image, location, professionalRating, userRating, userRatingCount;
+@synthesize description, name, portrait, type, telNo, image, location, address, professionalRating, userRating, userRatingCount, sportsFields, shopHoursBegin, shopHoursEnd, availableSessionCount;
 
 + (NSString *)parseClassName {
     return @"stadium";

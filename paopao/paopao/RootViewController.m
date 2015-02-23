@@ -14,11 +14,14 @@
 #import "LoginViewController.h"
 #import "UserHomeViewController.h"
 #import "StadiumView.h"
+#import "StadiumTableViewDND.h"
+#import "StadiumDetailViewController.h"
 
 #import "MYBlurIntroductionView.h"
 #import "MYCustomPanel.h"
 
-@interface RootViewController () <SignInDelegate, SidebarViewDelegate, MYIntroductionDelegate> {
+@interface RootViewController () <SignInDelegate, SidebarViewDelegate, MYIntroductionDelegate,
+    StadiumOuterDelegate> {
     UIView *navigationBar;
     UIScrollView *scrollView;
     UILabel *titleLabel;
@@ -155,7 +158,7 @@
 
 #pragma mark - MYIntroduction Delegate
 -(void)introduction:(MYBlurIntroductionView *)introductionView didChangeToPanel:(MYIntroductionPanel *)panel withIndex:(NSInteger)panelIndex{
-    NSLog(@"Introduction did change to panel %d", panelIndex);
+    NSLog(@"Introduction did change to panel %ld", (long)panelIndex);
     
     //You can edit introduction view properties right from the delegate method!
     //If it is the first panel, change the color to green!
@@ -213,6 +216,13 @@
 - (void)onUserHome {
     UserHomeViewController *userHomeVC = [[UserHomeViewController alloc] init];
     [self.navigationController pushViewController:userHomeVC animated:YES];
+}
+
+#pragma mark StadiumOuterDelegate
+- (void)showStadium:(Stadium *)stadium {
+    StadiumDetailViewController *sdVC = [[StadiumDetailViewController alloc] init];
+    [sdVC initializeWithStadium:stadium];
+    [self.navigationController pushViewController:sdVC animated:YES];
 }
 
 @end

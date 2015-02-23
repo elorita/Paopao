@@ -73,6 +73,24 @@
 		D86D400B1A870D2A00474618 /* ForkImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40071A870D2A00474618 /* ForkImage.png */; };
 		D86D400C1A870D2A00474618 /* HeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40081A870D2A00474618 /* HeaderImage.png */; };
 		D8885CC31A7C9B6D00B690D8 /* HyperlinksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D8885CC21A7C9B6D00B690D8 /* HyperlinksButton.m */; };
+		D88D259D1A973CCD00B715D2 /* sportField.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D259C1A973CCD00B715D2 /* sportField.m */; };
+		D88D25A01A9748C500B715D2 /* StadiumDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D259F1A9748C500B715D2 /* StadiumDetailViewController.m */; };
+		D88D25A21A98268E00B715D2 /* location_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25A11A98268E00B715D2 /* location_green@2x.png */; };
+		D88D25A41A982A4900B715D2 /* go_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25A31A982A4900B715D2 /* go_normal@2x.png */; };
+		D88D25B81A98ACF500B715D2 /* MenuHrizontal.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25B71A98ACF500B715D2 /* MenuHrizontal.m */; };
+		D88D25BB1A98AFE800B715D2 /* subTabbar_highLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25B91A98AFE800B715D2 /* subTabbar_highLight@2x.png */; };
+		D88D25BC1A98AFE800B715D2 /* subTabbar_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25BA1A98AFE800B715D2 /* subTabbar_normal@2x.png */; };
+		D88D25BF1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25BE1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m */; };
+		D88D25C21A99B89D00B715D2 /* SpecialDay.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C11A99B89D00B715D2 /* SpecialDay.m */; };
+		D88D25C51A99B9AC00B715D2 /* ReservationOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C41A99B9AC00B715D2 /* ReservationOrder.m */; };
+		D88D25C81A99BB5100B715D2 /* ReservationSuborder.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */; };
+		D88D25D81A9B110500B715D2 /* HeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CB1A9B110500B715D2 /* HeadView.m */; };
+		D88D25D91A9B110500B715D2 /* MeetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CD1A9B110500B715D2 /* MeetModel.m */; };
+		D88D25DA1A9B110500B715D2 /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CF1A9B110500B715D2 /* MyCell.m */; };
+		D88D25DB1A9B110500B715D2 /* MyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D11A9B110500B715D2 /* MyLabel.m */; };
+		D88D25DC1A9B110500B715D2 /* ReservationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D31A9B110500B715D2 /* ReservationViewController.m */; };
+		D88D25DD1A9B110500B715D2 /* TimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D51A9B110500B715D2 /* TimeCell.m */; };
+		D88D25DE1A9B110500B715D2 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D71A9B110500B715D2 /* TimeView.m */; };
 		D8AE96F41A7B96D500884E51 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AE96F31A7B96D500884E51 /* UIImage+ImageEffects.m */; };
 		D8AE96F71A7B988000884E51 /* ShareInstances.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AE96F61A7B988000884E51 /* ShareInstances.m */; };
 		D8AE96FB1A7BCA9200884E51 /* AVSubclassesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AE96FA1A7BCA9200884E51 /* AVSubclassesHelper.m */; };
@@ -204,6 +222,38 @@
 		D86D40081A870D2A00474618 /* HeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HeaderImage.png; sourceTree = "<group>"; };
 		D8885CC11A7C9B6D00B690D8 /* HyperlinksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyperlinksButton.h; sourceTree = "<group>"; };
 		D8885CC21A7C9B6D00B690D8 /* HyperlinksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyperlinksButton.m; sourceTree = "<group>"; };
+		D88D259B1A973CCD00B715D2 /* sportField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sportField.h; sourceTree = "<group>"; };
+		D88D259C1A973CCD00B715D2 /* sportField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sportField.m; sourceTree = "<group>"; };
+		D88D259E1A9748C500B715D2 /* StadiumDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StadiumDetailViewController.h; sourceTree = "<group>"; };
+		D88D259F1A9748C500B715D2 /* StadiumDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StadiumDetailViewController.m; sourceTree = "<group>"; };
+		D88D25A11A98268E00B715D2 /* location_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_green@2x.png"; sourceTree = "<group>"; };
+		D88D25A31A982A4900B715D2 /* go_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "go_normal@2x.png"; sourceTree = "<group>"; };
+		D88D25B61A98ACF500B715D2 /* MenuHrizontal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuHrizontal.h; sourceTree = "<group>"; };
+		D88D25B71A98ACF500B715D2 /* MenuHrizontal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuHrizontal.m; sourceTree = "<group>"; };
+		D88D25B91A98AFE800B715D2 /* subTabbar_highLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subTabbar_highLight@2x.png"; sourceTree = "<group>"; };
+		D88D25BA1A98AFE800B715D2 /* subTabbar_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subTabbar_normal@2x.png"; sourceTree = "<group>"; };
+		D88D25BD1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleHorizontalMenuCell.h; sourceTree = "<group>"; };
+		D88D25BE1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleHorizontalMenuCell.m; sourceTree = "<group>"; };
+		D88D25C01A99B89D00B715D2 /* SpecialDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialDay.h; sourceTree = "<group>"; };
+		D88D25C11A99B89D00B715D2 /* SpecialDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialDay.m; sourceTree = "<group>"; };
+		D88D25C31A99B9AC00B715D2 /* ReservationOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationOrder.h; sourceTree = "<group>"; };
+		D88D25C41A99B9AC00B715D2 /* ReservationOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationOrder.m; sourceTree = "<group>"; };
+		D88D25C61A99BB5100B715D2 /* ReservationSuborder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationSuborder.h; sourceTree = "<group>"; };
+		D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationSuborder.m; sourceTree = "<group>"; };
+		D88D25CA1A9B110500B715D2 /* HeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadView.h; sourceTree = "<group>"; };
+		D88D25CB1A9B110500B715D2 /* HeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadView.m; sourceTree = "<group>"; };
+		D88D25CC1A9B110500B715D2 /* MeetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetModel.h; sourceTree = "<group>"; };
+		D88D25CD1A9B110500B715D2 /* MeetModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetModel.m; sourceTree = "<group>"; };
+		D88D25CE1A9B110500B715D2 /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
+		D88D25CF1A9B110500B715D2 /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
+		D88D25D01A9B110500B715D2 /* MyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLabel.h; sourceTree = "<group>"; };
+		D88D25D11A9B110500B715D2 /* MyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLabel.m; sourceTree = "<group>"; };
+		D88D25D21A9B110500B715D2 /* ReservationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationViewController.h; sourceTree = "<group>"; };
+		D88D25D31A9B110500B715D2 /* ReservationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationViewController.m; sourceTree = "<group>"; };
+		D88D25D41A9B110500B715D2 /* TimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeCell.h; sourceTree = "<group>"; };
+		D88D25D51A9B110500B715D2 /* TimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeCell.m; sourceTree = "<group>"; };
+		D88D25D61A9B110500B715D2 /* TimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeView.h; sourceTree = "<group>"; };
+		D88D25D71A9B110500B715D2 /* TimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeView.m; sourceTree = "<group>"; };
 		D8AE96F21A7B96D500884E51 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		D8AE96F31A7B96D500884E51 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		D8AE96F51A7B988000884E51 /* ShareInstances.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareInstances.h; sourceTree = "<group>"; };
@@ -304,6 +354,8 @@
 				D85E27E01A79354600B50C2B /* StadiumTableViewDND.m */,
 				D85E27EC1A79C57400B50C2B /* StadiumView.h */,
 				D85E27ED1A79C57400B50C2B /* StadiumView.m */,
+				D88D259E1A9748C500B715D2 /* StadiumDetailViewController.h */,
+				D88D259F1A9748C500B715D2 /* StadiumDetailViewController.m */,
 			);
 			path = Stadium;
 			sourceTree = "<group>";
@@ -323,6 +375,7 @@
 		D85E27BC1A792DD400B50C2B /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
+				D88D25B51A98ACF500B715D2 /* MenuHrizontal */,
 				D86D3FDA1A824CC600474618 /* DOPDropDownMenu */,
 				D8C79D441A7CC7C6006E927E /* SVProgressHUD */,
 				D8AE970A1A7BD7DD00884E51 /* NavigationBar */,
@@ -381,6 +434,14 @@
 				D85E27EA1A7939A200B50C2B /* StadiumSpecification.m */,
 				D86D3FE71A83251A00474618 /* District.h */,
 				D86D3FE81A83251A00474618 /* District.m */,
+				D88D259B1A973CCD00B715D2 /* sportField.h */,
+				D88D259C1A973CCD00B715D2 /* sportField.m */,
+				D88D25C01A99B89D00B715D2 /* SpecialDay.h */,
+				D88D25C11A99B89D00B715D2 /* SpecialDay.m */,
+				D88D25C31A99B9AC00B715D2 /* ReservationOrder.h */,
+				D88D25C41A99B9AC00B715D2 /* ReservationOrder.m */,
+				D88D25C61A99BB5100B715D2 /* ReservationSuborder.h */,
+				D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */,
 			);
 			path = AVOSSubclasses;
 			sourceTree = "<group>";
@@ -408,6 +469,8 @@
 		D86853441A78A18B00059FE2 /* paopao */ = {
 			isa = PBXGroup;
 			children = (
+				D88D25C91A9B10F600B715D2 /* StadiumReservation */,
+				D88D25A51A985C7A00B715D2 /* 3rd */,
 				D86D3FF21A870C3C00474618 /* IntroductionView */,
 				D8AE97061A7BCE6100884E51 /* User */,
 				D8AE96EF1A7B721300884E51 /* Common */,
@@ -502,9 +565,11 @@
 				D86D3FD71A8207B100474618 /* heart_normal@2x.png */,
 				D8C7A17D1A7FBA1A006E927E /* share_normal@2x.png */,
 				D8C7A1941A81B08E006E927E /* location_small@2x.png */,
+				D88D25A11A98268E00B715D2 /* location_green@2x.png */,
 				D8C7A17E1A7FBA1A006E927E /* star_highlight@2x.png */,
 				D8C7A17F1A7FBA1A006E927E /* star_normal@2x.png */,
 				D8C7A1961A81B40E006E927E /* star_small_yellow@2x.png */,
+				D88D25A31A982A4900B715D2 /* go_normal@2x.png */,
 				D8AE97111A7BDEA300884E51 /* back_normal@2x.png */,
 				D85E27F91A7A096E00B50C2B /* menu@2x.png */,
 				D85E27FB1A7A0AE100B50C2B /* search@2x.png */,
@@ -553,6 +618,45 @@
 				D86D3FFD1A870D0400474618 /* TestPanel3.xib */,
 			);
 			path = IntroductionView;
+			sourceTree = "<group>";
+		};
+		D88D25A51A985C7A00B715D2 /* 3rd */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = 3rd;
+			sourceTree = "<group>";
+		};
+		D88D25B51A98ACF500B715D2 /* MenuHrizontal */ = {
+			isa = PBXGroup;
+			children = (
+				D88D25B61A98ACF500B715D2 /* MenuHrizontal.h */,
+				D88D25B71A98ACF500B715D2 /* MenuHrizontal.m */,
+				D88D25BD1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.h */,
+				D88D25BE1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m */,
+			);
+			path = MenuHrizontal;
+			sourceTree = "<group>";
+		};
+		D88D25C91A9B10F600B715D2 /* StadiumReservation */ = {
+			isa = PBXGroup;
+			children = (
+				D88D25CA1A9B110500B715D2 /* HeadView.h */,
+				D88D25CB1A9B110500B715D2 /* HeadView.m */,
+				D88D25CC1A9B110500B715D2 /* MeetModel.h */,
+				D88D25CD1A9B110500B715D2 /* MeetModel.m */,
+				D88D25CE1A9B110500B715D2 /* MyCell.h */,
+				D88D25CF1A9B110500B715D2 /* MyCell.m */,
+				D88D25D01A9B110500B715D2 /* MyLabel.h */,
+				D88D25D11A9B110500B715D2 /* MyLabel.m */,
+				D88D25D21A9B110500B715D2 /* ReservationViewController.h */,
+				D88D25D31A9B110500B715D2 /* ReservationViewController.m */,
+				D88D25D41A9B110500B715D2 /* TimeCell.h */,
+				D88D25D51A9B110500B715D2 /* TimeCell.m */,
+				D88D25D61A9B110500B715D2 /* TimeView.h */,
+				D88D25D71A9B110500B715D2 /* TimeView.m */,
+			);
+			path = StadiumReservation;
 			sourceTree = "<group>";
 		};
 		D8AE96EF1A7B721300884E51 /* Common */ = {
@@ -614,6 +718,8 @@
 			children = (
 				D86D3FD41A8200FF00474618 /* followbg@2x.png */,
 				D8AE970F1A7BDAFD00884E51 /* navigationBackground@2x.png */,
+				D88D25B91A98AFE800B715D2 /* subTabbar_highLight@2x.png */,
+				D88D25BA1A98AFE800B715D2 /* subTabbar_normal@2x.png */,
 			);
 			path = bgs;
 			sourceTree = "<group>";
@@ -719,9 +825,11 @@
 				D8C7A1951A81B08E006E927E /* location_small@2x.png in Resources */,
 				D85E27B81A792AF900B50C2B /* mzwyyc.jpg in Resources */,
 				D86853A51A78C54600059FE2 /* news_normal@2x.png in Resources */,
+				D88D25BB1A98AFE800B715D2 /* subTabbar_highLight@2x.png in Resources */,
 				D8C79D481A7CC7C6006E927E /* SVProgressHUD.bundle in Resources */,
 				D86D400A1A870D2A00474618 /* CheckMarkWhite.png in Resources */,
 				D86D3FD91A8207B100474618 /* heart_normal@2x.png in Resources */,
+				D88D25A21A98268E00B715D2 /* location_green@2x.png in Resources */,
 				D868539E1A78BD5D00059FE2 /* coach_highlight@2x.png in Resources */,
 				D868538A1A78B6CC00059FE2 /* location_highlight@2x.png in Resources */,
 				D85E27DE1A7933B600B50C2B /* LoadMoreCell.xib in Resources */,
@@ -741,6 +849,7 @@
 				D868537A1A78A25000059FE2 /* MenuCell.xib in Resources */,
 				D86D3FE61A82669400474618 /* location_small_green@2x.png in Resources */,
 				D86D40031A870D0400474618 /* TestHeader.xib in Resources */,
+				D88D25BC1A98AFE800B715D2 /* subTabbar_normal@2x.png in Resources */,
 				D8C7A1821A7FBA1A006E927E /* star_normal@2x.png in Resources */,
 				D85E27FC1A7A0AE100B50C2B /* search@2x.png in Resources */,
 				D86D3FED1A84F80400474618 /* featured_normal@2x.png in Resources */,
@@ -756,6 +865,7 @@
 				D86853961A78BA3F00059FE2 /* coach_normal@2x.png in Resources */,
 				D86853881A78B6CC00059FE2 /* competition_highlight@2x.png in Resources */,
 				D868539F1A78BD5D00059FE2 /* setting_highlight@2x.png in Resources */,
+				D88D25A41A982A4900B715D2 /* go_normal@2x.png in Resources */,
 				D8C7A1811A7FBA1A006E927E /* star_highlight@2x.png in Resources */,
 				D86853531A78A18B00059FE2 /* Images.xcassets in Resources */,
 			);
@@ -809,12 +919,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8AE970D1A7BD7FF00884E51 /* NormalNavigationBar.m in Sources */,
+				D88D25C51A99B9AC00B715D2 /* ReservationOrder.m in Sources */,
+				D88D25D81A9B110500B715D2 /* HeadView.m in Sources */,
+				D88D25DA1A9B110500B715D2 /* MyCell.m in Sources */,
 				D8885CC31A7C9B6D00B690D8 /* HyperlinksButton.m in Sources */,
 				D85E27CE1A79336400B50C2B /* SGFocusImageItem.m in Sources */,
 				D86D3FE91A83251A00474618 /* District.m in Sources */,
 				D8C7A18B1A80D5CC006E927E /* UserSummaryView.m in Sources */,
 				D85E27E81A79388E00B50C2B /* StadiumType.m in Sources */,
 				D86D3FDD1A824CC600474618 /* DOPDropDownMenu.m in Sources */,
+				D88D25BF1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m in Sources */,
+				D88D25DE1A9B110500B715D2 /* TimeView.m in Sources */,
+				D88D25DC1A9B110500B715D2 /* ReservationViewController.m in Sources */,
+				D88D25D91A9B110500B715D2 /* MeetModel.m in Sources */,
 				D8AE97051A7BCDF700884E51 /* InputText.m in Sources */,
 				D8AE97091A7BCE9E00884E51 /* LoginViewController.m in Sources */,
 				D8C7A1881A80D065006E927E /* SidebarViewController.m in Sources */,
@@ -832,21 +949,28 @@
 				D85E27EB1A7939A200B50C2B /* StadiumSpecification.m in Sources */,
 				D85E27CD1A79336400B50C2B /* SGFocusImageFrame.m in Sources */,
 				D86D3FE21A824FB100474618 /* LocationView.m in Sources */,
+				D88D25DD1A9B110500B715D2 /* TimeCell.m in Sources */,
 				D86D40021A870D0400474618 /* MYIntroductionPanel.m in Sources */,
 				D85E27E51A79370800B50C2B /* Stadium.m in Sources */,
 				D8AE96F71A7B988000884E51 /* ShareInstances.m in Sources */,
 				D86D40001A870D0400474618 /* MYCustomPanel.m in Sources */,
+				D88D25DB1A9B110500B715D2 /* MyLabel.m in Sources */,
 				D85E27E11A79354600B50C2B /* StadiumTableViewDND.m in Sources */,
 				D86853791A78A25000059FE2 /* MenuCell.m in Sources */,
 				D85E27DD1A7933B600B50C2B /* LoadMoreCell.m in Sources */,
+				D88D25A01A9748C500B715D2 /* StadiumDetailViewController.m in Sources */,
 				D8AE96F41A7B96D500884E51 /* UIImage+ImageEffects.m in Sources */,
 				D8C7A17C1A7F7E38006E927E /* UserHomeViewController.m in Sources */,
 				D85E27C71A79331600B50C2B /* CustomTableView.m in Sources */,
 				D85E27B41A78F2C300B50C2B /* StadiumTableViewCell.m in Sources */,
 				D8C79CC61A7CA29B006E927E /* Verifier.m in Sources */,
 				D86D3FFE1A870D0400474618 /* AMBlurView.m in Sources */,
+				D88D259D1A973CCD00B715D2 /* sportField.m in Sources */,
+				D88D25B81A98ACF500B715D2 /* MenuHrizontal.m in Sources */,
 				D8AE97021A7BCCD900884E51 /* UIView+XD.m in Sources */,
 				D8C7A1911A811E3A006E927E /* CustomLocationManager.m in Sources */,
+				D88D25C21A99B89D00B715D2 /* SpecialDay.m in Sources */,
+				D88D25C81A99BB5100B715D2 /* ReservationSuborder.m in Sources */,
 				D86D3FFF1A870D0400474618 /* MYBlurIntroductionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

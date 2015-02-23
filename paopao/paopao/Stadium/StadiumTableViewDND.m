@@ -49,9 +49,9 @@
 
 -(void)didSelectedRowAthIndexPath:(UITableView *)aTableView IndexPath:(NSIndexPath *)aIndexPath FromView:(CustomTableView *)aView{
     Stadium *stadium = (Stadium *)[aView.tableInfoArray objectAtIndex: aIndexPath.row];
-//    if ([_delegate respondsToSelector:@selector(showResell:)]) {
-//        [_delegate showResell: stadium];
-//    }
+    if ([_delegate respondsToSelector:@selector(showStadium:)]) {
+        [_delegate showStadium: stadium];
+    }
 }
 
 //从AVCloud查询数据并刷新界面

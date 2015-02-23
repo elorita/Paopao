@@ -58,8 +58,10 @@
     dropDownMenu.delegate = self;
     [self addSubview:dropDownMenu];
     
-    if (stadiumTableViewDND == nil)
+    if (stadiumTableViewDND == nil) {
         stadiumTableViewDND = [[StadiumTableViewDND alloc] init];
+        stadiumTableViewDND.delegate = self.homeViewController;
+    }
     if (stadiumTableView == nil)
         stadiumTableView = [[CustomTableView alloc] initWithFrame:CGRectMake(0, 0, scrollView.width, scrollView.height - 40)];
     
@@ -158,7 +160,7 @@
             stadiumTableViewDND.filtratedDistrictOid = [districtOidArray objectAtIndex:indexPath.row];
             break;
         case 2:
-            stadiumTableViewDND.orderType = indexPath.row;
+            stadiumTableViewDND.orderType = (DataOrderType)indexPath.row;
             break;
         default:
             break;

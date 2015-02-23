@@ -33,6 +33,9 @@
 #define NAVIGATION_TITLE_WIDTH 120
 #define NAVIGATION_TITLE_HEIGHT 44
 
+#define kReservationCellWidth 56
+#define kReservationCellHeight 32
+
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 #define MAIN_COLOR [UIColor colorWithRed:(77.0)/255.0 green:(177.0)/255.0 blue:(53.0)/255.0 alpha:(1.0)]
 

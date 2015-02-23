@@ -21,6 +21,7 @@
             _homeTableView = [[UITableView alloc] initWithFrame:frame];
             _homeTableView.delegate = self;
             _homeTableView.dataSource = self;
+            _homeTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             [_homeTableView setBackgroundColor:[UIColor clearColor]];
         }
         if (_tableInfoArray == Nil) {
@@ -103,7 +104,7 @@
                 NSInteger vNewRowCount = aAddedRowCount;
                 if (vNewRowCount > 0) {
                     NSMutableArray *indexPaths = [NSMutableArray array];
-                    for (int lIndex = mRowCount; lIndex < mRowCount + vNewRowCount; lIndex++) {
+                    for (NSInteger lIndex = mRowCount; lIndex < mRowCount + vNewRowCount; lIndex++) {
                         [indexPaths addObject:[NSIndexPath indexPathForRow:lIndex inSection:0]];
                     }
                     [tableView beginUpdates];

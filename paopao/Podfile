@@ -1,2 +1,3 @@
 pod 'AVOSCloud'
 pod 'AVOSCloudSNS'
+pod 'Pingpp', :git => 'https://github.com/PingPlusPlus/pingpp-ios.git'

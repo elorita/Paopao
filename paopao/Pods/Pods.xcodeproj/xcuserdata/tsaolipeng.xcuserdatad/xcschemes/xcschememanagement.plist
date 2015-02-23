@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Pingpp.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5E0F594FA801F7F69C8DD5E6</key>
+		<key>1786BCAA1A340F6D64827FE5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>712DBFCDCFB9E381E8EAB8CF</key>
+		<key>4DE8BDDBDF60298A7C496C3A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8CFCB2ED3F5B7F323E00B60A</key>
+		<key>DC9137497983C5EE622E13AC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F7C18CD3CCED21D65C52AAD6</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootViewController.h"
 
 @interface StadiumView : UIView
 
 - (id)initWithFrame:(CGRect)frame withController:(UIViewController *)controller;
 
-@property(nonatomic,retain) UIViewController *homeViewController;
+@property(nonatomic,weak) RootViewController *homeViewController;
 
 @end
