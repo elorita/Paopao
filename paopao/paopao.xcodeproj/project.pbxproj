@@ -72,12 +72,13 @@
 		D86D400A1A870D2A00474618 /* CheckMarkWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40061A870D2A00474618 /* CheckMarkWhite.png */; };
 		D86D400B1A870D2A00474618 /* ForkImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40071A870D2A00474618 /* ForkImage.png */; };
 		D86D400C1A870D2A00474618 /* HeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40081A870D2A00474618 /* HeaderImage.png */; };
+		D87CA11B1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */; };
 		D8885CC31A7C9B6D00B690D8 /* HyperlinksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D8885CC21A7C9B6D00B690D8 /* HyperlinksButton.m */; };
 		D88D259D1A973CCD00B715D2 /* sportField.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D259C1A973CCD00B715D2 /* sportField.m */; };
 		D88D25A01A9748C500B715D2 /* StadiumDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D259F1A9748C500B715D2 /* StadiumDetailViewController.m */; };
 		D88D25A21A98268E00B715D2 /* location_green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25A11A98268E00B715D2 /* location_green@2x.png */; };
 		D88D25A41A982A4900B715D2 /* go_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25A31A982A4900B715D2 /* go_normal@2x.png */; };
-		D88D25B81A98ACF500B715D2 /* MenuHrizontal.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25B71A98ACF500B715D2 /* MenuHrizontal.m */; };
+		D88D25B81A98ACF500B715D2 /* ScheduleHorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25B71A98ACF500B715D2 /* ScheduleHorizontalMenu.m */; };
 		D88D25BB1A98AFE800B715D2 /* subTabbar_highLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25B91A98AFE800B715D2 /* subTabbar_highLight@2x.png */; };
 		D88D25BC1A98AFE800B715D2 /* subTabbar_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D88D25BA1A98AFE800B715D2 /* subTabbar_normal@2x.png */; };
 		D88D25BF1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25BE1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m */; };
@@ -220,6 +221,8 @@
 		D86D40061A870D2A00474618 /* CheckMarkWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckMarkWhite.png; sourceTree = "<group>"; };
 		D86D40071A870D2A00474618 /* ForkImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ForkImage.png; sourceTree = "<group>"; };
 		D86D40081A870D2A00474618 /* HeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HeaderImage.png; sourceTree = "<group>"; };
+		D87CA1191A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleHorizontalMenuLite.h; sourceTree = "<group>"; };
+		D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleHorizontalMenuLite.m; sourceTree = "<group>"; };
 		D8885CC11A7C9B6D00B690D8 /* HyperlinksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyperlinksButton.h; sourceTree = "<group>"; };
 		D8885CC21A7C9B6D00B690D8 /* HyperlinksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyperlinksButton.m; sourceTree = "<group>"; };
 		D88D259B1A973CCD00B715D2 /* sportField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sportField.h; sourceTree = "<group>"; };
@@ -228,8 +231,8 @@
 		D88D259F1A9748C500B715D2 /* StadiumDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StadiumDetailViewController.m; sourceTree = "<group>"; };
 		D88D25A11A98268E00B715D2 /* location_green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_green@2x.png"; sourceTree = "<group>"; };
 		D88D25A31A982A4900B715D2 /* go_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "go_normal@2x.png"; sourceTree = "<group>"; };
-		D88D25B61A98ACF500B715D2 /* MenuHrizontal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuHrizontal.h; sourceTree = "<group>"; };
-		D88D25B71A98ACF500B715D2 /* MenuHrizontal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuHrizontal.m; sourceTree = "<group>"; };
+		D88D25B61A98ACF500B715D2 /* ScheduleHorizontalMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleHorizontalMenu.h; sourceTree = "<group>"; };
+		D88D25B71A98ACF500B715D2 /* ScheduleHorizontalMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleHorizontalMenu.m; sourceTree = "<group>"; };
 		D88D25B91A98AFE800B715D2 /* subTabbar_highLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subTabbar_highLight@2x.png"; sourceTree = "<group>"; };
 		D88D25BA1A98AFE800B715D2 /* subTabbar_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "subTabbar_normal@2x.png"; sourceTree = "<group>"; };
 		D88D25BD1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleHorizontalMenuCell.h; sourceTree = "<group>"; };
@@ -630,8 +633,10 @@
 		D88D25B51A98ACF500B715D2 /* MenuHrizontal */ = {
 			isa = PBXGroup;
 			children = (
-				D88D25B61A98ACF500B715D2 /* MenuHrizontal.h */,
-				D88D25B71A98ACF500B715D2 /* MenuHrizontal.m */,
+				D87CA1191A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.h */,
+				D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */,
+				D88D25B61A98ACF500B715D2 /* ScheduleHorizontalMenu.h */,
+				D88D25B71A98ACF500B715D2 /* ScheduleHorizontalMenu.m */,
 				D88D25BD1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.h */,
 				D88D25BE1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m */,
 			);
@@ -940,6 +945,7 @@
 				D85E27C31A792E0300B50C2B /* EGORefreshTableHeaderView.m in Sources */,
 				D8C79D491A7CC7C6006E927E /* SVProgressHUD.m in Sources */,
 				D85E27C21A792E0300B50C2B /* CircleView.m in Sources */,
+				D87CA11B1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m in Sources */,
 				D8AE96FB1A7BCA9200884E51 /* AVSubclassesHelper.m in Sources */,
 				D868534B1A78A18B00059FE2 /* AppDelegate.m in Sources */,
 				D86853481A78A18B00059FE2 /* main.m in Sources */,
@@ -966,7 +972,7 @@
 				D8C79CC61A7CA29B006E927E /* Verifier.m in Sources */,
 				D86D3FFE1A870D0400474618 /* AMBlurView.m in Sources */,
 				D88D259D1A973CCD00B715D2 /* sportField.m in Sources */,
-				D88D25B81A98ACF500B715D2 /* MenuHrizontal.m in Sources */,
+				D88D25B81A98ACF500B715D2 /* ScheduleHorizontalMenu.m in Sources */,
 				D8AE97021A7BCCD900884E51 /* UIView+XD.m in Sources */,
 				D8C7A1911A811E3A006E927E /* CustomLocationManager.m in Sources */,
 				D88D25C21A99B89D00B715D2 /* SpecialDay.m in Sources */,

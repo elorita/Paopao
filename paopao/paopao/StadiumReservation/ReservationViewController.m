@@ -5,14 +5,25 @@
 //  Created by zzy on 14-5-5.
 //  Copyright (c) 2014年 zzy. All rights reserved.
 //
-#define kCount 20
 #import "ReservationViewController.h"
+#import "NormalNavigationBar.h"
 #import "HeadView.h"
 #import "TimeView.h"
 #import "MyCell.h"
 #import "MeetModel.h"
+#import "Defines.h"
+#import "ScheduleHorizontalMenuLite.h"
+#import "UIView+XD.h"
+#import "Stadium.h"
+#import "sportField.h"
 
-@interface ViewController ()<UITableViewDataSource,UITableViewDelegate,MyCellDelegate>
+#define MENUHEIHT 40
+
+@interface ReservationViewController ()<UITableViewDataSource,UITableViewDelegate,MyCellDelegate,NormalNavigationDelegate,MenuHrizontalDelegate> {
+    Stadium *curStadium;
+}
+@property (nonatomic, strong) NormalNavigationBar *navigationBar;
+@property (nonatomic, strong) ScheduleHorizontalMenuLite *shMenuLite;
 @property (nonatomic,strong) UIView *myHeadView;
 @property (nonatomic,strong) UITableView *myTableView;
 @property (nonatomic,strong) TimeView *timeView;
@@ -20,7 +31,13 @@
 @property (nonatomic,strong) NSMutableArray *currentTime;
 @end
 
-@implementation ViewController
+@implementation ReservationViewController
+
+- (instancetype)initWithStadium:(Stadium *)stadium {
+    self = [super init];
+    curStadium = stadium;
+    return self;
+}
 
 -(void)initData
 {
@@ -36,48 +53,120 @@
         [self.meets addObject:meet];
     }
 }
+
+- (void)setOriginSelectedDateIndex:(NSInteger)index {
+    originSelectedDateIndex = index;
+    if (_shMenuLite != nil) {
+        [_shMenuLite changeButtonStateAtIndex:index];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"场馆预订"];
+    self.navigationBar.delegate = self;
+    [self.view addSubview:self.navigationBar];
+    
+    _shMenuLite = [[ScheduleHorizontalMenuLite alloc] initWithFrame:CGRectMake(0, NAVIGATION_BAR_HEIGHT + STATU_BAR_HEIGHT, self.view.width, MENUHEIHT) withFirstDate:[NSDate date]];
+    _shMenuLite.delegate = self;
+    [_shMenuLite changeButtonStateAtIndex:originSelectedDateIndex];
+    [self.view addSubview:_shMenuLite];
+
+    [self createSubView_ColorIntro];//创建定场馆表格中各Cell颜色的介绍
+    
     [self initData];
     
-    self.title=@"会议管理";
     self.view.backgroundColor=[UIColor whiteColor];
     
-    UIView *tableViewHeadView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, kCount*kWidth, kHeight)];
-    self.myHeadView=tableViewHeadView;
+    AVQuery *query = [SportField query];
+    [query whereKey:@"stadium" equalTo:curStadium];
+    [query orderByAscending:@"order"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            UIView *tableViewHeadView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, objects.count * kReservationCellWidth, kReservationCellHeight)];
+            self.myHeadView=tableViewHeadView;
+            
+            for(int i=0; i<objects.count; i++){
+                SportField *sp = [objects objectAtIndex:i];
+                HeadView *headView=[[HeadView alloc]initWithFrame:CGRectMake(i*kReservationCellWidth, 0, kReservationCellWidth, kReservationCellHeight)];
+                headView.name = sp.name;
+                headView.backgroundColor=[UIColor whiteColor];
+                [tableViewHeadView addSubview:headView];
+            }
+            
+            UITableView *tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.myHeadView.frame.size.width, 480) style:UITableViewStylePlain];
+            tableView.delegate=self;
+            tableView.dataSource=self;
+            tableView.bounces=NO;
+            tableView.showsVerticalScrollIndicator = NO;
+            tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+            self.myTableView=tableView;
+            tableView.backgroundColor=[UIColor whiteColor];
+            
+            UIScrollView *myScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(42, NAVIGATION_BAR_HEIGHT + STATU_BAR_HEIGHT + MENUHEIHT + 60, self.view.frame.size.width-42, 320)];
+            [myScrollView addSubview:tableView];
+            myScrollView.bounces=NO;
+            myScrollView.contentSize=CGSizeMake(tableView.width,0);
+            [self.view addSubview:myScrollView];
+        }
+    }];
 
-    for(int i=0;i<kCount;i++){
-    
-        HeadView *headView=[[HeadView alloc]initWithFrame:CGRectMake(i*kWidth, 0, kWidth, kHeight)];
-        headView.num=[NSString stringWithFormat:@"%03d",i];
-        headView.detail=@"查看会议室安排";
-        headView.backgroundColor=[UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:1];
-        [tableViewHeadView addSubview:headView];
-    }
-    
-    UITableView *tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.myHeadView.frame.size.width, 480) style:UITableViewStylePlain];
-    tableView.delegate=self;
-    tableView.dataSource=self;
-    tableView.bounces=NO;
-    tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-    self.myTableView=tableView;
-    tableView.backgroundColor=[UIColor whiteColor];
-
-    UIScrollView *myScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(70, 0, self.view.frame.size.width-kWidth*0.7, 568)];
-    [myScrollView addSubview:tableView];
-    myScrollView.bounces=NO;
-    myScrollView.contentSize=CGSizeMake(self.myHeadView.frame.size.width,0);
-    [self.view addSubview:myScrollView];
-
-    self.timeView=[[TimeView alloc]initWithFrame:CGRectMake(0, 98, 70, kCount*kHeight)];
+    self.timeView=[[TimeView alloc] initWithFrame:CGRectMake(0, NAVIGATION_BAR_HEIGHT + STATU_BAR_HEIGHT + MENUHEIHT + kReservationCellHeight + 60 - 8, 42, 300) withBeginTime:curStadium.shopHoursBegin withEndTime:curStadium.shopHoursEnd];
     [self.view addSubview:self.timeView];
 }
 
+- (void)createSubView_ColorIntro {
+    UIView *colorIntroView = [[UIView alloc] initWithFrame:CGRectMake(10, NAVIGATION_BAR_HEIGHT + STATU_BAR_HEIGHT + MENUHEIHT, self.view.width - 20, 60)];
+    UIView *reservatedCellIntroView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, colorIntroView.width / 3, colorIntroView.height)];
+    UIView *curSelectedCellIntroView = [[UIView alloc] initWithFrame:CGRectMake(reservatedCellIntroView.width, 0, colorIntroView.width / 3, colorIntroView.height)];
+    UIView *canReservateCellIntroView = [[UIView alloc] initWithFrame:CGRectMake(curSelectedCellIntroView.frame.origin.x + curSelectedCellIntroView.width, 0, colorIntroView.width / 3, colorIntroView.height)];
+    
+    UIView *reservatedCellColorView = [[UIView alloc] initWithFrame:CGRectMake((reservatedCellIntroView.width - 40) / 2, 10, 40, 20)];
+    [reservatedCellColorView setBackgroundColor:DARK_BACKGROUND_COLOR];
+    [reservatedCellIntroView addSubview:reservatedCellColorView];
+    UILabel *reservatedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, reservatedCellIntroView.width, 20)];
+    [reservatedLabel setText:@"已售出"];
+    [reservatedLabel setTextAlignment:NSTextAlignmentCenter];
+    [reservatedLabel setTextColor:[UIColor grayColor]];
+    [reservatedLabel setFont:[UIFont systemFontOfSize:15]];
+    [reservatedCellIntroView addSubview:reservatedLabel];
+    [colorIntroView addSubview:reservatedCellIntroView];
+    
+    UIView *curSelectedCellColorView = [[UIView alloc] initWithFrame:CGRectMake((curSelectedCellIntroView.width - 40) / 2, 10, 40, 20)];
+    [curSelectedCellColorView setBackgroundColor:[UIColor orangeColor]];
+    [curSelectedCellIntroView addSubview:curSelectedCellColorView];
+    UILabel *curSelectedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, curSelectedCellIntroView.width, 20)];
+    [curSelectedLabel setText:@"当前选中"];
+    [curSelectedLabel setTextAlignment:NSTextAlignmentCenter];
+    [curSelectedLabel setTextColor:[UIColor grayColor]];
+    [curSelectedLabel setFont:[UIFont systemFontOfSize:15]];
+    [curSelectedCellIntroView addSubview:curSelectedLabel];
+    [colorIntroView addSubview:curSelectedCellIntroView];
+    
+    UIView *canReservateCellColorView = [[UIView alloc] initWithFrame:CGRectMake((canReservateCellIntroView.width - 40) / 2, 10, 40, 20)];
+    [canReservateCellColorView setBackgroundColor:MAIN_COLOR];
+    [canReservateCellIntroView addSubview:canReservateCellColorView];
+    UILabel *canReservateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, canReservateCellIntroView.width, 20)];
+    [canReservateLabel setText:@"可订购"];
+    [canReservateLabel setTextAlignment:NSTextAlignmentCenter];
+    [canReservateLabel setTextColor:[UIColor grayColor]];
+    [canReservateLabel setFont:[UIFont systemFontOfSize:15]];
+    [canReservateCellIntroView addSubview:canReservateLabel];
+    [colorIntroView addSubview:canReservateCellIntroView];
+    
+    UIView *spLine = [[UIView alloc] initWithFrame:CGRectMake(0, 56, colorIntroView.width, 1)];
+    [spLine setBackgroundColor:NORMAL_BACKGROUND_COLOR];
+    [colorIntroView addSubview:spLine];
+    
+    [self.view addSubview: colorIntroView];
+}
+
+#pragma mark UITableViewDelegate N' UITableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return kCount-1;
+    return curStadium.shopHoursEnd - curStadium.shopHoursBegin + 5;//这里返回n+5后，才能有n条滚动的空间，原因不明
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -112,10 +201,10 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return kHeight;
+    return kReservationCellHeight;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kHeight;
+    return kReservationCellHeight;
 }
 -(void)myHeadView:(HeadView *)headView point:(CGPoint)point
 {
@@ -125,11 +214,12 @@
 }
 -(void)convertRoomFromPoint:(CGPoint)ponit
 {
-    NSString *roomNum=[NSString stringWithFormat:@"%03d",(int)(ponit.x)/kWidth];
-    int currentTime=(ponit.y-kHeight-kHeightMargin)*30.0/(kHeight+kHeightMargin)+510;
+    NSString *roomNum=[NSString stringWithFormat:@"%03d",(int)(ponit.x)/kReservationCellWidth];
+    int currentTime=(ponit.y-kReservationCellHeight-kHeightMargin)*30.0/(kReservationCellHeight+kHeightMargin)+510;
     UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"clicked room" message:[NSString stringWithFormat:@"time :%@ room :%@",[NSString stringWithFormat:@"%d:%02d",currentTime/60,currentTime%60],roomNum] delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles:@"ok", nil];
     [alert show];
 }
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetY= self.myTableView.contentOffset.y;
@@ -144,6 +234,15 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)doReturn {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark MenuHrizontalDelegate
+-(void)didMenuHrizontalClickedButtonAtIndex:(NSInteger)aIndex {
+    
 }
 
 @end

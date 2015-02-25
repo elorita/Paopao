@@ -6,19 +6,17 @@
 //  Copyright (c) 2014年 @"". All rights reserved.
 //
 
-#import "MenuHrizontal.h"
-#import "ScheduleHorizontalMenuCell.h"
-#import "UIView+XD.h"
+#import "ScheduleHorizontalMenuLite.h"
+#import "Defines.h"
 
-#define BUTTONITEMWIDTH   70
+#define BUTTONITEMWIDTH   100
 
-@implementation MenuHrizontal
+@implementation ScheduleHorizontalMenuLite
 
 #pragma mark 初始化菜单
-
-- (id)initWithFrame:(CGRect)frame withStadium:(Stadium *)stadium withDate:(NSDate *)date {
+- (id)initWithFrame:(CGRect)frame withFirstDate:(NSDate *)date
+{
     self = [super initWithFrame:frame];
-    self.height = kScheduleHorizontalMenuCellHeight + 10;
     if (self) {
         if (mButtonArray == nil) {
             mButtonArray = [[NSMutableArray alloc] init];
@@ -31,28 +29,42 @@
             mItemInfoArray = [[NSMutableArray alloc]init];
         }
         [mItemInfoArray removeAllObjects];
-        [self createMenuItemsWithStadium:stadium withDate:date];
+        [self createMenuItemsWithFirstDate:date];
     }
     return self;
 }
 
--(void)createMenuItemsWithStadium:(Stadium *)stadium withDate:(NSDate *)date {
+-(void)createMenuItemsWithFirstDate:(NSDate *)date{
+    int i = 0;
     float menuWidth = 0.0;
-    NSDate *tempDate;
-    for (int i = 0; i < 7; i++) {
-        tempDate = [date dateByAddingTimeInterval:3600 * 24 * i];
-        ScheduleHorizontalMenuCell *cell = [[ScheduleHorizontalMenuCell alloc] initWithOriginX:kScheduleHorizontalMenuCellWidth * i + 5 * (i + 1) withOriginY:5];
-        [cell initializeWithStadium:stadium withDate:tempDate];
-        cell.tag = i;
-        [mScrollView addSubview:cell];
-        [mButtonArray addObject:cell];
+    for (i = 0; i < 7; i++) {
+        NSDate *aDate = [date dateByAddingTimeInterval:3600 * 24 * i];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        NSString *vTitleStr;
+        if (i != 0) {
+            [dateFormatter setDateFormat:@"EEE/M.d"];
+        } else {
+            [dateFormatter setDateFormat:@"今天/M.d"];
+        }
+        vTitleStr = [dateFormatter stringFromDate:aDate];
+        UIButton *vButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [vButton setBackgroundImage:[UIImage imageNamed:@"subTabbar_normal.png"] forState:UIControlStateNormal];
+        [vButton setBackgroundImage:[UIImage imageNamed:@"subTabbar_highLight.png"] forState:UIControlStateSelected];
+        [vButton setBackgroundImage:[UIImage imageNamed:@"subTabbar_highLight.png"] forState:UIControlStateHighlighted];
+        [vButton setTitle:vTitleStr forState:UIControlStateNormal];
+        [vButton setTitleColor:[UIColor colorWithRed:88.0/255.0 green:88.0/255.0 blue:88.0/255.0 alpha:1] forState:UIControlStateNormal];
+        [vButton setTitleColor:MAIN_COLOR forState:UIControlStateSelected];
+        [vButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [vButton setTag:i];
+        [vButton addTarget:self action:@selector(menuButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [vButton setFrame:CGRectMake(menuWidth, 0, BUTTONITEMWIDTH, self.frame.size.height)];
+        [mScrollView addSubview:vButton];
+        [mButtonArray addObject:vButton];
         
-        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doViewTap:)];
-        [cell addGestureRecognizer:tapGR];
+        menuWidth += BUTTONITEMWIDTH;
         
-        menuWidth = (kScheduleHorizontalMenuCellWidth + 5) * (i + 1) + 5;
         //保存button资源信息，同时增加button.oringin.x的位置，方便点击button时，移动位置。
-        NSMutableDictionary *vNewDic = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *vNewDic = [[NSMutableDictionary alloc] init];;
         [vNewDic setObject:[NSNumber numberWithFloat:menuWidth] forKey:TOTALWIDTH];
         [mItemInfoArray addObject:vNewDic];
     }
@@ -63,37 +75,27 @@
     mTotalWidth = menuWidth;
 }
 
-- (void)doViewTap:(id)sender {
-    UITapGestureRecognizer *tapGR = (UITapGestureRecognizer *)sender;
-    if (tapGR.view != nil) {
-        [self changeButtonStateAtIndex:tapGR.view.tag];
-        if ([_delegate respondsToSelector:@selector(didMenuHrizontalClickedButtonAtIndex:)]) {
-            [_delegate didMenuHrizontalClickedButtonAtIndex:tapGR.view.tag];
-        }
+#pragma mark - 其他辅助功能
+#pragma mark 取消所有button点击状态
+-(void)changeButtonsToNormalState{
+    for (UIButton *vButton in mButtonArray) {
+        vButton.selected = NO;
+        [vButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     }
 }
 
-#pragma mark - 其他辅助功能
-#pragma mark 取消所有button点击状态
-//-(void)changeButtonsToNormalState{
-//    for (UIButton *vButton in mButtonArray) {
-//        vButton.selected = NO;
-//        [vButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-//    }
-//}
-
 #pragma mark 模拟选中第几个button
 -(void)clickButtonAtIndex:(NSInteger)aIndex{
-    ScheduleHorizontalMenuCell *vCell = [mButtonArray objectAtIndex:aIndex];
-    [self menuButtonClicked:vCell];
+    UIButton *vButton = [mButtonArray objectAtIndex:aIndex];
+    [self menuButtonClicked:vButton];
 }
 
 #pragma mark 改变第几个button为选中状态，不发送delegate
 -(void)changeButtonStateAtIndex:(NSInteger)aIndex{
-    ScheduleHorizontalMenuCell *vCell = [mButtonArray objectAtIndex:aIndex];
-    //[self changeButtonsToNormalState];
-    //vButton.selected = YES;
-    //[vButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+    UIButton *vButton = [mButtonArray objectAtIndex:aIndex];
+    [self changeButtonsToNormalState];
+    vButton.selected = YES;
+    [vButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [self moveScrolViewWithIndex:aIndex];
 }
 
@@ -128,10 +130,10 @@
 }
 
 #pragma mark - 点击事件
--(void)menuButtonClicked:(ScheduleHorizontalMenuCell *)aCell{
-    [self changeButtonStateAtIndex:aCell.tag];
+-(void)menuButtonClicked:(UIButton *)aButton{
+    [self changeButtonStateAtIndex:aButton.tag];
     if ([_delegate respondsToSelector:@selector(didMenuHrizontalClickedButtonAtIndex:)]) {
-        [_delegate didMenuHrizontalClickedButtonAtIndex:aCell.tag];
+        [_delegate didMenuHrizontalClickedButtonAtIndex:aButton.tag];
     }
 }
 

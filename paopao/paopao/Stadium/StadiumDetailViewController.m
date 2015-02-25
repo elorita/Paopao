@@ -10,13 +10,14 @@
 #import "NormalNavigationBar.h"
 #import "UIView+XD.h"
 #import "Defines.h"
-#import "MenuHrizontal.h"
+#import "ScheduleHorizontalMenu.h"
+#import "ReservationViewController.h"
 
 #define SubViewSpace 1
 #define MENUHEIHT 40
 
 @interface StadiumDetailViewController () <NormalNavigationDelegate, MenuHrizontalDelegate> {
-    MenuHrizontal *mMenuHriZontal;
+    ScheduleHorizontalMenu *mMenuHriZontal;
 }
 
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
@@ -30,9 +31,15 @@
     [super viewDidLoad];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    if (_curStadium != nil) {
+        [mMenuHriZontal refreshCellsWithStadium:_curStadium withDate:[NSDate date]];
+    }
+}
+
 - (void)initializeWithStadium:(Stadium *)stadium {
     _curStadium = stadium;
-    [self.view setBackgroundColor:MAIN_COLOR];
+    [self.view setBackgroundColor:NORMAL_BACKGROUND_COLOR];
     
     self.navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"场馆详情"];
     self.navigationBar.delegate = self;
@@ -100,7 +107,7 @@
     }
     
     UIView *orderView = [[UIView alloc] initWithFrame:CGRectMake(telNoView.frame.origin.x, telNoView.frame.origin.y + telNoView.height + SubViewSpace, telNoView.width, 90)];
-    [orderView setBackgroundColor:MAIN_COLOR];
+    [orderView setBackgroundColor:NORMAL_BACKGROUND_COLOR];
     [self.view addSubview:orderView];
     [self initReservationViewWithContainer:orderView];
 }
@@ -109,33 +116,23 @@
 -(void)initReservationViewWithContainer:(UIView *)container{
 
     if (mMenuHriZontal == nil) {
-        mMenuHriZontal = [[MenuHrizontal alloc] initWithFrame:CGRectMake(0, 0, container.width, MENUHEIHT) withStadium:_curStadium withDate:[NSDate date]];
+        mMenuHriZontal = [[ScheduleHorizontalMenu alloc] initWithFrame:CGRectMake(0, 0, container.width, MENUHEIHT) withStadium:_curStadium withDate:[NSDate date]];
         mMenuHriZontal.delegate = self;
     }
-//    //初始化滑动列表
-//    if (mScrollPageView == nil) {
-//        mScrollPageView = [[ScrollPageView alloc] initWithFrame:CGRectMake(0, MENUHEIHT, self.frame.size.width, self.frame.size.height - MENUHEIHT)];
-//        mScrollPageView.delegate = self;
-//        mScrollPageView.homeViewController = self.homeViewController;
-//    }
-//    [mScrollPageView setContentOfTables:vButtonItemArray.count];
-    //默认选中第一个button
     [mMenuHriZontal clickButtonAtIndex:0];
-    //-------
-//    [self addSubview:mScrollPageView];
     [container addSubview:mMenuHriZontal];
 }
 
 #pragma mark - 其他辅助功能
 #pragma mark MenuHrizontalDelegate
 -(void)didMenuHrizontalClickedButtonAtIndex:(NSInteger)aIndex{
-    NSLog(@"第%d个Button点击了",aIndex);
-    //[mScrollPageView moveScrollowViewAthIndex:aIndex];
+    ReservationViewController *reservationVC = [[ReservationViewController alloc] initWithStadium:_curStadium];
+    reservationVC.originSelectedDateIndex = aIndex;
+    [self.navigationController pushViewController:reservationVC animated:YES];
 }
 
 #pragma mark ScrollPageViewDelegate
 -(void)didScrollPageViewChangedPage:(NSInteger)aPage{
-    NSLog(@"CurrentPage:%d",aPage);
     [mMenuHriZontal changeButtonStateAtIndex:aPage];
     //    if (aPage == 3) {
     //刷新当页数据

@@ -18,4 +18,6 @@
 
 - (void)initializeWithStadium:(Stadium *)stadium withDate:(NSDate *)date;
 
+- (void)updateCellWithStadium:(Stadium *)stadium withDate:(NSDate *)date;
+
 @end

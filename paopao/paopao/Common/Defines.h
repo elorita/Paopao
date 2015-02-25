@@ -38,6 +38,8 @@
 
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 #define MAIN_COLOR [UIColor colorWithRed:(77.0)/255.0 green:(177.0)/255.0 blue:(53.0)/255.0 alpha:(1.0)]
+#define NORMAL_BACKGROUND_COLOR [UIColor colorWithRed:(242.0)/255.0 green:(237.0)/255.0 blue:(238.0)/255.0 alpha:(1.0)]
+#define DARK_BACKGROUND_COLOR [UIColor colorWithRed:(226.0)/255.0 green:(231.0)/255.0 blue:(237.0)/255.0 alpha:(1.0)]
 
 //表单排序类型
 #define DataOrderTypeCount 6

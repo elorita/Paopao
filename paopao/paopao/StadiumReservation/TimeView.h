@@ -10,4 +10,6 @@
 
 @interface TimeView : UIView
 @property (nonatomic,strong) UITableView *timeTableView;
+
+- (id)initWithFrame:(CGRect)frame withBeginTime:(NSInteger)beginTime withEndTime:(NSInteger)endTime;
 @end

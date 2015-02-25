@@ -15,8 +15,11 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.timeLabel=[[MyLabel alloc]initWithFrame:CGRectMake(17, -1, self.frame.size.width, self.frame.size.height*0.3)];
+        self.timeLabel=[[MyLabel alloc]initWithFrame:CGRectMake(5, -1, self.frame.size.width, self.frame.size.height*0.3)];
+        [self.timeLabel setTextColor:[UIColor lightGrayColor]];
+        [self.timeLabel setFont:[UIFont systemFontOfSize:12]];
         [self.timeLabel setVerticalAlignment:VerticalAlignmentTop];
+        //[self.timeLabel setTextAlignment:NSTextAlignmentRight];
         [self.contentView addSubview:self.timeLabel];
     }
     return self;

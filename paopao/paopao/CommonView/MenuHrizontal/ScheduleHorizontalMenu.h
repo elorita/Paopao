@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Stadium.h"
+#import "ScheduleHorizontalMenuLite.h"
 
 #define NOMALKEY   @"normalKey"
 #define HEIGHTKEY  @"helightKey"
@@ -15,12 +16,7 @@
 #define TITLEWIDTH @"titleWidth"
 #define TOTALWIDTH @"totalWidth"
 
-@protocol MenuHrizontalDelegate <NSObject>
-
-@optional
--(void)didMenuHrizontalClickedButtonAtIndex:(NSInteger)aIndex;
-@end
-@interface MenuHrizontal : UIView
+@interface ScheduleHorizontalMenu : UIView
 {
     NSMutableArray        *mButtonArray;
     NSMutableArray        *mItemInfoArray;
@@ -39,5 +35,7 @@
 
 #pragma mark 改变第几个button为选中状态，不发送delegate
 -(void)changeButtonStateAtIndex:(NSInteger)aIndex;
+
+- (void)refreshCellsWithStadium:(Stadium *)stadium withDate:(NSDate *)date;
 
 @end

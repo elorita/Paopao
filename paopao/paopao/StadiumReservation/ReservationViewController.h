@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Stadium.h"
 
-@interface ViewController : UIViewController
+@interface ReservationViewController : UIViewController {
+    NSInteger originSelectedDateIndex;
+}
+
+- (void)setOriginSelectedDateIndex:(NSInteger)index;
+
+- (instancetype)initWithStadium:(Stadium *)stadium;
 
 @end

@@ -11,6 +11,10 @@
 #import "HeadView.h"
 #import "MeetModel.h"
 #import "Defines.h"
+
+#define kWidthMargin 1
+#define kHeightMargin 1
+
 @interface MyCell()<HeadViewDelegate>
 
 @end
@@ -24,7 +28,7 @@
         
         for(int i=0;i<20;i++){
         
-            HeadView *headView=[[HeadView alloc]initWithFrame:CGRectMake(i*kWidth, 0, kWidth-kWidthMargin, kHeight-kHeightMargin)];
+            HeadView *headView=[[HeadView alloc]initWithFrame:CGRectMake(i*kReservationCellWidth, 0, kReservationCellWidth-kWidthMargin, kReservationCellHeight-kHeightMargin)];
             headView.delegate=self;
             headView.backgroundColor=[UIColor lightGrayColor];
             [self.contentView addSubview:headView];

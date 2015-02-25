@@ -5,36 +5,27 @@
 //  Created by zzy on 14-5-6.
 //  Copyright (c) 2014年 zzy. All rights reserved.
 //
-#define kCount 20
 #import "TimeView.h"
 #import "MyLabel.h"
 #import "TimeCell.h"
-@interface TimeView()<UITableViewDataSource,UITableViewDelegate>
+#import "Defines.h"
+@interface TimeView()<UITableViewDataSource,UITableViewDelegate> {
+    NSInteger timeCount;
+}
 @property (nonatomic,strong) NSMutableArray *times;
 @end
 
 @implementation TimeView
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame withBeginTime:(NSInteger)beginTime withEndTime:(NSInteger)endTime
 {
     self = [super initWithFrame:frame];
     if (self) {
-      
-//        for(int i=0;i<20;i++){
-// 
-//            MyLabel *timeLabel=[[MyLabel alloc]initWithFrame:CGRectMake(0, i*(kHeight+kHeightMargin), kWidth, (kHeight+kHeightMargin))];
-////            timeLabel.backgroundColor=[UIColor yellowColor];
-//            [timeLabel setVerticalAlignment:VerticalAlignmentTop];
-//            timeLabel.textAlignment=NSTextAlignmentRight;
-//            int currentTime=i*30+510;
-//            timeLabel.text=[NSString stringWithFormat:@"%d:%02d",currentTime/60,currentTime%60];
-//            [self addSubview:timeLabel];
-//        
-//        }
         self.times=[NSMutableArray array];
-        for (int i=0; i<=kCount; i++) {
-            int currentTime=i*60+510;
-            NSString *time=[NSString stringWithFormat:@"%d:%02d",currentTime/60,currentTime%60];
+        timeCount = endTime - beginTime + 1;
+        for (int i=0; i<=timeCount; i++) {
+            NSInteger currentTime = 60 * beginTime + 60 * i;
+            NSString *time=[NSString stringWithFormat:@"%02ld:%02ld-",currentTime/60,currentTime%60];
             [self.times addObject:time];
         }
         
@@ -51,10 +42,10 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return kCount;
+    return timeCount;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kHeight;
+    return kReservationCellHeight;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
