@@ -12,11 +12,17 @@
 
 @protocol HeadViewDelegate <NSObject>
 
--(void)headView:(HeadView *)headView point:(CGPoint)point;
+-(void)headView:(HeadView *)headView isSelected:(BOOL)selected;
 
 @end
 
-@interface HeadView : UIView
+@interface HeadView : UIView {
+    BOOL isReservationable;
+}
 @property (nonatomic,strong) NSString *name;
+@property (nonatomic) NSInteger sportFieldIndex;
 @property (nonatomic,assign) id <HeadViewDelegate> delegate;
+
+- (void)setIsReservationable:(BOOL)value;
+
 @end

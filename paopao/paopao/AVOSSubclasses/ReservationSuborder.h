@@ -15,10 +15,10 @@
 @property (nonatomic, strong) NSDate *generateDateTime;
 @property (nonatomic, strong) NSDate *payDateTime;
 @property (nonatomic, strong) NSDate *date;
-@property (nonatomic) NSNumber *time;
+@property (nonatomic) NSInteger time;
 @property (nonatomic, strong) Stadium *stadium;
 @property (nonatomic, strong) SportField *sportField;
 @property (nonatomic, strong) AVUser *user;
-@property (nonatomic) BOOL *isPaid;
+@property (nonatomic) BOOL isPaid;
 
 @end

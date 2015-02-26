@@ -11,6 +11,7 @@
 #import "UIView+XD.h"
 #import "Stadium.h"
 #import "ReservationSuborder.h"
+#import "DateTimeHelper.h"
 
 @implementation ScheduleHorizontalMenuCell {
     UILabel *dateLabel;
@@ -55,7 +56,7 @@
 
 - (void)updateCellWithStadium:(Stadium *)stadium withDate:(NSDate *)date {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    if (![self date:[NSDate date] isEqualOtherDate:date]) {
+    if (![DateTimeHelper date:[NSDate date] isEqualOtherDate:date]) {
         [dateFormatter setDateFormat:@"EEE/M.d"];
     } else {
         [dateFormatter setDateFormat:@"今天/M.d"];
@@ -71,21 +72,6 @@
         }
     }];
     [self addSubview:remainCountLabel];
-}
-
-- (BOOL)date:(NSDate *)date isEqualOtherDate:(NSDate *)aDate
-{
-    if (aDate == nil || date == nil) return NO;
-    
-    NSCalendar *cal = [NSCalendar currentCalendar];
-    NSDateComponents *components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
-    NSDate *today = [cal dateFromComponents:components];
-    components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:aDate];
-    NSDate *otherDate = [cal dateFromComponents:components];
-    if([today isEqualToDate:otherDate])
-        return YES;
-    
-    return NO;
 }
 
 @end

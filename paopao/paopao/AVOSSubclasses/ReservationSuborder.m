@@ -10,7 +10,7 @@
 
 @implementation ReservationSuborder
 
-@synthesize generateDateTime,payDateTime,description,time,stadium,sportField,user;
+@synthesize generateDateTime,payDateTime,description,time,stadium,sportField,user,isPaid;
 
 + (NSString *)parseClassName {
     return @"reservationSuborder";

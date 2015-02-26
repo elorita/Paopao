@@ -9,8 +9,9 @@
 
 #import "MyCell.h"
 #import "HeadView.h"
-#import "MeetModel.h"
+#import "SessionModel.h"
 #import "Defines.h"
+#import "ReservationSuborder.h"
 
 #define kWidthMargin 1
 #define kHeightMargin 1
@@ -21,67 +22,46 @@
 
 @implementation MyCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withSubCellCount:(NSInteger)subCellCount
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        for(int i=0;i<20;i++){
+        for(int i=0; i<subCellCount; i++){
         
             HeadView *headView=[[HeadView alloc]initWithFrame:CGRectMake(i*kReservationCellWidth, 0, kReservationCellWidth-kWidthMargin, kReservationCellHeight-kHeightMargin)];
             headView.delegate=self;
-            headView.backgroundColor=[UIColor lightGrayColor];
+            headView.sportFieldIndex = i;
             [self.contentView addSubview:headView];
         }
         [self setBackgroundColor:[UIColor redColor]];
     }
     return self;
 }
--(void)headView:(HeadView *)headView point:(CGPoint)point
+-(void)headView:(HeadView *)headView isSelected:(BOOL)selected
 {
-    if([self.delegate respondsToSelector:@selector(myHeadView:point:)]){
-    
-        [self.delegate myHeadView:headView point:point];
+    if([self.delegate respondsToSelector:@selector(selectingIsChanged:withTime:withSportField:)]){
+        [self.delegate selectingIsChanged:selected withTime:_currentTime withSportField:headView.sportFieldIndex];
     }
 
 }
--(void)setCurrentTime:(NSMutableArray *)currentTime
-{
-     _currentTime=currentTime;
-    int count=currentTime.count;
-    if(count>0){
-        for(int i=0;i<count;i++){
-        
-            MeetModel *model=currentTime[i];
-            
-            HeadView *headView;
-            if([model.meetRoom isEqualToString:@"000"]){
-              
-                headView=(HeadView *)self.contentView.subviews[0];
-            }else{
-               
-                NSArray *room=[model.meetRoom componentsSeparatedByString:@"0"];
-                headView=(HeadView *)self.contentView.subviews[[[room lastObject] intValue]];
-            }
-            headView.backgroundColor=[UIColor greenColor];
-            
-            for(HeadView *leftHeadView in self.contentView.subviews){
-              
-                if(headView!=leftHeadView) leftHeadView.backgroundColor=[UIColor lightGrayColor];
-            }
-        }
-    }else{
-       
-        for(HeadView *headView in self.contentView.subviews){
-        
-            headView.backgroundColor=[UIColor lightGrayColor];
+
+- (void)reloadDataWithReservatedSession:(NSArray *)sessions{
+    for (HeadView * headView in self.contentView.subviews) {
+        headView.isReservationable = TRUE;
+    }
+    
+    for (SessionModel *session in sessions) {
+        if (session.sessionTime == _currentTime) {
+            HeadView *headView = (HeadView *)self.contentView.subviews[session.sportFieldIndex];
+            headView.isReservationable = FALSE;
         }
     }
 }
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
     // Configure the view for the selected state
 }
 

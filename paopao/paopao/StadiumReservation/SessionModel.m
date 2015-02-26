@@ -6,8 +6,8 @@
 //  Copyright (c) 2014年 zzy. All rights reserved.
 //
 
-#import "MeetModel.h"
+#import "SessionModel.h"
 
-@implementation MeetModel
+@implementation SessionModel
 
 @end

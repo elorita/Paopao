@@ -13,12 +13,16 @@
 
 @protocol MyCellDelegate <NSObject>
 
--(void)myHeadView:(HeadView *)headView point:(CGPoint)point;
+-(void)selectingIsChanged:(BOOL)selected withTime:(NSInteger)time withSportField:(NSInteger)sportFieldIndex;
 
 @end
 
 @interface MyCell : UITableViewCell
 @property (nonatomic,assign) id<MyCellDelegate> delegate;
-@property (nonatomic,strong) NSMutableArray *currentTime;
+@property (nonatomic) NSInteger currentTime;
 @property (nonatomic,assign) int index;
+
+- (void)reloadDataWithReservatedSession:(NSArray *)sessions;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withSubCellCount:(NSInteger)subCellCount;
 @end

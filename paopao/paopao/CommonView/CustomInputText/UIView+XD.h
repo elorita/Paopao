@@ -15,6 +15,8 @@
 @property (nonatomic, assign)CGFloat centerY;
 @property (nonatomic, assign)CGFloat width;
 @property (nonatomic, assign)CGFloat height;
+@property (nonatomic, assign)CGFloat right;
+@property (nonatomic, assign)CGFloat bottom;
 @end
 
 // 版权属于原作者

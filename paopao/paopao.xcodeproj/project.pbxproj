@@ -73,6 +73,8 @@
 		D86D400B1A870D2A00474618 /* ForkImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40071A870D2A00474618 /* ForkImage.png */; };
 		D86D400C1A870D2A00474618 /* HeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40081A870D2A00474618 /* HeaderImage.png */; };
 		D87CA11B1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */; };
+		D87CA11E1A9DBD4D00141EA0 /* DateTimeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA11D1A9DBD4D00141EA0 /* DateTimeHelper.m */; };
+		D87CA1211A9F0E3500141EA0 /* OrderConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA1201A9F0E3500141EA0 /* OrderConfirmViewController.m */; };
 		D8885CC31A7C9B6D00B690D8 /* HyperlinksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D8885CC21A7C9B6D00B690D8 /* HyperlinksButton.m */; };
 		D88D259D1A973CCD00B715D2 /* sportField.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D259C1A973CCD00B715D2 /* sportField.m */; };
 		D88D25A01A9748C500B715D2 /* StadiumDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D259F1A9748C500B715D2 /* StadiumDetailViewController.m */; };
@@ -86,7 +88,7 @@
 		D88D25C51A99B9AC00B715D2 /* ReservationOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C41A99B9AC00B715D2 /* ReservationOrder.m */; };
 		D88D25C81A99BB5100B715D2 /* ReservationSuborder.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */; };
 		D88D25D81A9B110500B715D2 /* HeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CB1A9B110500B715D2 /* HeadView.m */; };
-		D88D25D91A9B110500B715D2 /* MeetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CD1A9B110500B715D2 /* MeetModel.m */; };
+		D88D25D91A9B110500B715D2 /* SessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CD1A9B110500B715D2 /* SessionModel.m */; };
 		D88D25DA1A9B110500B715D2 /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CF1A9B110500B715D2 /* MyCell.m */; };
 		D88D25DB1A9B110500B715D2 /* MyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D11A9B110500B715D2 /* MyLabel.m */; };
 		D88D25DC1A9B110500B715D2 /* ReservationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D31A9B110500B715D2 /* ReservationViewController.m */; };
@@ -223,6 +225,10 @@
 		D86D40081A870D2A00474618 /* HeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HeaderImage.png; sourceTree = "<group>"; };
 		D87CA1191A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleHorizontalMenuLite.h; sourceTree = "<group>"; };
 		D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleHorizontalMenuLite.m; sourceTree = "<group>"; };
+		D87CA11C1A9DBD4D00141EA0 /* DateTimeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTimeHelper.h; sourceTree = "<group>"; };
+		D87CA11D1A9DBD4D00141EA0 /* DateTimeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateTimeHelper.m; sourceTree = "<group>"; };
+		D87CA11F1A9F0E3500141EA0 /* OrderConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmViewController.h; sourceTree = "<group>"; };
+		D87CA1201A9F0E3500141EA0 /* OrderConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmViewController.m; sourceTree = "<group>"; };
 		D8885CC11A7C9B6D00B690D8 /* HyperlinksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyperlinksButton.h; sourceTree = "<group>"; };
 		D8885CC21A7C9B6D00B690D8 /* HyperlinksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyperlinksButton.m; sourceTree = "<group>"; };
 		D88D259B1A973CCD00B715D2 /* sportField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sportField.h; sourceTree = "<group>"; };
@@ -245,8 +251,8 @@
 		D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationSuborder.m; sourceTree = "<group>"; };
 		D88D25CA1A9B110500B715D2 /* HeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadView.h; sourceTree = "<group>"; };
 		D88D25CB1A9B110500B715D2 /* HeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadView.m; sourceTree = "<group>"; };
-		D88D25CC1A9B110500B715D2 /* MeetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetModel.h; sourceTree = "<group>"; };
-		D88D25CD1A9B110500B715D2 /* MeetModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetModel.m; sourceTree = "<group>"; };
+		D88D25CC1A9B110500B715D2 /* SessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionModel.h; sourceTree = "<group>"; };
+		D88D25CD1A9B110500B715D2 /* SessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionModel.m; sourceTree = "<group>"; };
 		D88D25CE1A9B110500B715D2 /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
 		D88D25CF1A9B110500B715D2 /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
 		D88D25D01A9B110500B715D2 /* MyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLabel.h; sourceTree = "<group>"; };
@@ -648,8 +654,8 @@
 			children = (
 				D88D25CA1A9B110500B715D2 /* HeadView.h */,
 				D88D25CB1A9B110500B715D2 /* HeadView.m */,
-				D88D25CC1A9B110500B715D2 /* MeetModel.h */,
-				D88D25CD1A9B110500B715D2 /* MeetModel.m */,
+				D88D25CC1A9B110500B715D2 /* SessionModel.h */,
+				D88D25CD1A9B110500B715D2 /* SessionModel.m */,
 				D88D25CE1A9B110500B715D2 /* MyCell.h */,
 				D88D25CF1A9B110500B715D2 /* MyCell.m */,
 				D88D25D01A9B110500B715D2 /* MyLabel.h */,
@@ -660,6 +666,8 @@
 				D88D25D51A9B110500B715D2 /* TimeCell.m */,
 				D88D25D61A9B110500B715D2 /* TimeView.h */,
 				D88D25D71A9B110500B715D2 /* TimeView.m */,
+				D87CA11F1A9F0E3500141EA0 /* OrderConfirmViewController.h */,
+				D87CA1201A9F0E3500141EA0 /* OrderConfirmViewController.m */,
 			);
 			path = StadiumReservation;
 			sourceTree = "<group>";
@@ -679,6 +687,8 @@
 				D8C7A18C1A80F421006E927E /* SignInDelegate.h */,
 				D8C7A18F1A811E3A006E927E /* CustomLocationManager.h */,
 				D8C7A1901A811E3A006E927E /* CustomLocationManager.m */,
+				D87CA11C1A9DBD4D00141EA0 /* DateTimeHelper.h */,
+				D87CA11D1A9DBD4D00141EA0 /* DateTimeHelper.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -928,6 +938,7 @@
 				D88D25D81A9B110500B715D2 /* HeadView.m in Sources */,
 				D88D25DA1A9B110500B715D2 /* MyCell.m in Sources */,
 				D8885CC31A7C9B6D00B690D8 /* HyperlinksButton.m in Sources */,
+				D87CA1211A9F0E3500141EA0 /* OrderConfirmViewController.m in Sources */,
 				D85E27CE1A79336400B50C2B /* SGFocusImageItem.m in Sources */,
 				D86D3FE91A83251A00474618 /* District.m in Sources */,
 				D8C7A18B1A80D5CC006E927E /* UserSummaryView.m in Sources */,
@@ -936,7 +947,7 @@
 				D88D25BF1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m in Sources */,
 				D88D25DE1A9B110500B715D2 /* TimeView.m in Sources */,
 				D88D25DC1A9B110500B715D2 /* ReservationViewController.m in Sources */,
-				D88D25D91A9B110500B715D2 /* MeetModel.m in Sources */,
+				D88D25D91A9B110500B715D2 /* SessionModel.m in Sources */,
 				D8AE97051A7BCDF700884E51 /* InputText.m in Sources */,
 				D8AE97091A7BCE9E00884E51 /* LoginViewController.m in Sources */,
 				D8C7A1881A80D065006E927E /* SidebarViewController.m in Sources */,
@@ -947,6 +958,7 @@
 				D85E27C21A792E0300B50C2B /* CircleView.m in Sources */,
 				D87CA11B1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m in Sources */,
 				D8AE96FB1A7BCA9200884E51 /* AVSubclassesHelper.m in Sources */,
+				D87CA11E1A9DBD4D00141EA0 /* DateTimeHelper.m in Sources */,
 				D868534B1A78A18B00059FE2 /* AppDelegate.m in Sources */,
 				D86853481A78A18B00059FE2 /* main.m in Sources */,
 				D8C7A1851A80D002006E927E /* LLBlurSidebar.m in Sources */,
