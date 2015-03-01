@@ -7,7 +7,7 @@
 //
 #import "ReservationViewController.h"
 #import "NormalNavigationBar.h"
-#import "HeadView.h"
+#import "SubCell.h"
 #import "TimeView.h"
 #import "MyCell.h"
 #import "SessionModel.h"
@@ -20,10 +20,11 @@
 #import "DateTimeHelper.h"
 #import "SVProgressHUD.h"
 #import "OrderConfirmViewController.h"
+#import "LoginViewController.h"
 
 #define MENUHEIHT 40
 
-@interface ReservationViewController ()<UITableViewDataSource,UITableViewDelegate,MyCellDelegate,NormalNavigationDelegate,MenuHrizontalDelegate> {
+@interface ReservationViewController ()<UITableViewDataSource,UITableViewDelegate,MyCellDelegate,NormalNavigationDelegate,MenuHrizontalDelegate,UIAlertViewDelegate> {
     Stadium *curStadium;
     NSInteger sportFieldCount;
     NSArray *sportsFields;
@@ -74,6 +75,7 @@
     
     self.view.backgroundColor=[UIColor whiteColor];
     
+    [SVProgressHUD showWithStatus:@"场馆查询中..."];
     AVQuery *query = [SportField query];
     [query whereKey:@"stadium" equalTo:curStadium];
     [query orderByAscending:@"order"];
@@ -87,10 +89,10 @@
             
             for(int i=0; i<objects.count; i++){
                 SportField *sp = [objects objectAtIndex:i];
-                HeadView *headView=[[HeadView alloc]initWithFrame:CGRectMake(i*kReservationCellWidth, 0, kReservationCellWidth, kReservationCellHeight)];
-                headView.name = sp.name;
-                headView.backgroundColor=[UIColor whiteColor];
-                [tableViewHeadView addSubview:headView];
+                SubCell *headCell=[[SubCell alloc]initWithFrame:CGRectMake(i*kReservationCellWidth, 0, kReservationCellWidth, kReservationCellHeight) isHeadCell:YES];
+                headCell.name = sp.name;
+                headCell.backgroundColor=[UIColor whiteColor];
+                [tableViewHeadView addSubview:headCell];
             }
             
             UITableView *tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.myHeadView.frame.size.width, 480) style:UITableViewStylePlain];
@@ -107,8 +109,10 @@
             myScrollView.bounces=NO;
             myScrollView.contentSize=CGSizeMake(tableView.width,0);
             [self.view addSubview:myScrollView];
-            
+            [SVProgressHUD dismiss];
             [self queryReservationOrderWithDateOffset:originSelectedDateIndex];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
         }
     }];
 
@@ -125,8 +129,9 @@
     _checkOutButton.layer.cornerRadius = 4.0f;
     _checkOutButton.layer.masksToBounds = YES;
     _checkOutButton.backgroundColor = [UIColor orangeColor];
-    [_checkOutButton setTitle:@"提交订单" forState:UIControlStateNormal];
+    [_checkOutButton setTitle:@"去结账" forState:UIControlStateNormal];
     [_checkOutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_checkOutButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [_checkOutButton addTarget:self action:@selector(doCheckOut) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_checkOutButton];
 }
@@ -144,7 +149,7 @@
     [reservatedLabel setText:@"已售出"];
     [reservatedLabel setTextAlignment:NSTextAlignmentCenter];
     [reservatedLabel setTextColor:[UIColor grayColor]];
-    [reservatedLabel setFont:[UIFont systemFontOfSize:15]];
+    [reservatedLabel setFont:[UIFont systemFontOfSize:13]];
     [reservatedCellIntroView addSubview:reservatedLabel];
     [colorIntroView addSubview:reservatedCellIntroView];
     
@@ -155,7 +160,7 @@
     [curSelectedLabel setText:@"当前选中"];
     [curSelectedLabel setTextAlignment:NSTextAlignmentCenter];
     [curSelectedLabel setTextColor:[UIColor grayColor]];
-    [curSelectedLabel setFont:[UIFont systemFontOfSize:15]];
+    [curSelectedLabel setFont:[UIFont systemFontOfSize:13]];
     [curSelectedCellIntroView addSubview:curSelectedLabel];
     [colorIntroView addSubview:curSelectedCellIntroView];
     
@@ -166,7 +171,7 @@
     [canReservateLabel setText:@"可订购"];
     [canReservateLabel setTextAlignment:NSTextAlignmentCenter];
     [canReservateLabel setTextColor:[UIColor grayColor]];
-    [canReservateLabel setFont:[UIFont systemFontOfSize:15]];
+    [canReservateLabel setFont:[UIFont systemFontOfSize:13]];
     [canReservateCellIntroView addSubview:canReservateLabel];
     [colorIntroView addSubview:canReservateCellIntroView];
     
@@ -189,12 +194,12 @@
     MyCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if(cell==nil){
     
-        cell=[[MyCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier withSubCellCount:sportFieldCount];
+        cell=[[MyCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier withSportFieldsCount:sportsFields.count];
         cell.delegate=self;
         cell.backgroundColor=[UIColor whiteColor];
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
-        cell.currentTime = curStadium.shopHoursBegin + indexPath.row;
     }
+    [cell reloadPriceWithSportFields:sportsFields withDate:selectedDate withTime:curStadium.shopHoursBegin + indexPath.row];
     [cell reloadDataWithReservatedSession:subOrderSessions];
 
     return cell;
@@ -211,6 +216,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return kReservationCellHeight;
 }
+//当用户点击列表框，选择或取消选择场次时
 - (void)selectingIsChanged:(BOOL)selected withTime:(NSInteger)time withSportField:(NSInteger)sportFieldIndex {
     if (selectedSessions == nil) {
         selectedSessions = [[NSMutableArray alloc] init];
@@ -232,14 +238,18 @@
         [selectedSessions addObject:session];
     }
     
-    NSInteger amount = 0;
-    for (SessionModel *session in selectedSessions) {
-        SportField *sp = [sportsFields objectAtIndex:session.sportFieldIndex];
-        id price = [sp.normalPrices objectAtIndex:(session.sessionTime)];
-        amount += [price integerValue];
+    if (selectedSessions.count == 0) {
+        [_checkOutButton setTitle:@"提交订单" forState:UIControlStateNormal];
+    } else {
+        NSInteger amount = 0;
+        for (SessionModel *session in selectedSessions) {
+            SportField *sp = [sportsFields objectAtIndex:session.sportFieldIndex];
+            id price = [sp.normalPrices objectAtIndex:(session.sessionTime)];
+            amount += [price integerValue];
+        }
+        NSString *buttonTitle = [NSString stringWithFormat:@"%ld个场次 合计%ld元 去结账", selectedSessions.count, amount];
+        [_checkOutButton setTitle:buttonTitle forState:UIControlStateNormal];
     }
-    NSString *buttonTitle = [NSString stringWithFormat:@"%ld个场次\t合计%ld元\t提交订单", selectedSessions.count, amount];
-    [_checkOutButton setTitle:buttonTitle forState:UIControlStateNormal];
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -267,22 +277,26 @@
     AVQuery *query = [ReservationSuborder query];
     [query whereKey:@"stadium" equalTo:curStadium];
     selectedDate = [beginDate dateByAddingTimeInterval:3600 * 24 * offset];
-    //[query whereKey:@"date" equalTo:curDate];
     [query whereKey:@"date" greaterThanOrEqualTo:selectedDate];
     [query whereKey:@"date" lessThanOrEqualTo:[selectedDate dateByAddingTimeInterval:1]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             subOrderSessions = [[NSMutableArray alloc] init];
             for (ReservationSuborder *suborder in objects) {
-                SessionModel *model = [[SessionModel alloc] init];
-                model.sessionTime = suborder.time;
-                model.sportField = suborder.sportField;
-                model.sportFieldIndex = [self indexOfSportsField:suborder.sportField];
-                [subOrderSessions addObject:model];
+                NSInteger interval = [[NSDate date] timeIntervalSinceDate:suborder.generateDateTime];
+                if (suborder.isPaid || interval < 60 * 15){//未支付订单能锁定场次15分钟
+                    SessionModel *model = [[SessionModel alloc] init];
+                    model.sessionTime = suborder.time;
+                    model.sportField = suborder.sportField;
+                    model.sportFieldIndex = [self indexOfSportsField:suborder.sportField];
+                    [subOrderSessions addObject:model];
+                }
             }
             if (_myTableView != nil)
                 [_myTableView reloadData];
             [SVProgressHUD dismiss];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
         }
     }];
 }
@@ -290,7 +304,16 @@
 #pragma mark MenuHrizontalDelegate
 -(void)didMenuHrizontalClickedButtonAtIndex:(NSInteger)aIndex {
     [_checkOutButton setTitle:@"提交订单" forState:UIControlStateNormal];
+    [selectedSessions removeAllObjects];
     [self queryReservationOrderWithDateOffset:aIndex];
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        LoginViewController *loginInVC = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:loginInVC animated:YES];
+    }
 }
 
 - (NSInteger)indexOfSportsField:(SportField *)sportField {
@@ -304,12 +327,17 @@
 }
 
 - (void)doCheckOut {
-    if (selectedSessions.count > 0) {
-        //todo：还应该对session按场地/时间排序后再传入
-        OrderConfirmViewController *ocVC = [[OrderConfirmViewController alloc] initWithStadium:curStadium withOrderDate:selectedDate withOrderedSessions:selectedSessions];
-        [self.navigationController pushViewController:ocVC animated:YES];
+    if ([AVUser currentUser] != nil) {
+        if (selectedSessions.count > 0) {
+            //todo：还应该对session按场地/时间排序后再传入
+            OrderConfirmViewController *ocVC = [[OrderConfirmViewController alloc] initWithStadium:curStadium withOrderDate:selectedDate withOrderedSessions:selectedSessions];
+            [self.navigationController pushViewController:ocVC animated:YES];
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"抱歉" message:@"您尚未选择任何场次" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"抱歉" message:@"您尚未选择任何场次" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"您尚未登录" message:@"请先注册或登录，获得更多服务" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:@"去登录", nil];
         [alertView show];
     }
 }

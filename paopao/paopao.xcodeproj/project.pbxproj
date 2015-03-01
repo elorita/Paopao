@@ -87,7 +87,7 @@
 		D88D25C21A99B89D00B715D2 /* SpecialDay.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C11A99B89D00B715D2 /* SpecialDay.m */; };
 		D88D25C51A99B9AC00B715D2 /* ReservationOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C41A99B9AC00B715D2 /* ReservationOrder.m */; };
 		D88D25C81A99BB5100B715D2 /* ReservationSuborder.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */; };
-		D88D25D81A9B110500B715D2 /* HeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CB1A9B110500B715D2 /* HeadView.m */; };
+		D88D25D81A9B110500B715D2 /* SubCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CB1A9B110500B715D2 /* SubCell.m */; };
 		D88D25D91A9B110500B715D2 /* SessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CD1A9B110500B715D2 /* SessionModel.m */; };
 		D88D25DA1A9B110500B715D2 /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25CF1A9B110500B715D2 /* MyCell.m */; };
 		D88D25DB1A9B110500B715D2 /* MyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D88D25D11A9B110500B715D2 /* MyLabel.m */; };
@@ -118,6 +118,7 @@
 		D8C7A1911A811E3A006E927E /* CustomLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C7A1901A811E3A006E927E /* CustomLocationManager.m */; };
 		D8C7A1951A81B08E006E927E /* location_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C7A1941A81B08E006E927E /* location_small@2x.png */; };
 		D8C7A1971A81B40E006E927E /* star_small_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C7A1961A81B40E006E927E /* star_small_yellow@2x.png */; };
+		D8EF0E8E1AA0B99F00A01851 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EF0E8D1AA0B99F00A01851 /* PaymentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,8 +250,8 @@
 		D88D25C41A99B9AC00B715D2 /* ReservationOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationOrder.m; sourceTree = "<group>"; };
 		D88D25C61A99BB5100B715D2 /* ReservationSuborder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationSuborder.h; sourceTree = "<group>"; };
 		D88D25C71A99BB5100B715D2 /* ReservationSuborder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationSuborder.m; sourceTree = "<group>"; };
-		D88D25CA1A9B110500B715D2 /* HeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadView.h; sourceTree = "<group>"; };
-		D88D25CB1A9B110500B715D2 /* HeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadView.m; sourceTree = "<group>"; };
+		D88D25CA1A9B110500B715D2 /* SubCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubCell.h; sourceTree = "<group>"; };
+		D88D25CB1A9B110500B715D2 /* SubCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubCell.m; sourceTree = "<group>"; };
 		D88D25CC1A9B110500B715D2 /* SessionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionModel.h; sourceTree = "<group>"; };
 		D88D25CD1A9B110500B715D2 /* SessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionModel.m; sourceTree = "<group>"; };
 		D88D25CE1A9B110500B715D2 /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
@@ -305,6 +306,8 @@
 		D8C7A1901A811E3A006E927E /* CustomLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLocationManager.m; sourceTree = "<group>"; };
 		D8C7A1941A81B08E006E927E /* location_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_small@2x.png"; sourceTree = "<group>"; };
 		D8C7A1961A81B40E006E927E /* star_small_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_small_yellow@2x.png"; sourceTree = "<group>"; };
+		D8EF0E8C1AA0B99F00A01851 /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
+		D8EF0E8D1AA0B99F00A01851 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
 		EDA914C2E2332B5AC4F30D95 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -652,8 +655,8 @@
 		D88D25C91A9B10F600B715D2 /* StadiumReservation */ = {
 			isa = PBXGroup;
 			children = (
-				D88D25CA1A9B110500B715D2 /* HeadView.h */,
-				D88D25CB1A9B110500B715D2 /* HeadView.m */,
+				D88D25CA1A9B110500B715D2 /* SubCell.h */,
+				D88D25CB1A9B110500B715D2 /* SubCell.m */,
 				D88D25CC1A9B110500B715D2 /* SessionModel.h */,
 				D88D25CD1A9B110500B715D2 /* SessionModel.m */,
 				D88D25CE1A9B110500B715D2 /* MyCell.h */,
@@ -668,6 +671,8 @@
 				D88D25D71A9B110500B715D2 /* TimeView.m */,
 				D87CA11F1A9F0E3500141EA0 /* OrderConfirmViewController.h */,
 				D87CA1201A9F0E3500141EA0 /* OrderConfirmViewController.m */,
+				D8EF0E8C1AA0B99F00A01851 /* PaymentViewController.h */,
+				D8EF0E8D1AA0B99F00A01851 /* PaymentViewController.m */,
 			);
 			path = StadiumReservation;
 			sourceTree = "<group>";
@@ -935,7 +940,7 @@
 			files = (
 				D8AE970D1A7BD7FF00884E51 /* NormalNavigationBar.m in Sources */,
 				D88D25C51A99B9AC00B715D2 /* ReservationOrder.m in Sources */,
-				D88D25D81A9B110500B715D2 /* HeadView.m in Sources */,
+				D88D25D81A9B110500B715D2 /* SubCell.m in Sources */,
 				D88D25DA1A9B110500B715D2 /* MyCell.m in Sources */,
 				D8885CC31A7C9B6D00B690D8 /* HyperlinksButton.m in Sources */,
 				D87CA1211A9F0E3500141EA0 /* OrderConfirmViewController.m in Sources */,
@@ -976,6 +981,7 @@
 				D85E27E11A79354600B50C2B /* StadiumTableViewDND.m in Sources */,
 				D86853791A78A25000059FE2 /* MenuCell.m in Sources */,
 				D85E27DD1A7933B600B50C2B /* LoadMoreCell.m in Sources */,
+				D8EF0E8E1AA0B99F00A01851 /* PaymentViewController.m in Sources */,
 				D88D25A01A9748C500B715D2 /* StadiumDetailViewController.m in Sources */,
 				D8AE96F41A7B96D500884E51 /* UIImage+ImageEffects.m in Sources */,
 				D8C7A17C1A7F7E38006E927E /* UserHomeViewController.m in Sources */,

@@ -5,29 +5,33 @@
 //  Created by zzy on 14-5-5.
 //  Copyright (c) 2014年 zzy. All rights reserved.
 //
-#import "HeadView.h"
+#import "SubCell.h"
 #import "Defines.h"
 
-@interface HeadView() {
+@interface SubCell() {
+    BOOL isHeadCell;
     BOOL isSelected;
 }
 @property (nonatomic,strong) UILabel *nameLabel;
 @end
 
-@implementation HeadView
+@implementation SubCell
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame isHeadCell:(BOOL)isHC
 {
     self = [super initWithFrame:frame];
     if (self) {
+        isHeadCell = isHC;
         isSelected = NO;
         isReservationable = YES;
         [self resetBackground];
         
         self.nameLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height*0.5)];
         self.nameLabel.textAlignment=NSTextAlignmentCenter;
-        self.nameLabel.textColor = [UIColor grayColor];
-        self.nameLabel.font = [UIFont systemFontOfSize:13];
+        if (isHeadCell){
+            self.nameLabel.textColor = [UIColor grayColor];
+            self.nameLabel.font = [UIFont systemFontOfSize:13];
+        }
         self.nameLabel.center=CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.5);
         [self addSubview:self.nameLabel];
         
@@ -37,13 +41,13 @@
 }
 -(void)tapView:(UITapGestureRecognizer *)tap
 {
-    if(isReservationable && [self.delegate respondsToSelector:@selector(headView:isSelected:)]){
+    if(isReservationable && [self.delegate respondsToSelector:@selector(subCell:isSelected:)]){
         isSelected = !isSelected;
         if (isSelected)
             [self setBackgroundColor:[UIColor orangeColor]];
         else
             [self resetBackground];
-        [self.delegate headView:self isSelected:isSelected];
+        [self.delegate subCell:self isSelected:isSelected];
     }
     
 }
@@ -53,10 +57,18 @@
     [self resetBackground];
 }
 - (void)resetBackground {
-    if (isReservationable)
-        [self setBackgroundColor:MAIN_COLOR];
-    else
-        [self setBackgroundColor:DARK_BACKGROUND_COLOR];
+    if (!isHeadCell){
+        if (isReservationable){
+            [self setBackgroundColor:MAIN_COLOR];
+            self.nameLabel.textColor = [UIColor whiteColor];
+        }else{
+            [self setBackgroundColor:DARK_BACKGROUND_COLOR];
+            self.nameLabel.textColor = DARK_BACKGROUND_COLOR;
+        }
+        [self.nameLabel setFont:[UIFont systemFontOfSize:12]];
+    } else {
+        self.nameLabel.textColor = [UIColor grayColor];
+    }
 }
 -(void)setName:(NSString *)name
 {

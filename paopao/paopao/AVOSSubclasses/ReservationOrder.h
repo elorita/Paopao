@@ -17,7 +17,8 @@
 @property (nonatomic, strong) NSString *pingppOrderID;
 @property (nonatomic, strong) AVRelation *suborders;
 @property (nonatomic, strong) NSDate *payDateTime;
-@property (nonatomic) NSNumber *paymentChannel;
+@property (nonatomic, strong) NSNumber *paymentChannel;
+@property (nonatomic, strong) NSNumber *amount;
 @property (nonatomic, strong) AVUser *user;
 
 @end

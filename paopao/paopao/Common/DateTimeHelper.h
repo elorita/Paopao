@@ -13,5 +13,7 @@
 + (NSDate *)getZeroHour:(NSDate *)date;
 
 + (BOOL)date:(NSDate *)date isEqualOtherDate:(NSDate *)aDate;
++ (NSDateComponents *)getDateComponents:(NSDate *)date;
++ (BOOL)isWorkingDay:(NSDate *)date;
 
 @end

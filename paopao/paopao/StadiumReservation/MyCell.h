@@ -5,8 +5,8 @@
 //  Created by zzy on 14-5-6.
 //  Copyright (c) 2014年 zzy. All rights reserved.
 //
-#define kWidthMargin 1
-#define kHeightMargin 1
+#define kMyCellWidthMargin 1
+#define kMyCellHeightMargin 1
 #import <UIKit/UIKit.h>
 
 @class MyCell,HeadView,MeetModel;
@@ -19,10 +19,10 @@
 
 @interface MyCell : UITableViewCell
 @property (nonatomic,assign) id<MyCellDelegate> delegate;
-@property (nonatomic) NSInteger currentTime;
 @property (nonatomic,assign) int index;
 
 - (void)reloadDataWithReservatedSession:(NSArray *)sessions;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withSubCellCount:(NSInteger)subCellCount;
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withSportFieldsCount:(NSInteger)spCount;// withSportFields:(NSArray *)sportFields withDate:(NSDate *)date withTime:(NSInteger)time;
+- (void)reloadPriceWithSportFields:(NSArray *)sportFields withDate:(NSDate *)date withTime:(NSInteger)time;
 @end

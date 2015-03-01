@@ -12,16 +12,23 @@
 #import "Defines.h"
 #import "SessionModel.h"
 #import "DateTimeHelper.h"
+#import "ReservationOrder.h"
+#import "ReservationSuborder.h"
+#import "SVProgressHUD.h"
+#import "PaymentViewController.h"
 
 #define kMargin 10
 #define kSplitterHeight 1
-#define kLabelHeight 30
-#define kTitleLabelHeight 51
+#define kLabelHeight 26
+#define kTextSize 14
+#define kTitleLabelHeight 42
+#define kButtonHeight 40
 
 @interface OrderConfirmViewController() <NormalNavigationDelegate> {
     Stadium *orderStadium;
     NSDate *orderDate;
     NSArray *orderedSessions;
+    NSInteger amount;
 }
 
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
@@ -41,11 +48,11 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    self.navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"场馆预订"];
+    self.navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"确认订单"];
     self.navigationBar.delegate = self;
     [self.view addSubview:self.navigationBar];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, NAVIGATION_BAR_HEIGHT + STATU_BAR_HEIGHT, self.view.width, self.view.height - NAVIGATION_BAR_HEIGHT - STATU_BAR_HEIGHT)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, NAVIGATION_BAR_HEIGHT + STATU_BAR_HEIGHT, self.view.width, self.view.height - NAVIGATION_BAR_HEIGHT - STATU_BAR_HEIGHT - kButtonHeight - kMargin * 2)];
     [scrollView setBackgroundColor:DARK_BACKGROUND_COLOR];
     [self.view addSubview:scrollView];
     
@@ -55,7 +62,7 @@
     [scrollView addSubview:summaryView];
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kMargin, 5, summaryView.width - kMargin * 2, kLabelHeight)];
     [titleLabel setTextColor:[UIColor orangeColor]];
-    [titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [titleLabel setFont:[UIFont systemFontOfSize:kTextSize + 2]];
     [titleLabel setText:@"订购详情，请核对"];
     [summaryView addSubview:titleLabel];
     UILabel *stadiumNameLabel = [self createLabelAndSetCommonPropWithFrame:CGRectMake(kMargin, titleLabel.bottom, titleLabel.width, kLabelHeight)];
@@ -82,7 +89,7 @@
     UIView *sessionListView = [[UIView alloc] initWithFrame:CGRectMake(sessionTitleLabel.right, sessionTitleLabel.y, summaryView.width - sessionTitleLabel.width - kMargin, kLabelHeight * orderedSessions.count)];
     [summaryView addSubview:sessionListView];
     CGFloat lastSessionLabelBottom = 0.0f;
-    NSInteger amount = 0;
+    amount = 0;
     for (SessionModel *model in orderedSessions) {
         UILabel *sessionLabel = [self createLabelAndSetCommonPropWithFrame:CGRectMake(0, lastSessionLabelBottom, sessionListView.width, kLabelHeight)];
         lastSessionLabelBottom = sessionLabel.bottom;
@@ -100,21 +107,89 @@
     UILabel *amountLable = [self createLabelAndSetCommonPropWithFrame:CGRectMake(amountTitleLabel.right, amountTitleLabel.y, summaryView.width - amountTitleLabel.width - kMargin, kLabelHeight)];
     [amountLable setText:[NSString stringWithFormat:@"%ld元", amount]];
     [amountLable setTextColor:[UIColor redColor]];
-    [amountLable setFont:[UIFont systemFontOfSize:18]];
+    [amountLable setFont:[UIFont systemFontOfSize:kTextSize + 2]];
     [summaryView addSubview:amountLable];
     [summaryView setHeight:amountLable.bottom + kMargin];//重新设置summary的高度
+    
+    UILabel *phoneNoLabel = [self createLabelAndSetCommonPropWithFrame:CGRectMake(summaryView.x, summaryView.bottom + kMargin, summaryView.width, kLabelHeight)];
+    [phoneNoLabel setText:[NSString stringWithFormat:@"确认您的手机号：%@", [AVUser currentUser].mobilePhoneNumber]];
+    [phoneNoLabel setBackgroundColor:[UIColor clearColor]];
+    [scrollView addSubview:phoneNoLabel];
+    
+    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(kMargin, self.view.bottom - kButtonHeight - kMargin, summaryView.width, 40)];
+    submitButton.layer.cornerRadius = 4.0f;
+    submitButton.layer.masksToBounds = YES;
+    submitButton.backgroundColor = [UIColor orangeColor];
+    [submitButton setTitle:@"提交订单" forState:UIControlStateNormal];
+    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [submitButton.titleLabel setFont:[UIFont systemFontOfSize:kTextSize]];
+    [submitButton addTarget:self action:@selector(doSubmit) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:submitButton];
 }
 
 - (UILabel *)createLabelAndSetCommonPropWithFrame:(CGRect)frame {
     UILabel *ret = [[UILabel alloc] initWithFrame:frame];
     [ret setBackgroundColor:[UIColor whiteColor]];
     [ret setTextColor:[UIColor grayColor]];
-    [ret setFont:[UIFont systemFontOfSize:17]];
+    [ret setFont:[UIFont systemFontOfSize:kTextSize]];
     return ret;
 }
 
 - (void)doReturn {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)doSubmit {
+    ReservationOrder *order = [[ReservationOrder alloc] init];
+//    order.generateDateTime = [NSDate date];
+//    order.date = orderDate;
+//    order.stadium = orderStadium;
+//    order.user = [AVUser currentUser];
+    [order setObject:[NSDate date] forKey:@"generateDateTime"];
+    [order setObject:orderDate forKey:@"date"];
+    [order setObject:orderStadium forKey:@"stadium"];
+    [order setObject:[NSNumber numberWithInteger:amount] forKey:@"amount"];
+    [order setObject:[AVUser currentUser] forKey:@"user"];
+    [SVProgressHUD showWithStatus:@"生成订单"];
+    
+    NSMutableArray *suborders = [[NSMutableArray alloc] init];
+    for (SessionModel *model in orderedSessions) {
+        ReservationSuborder *suborder = [[ReservationSuborder alloc] init];
+//        suborder.generateDateTime = order.generateDateTime;
+//        suborder.date = order.date;
+//        suborder.time = model.sessionTime;
+//        suborder.stadium = order.stadium;
+//        suborder.sportField = model.sportField;
+//        suborder.user = order.user;
+//        suborder.isPaid = false;
+        [suborder setObject:order.generateDateTime forKey:@"generateDateTime"];
+        [suborder setObject:order.date forKey:@"date"];
+        [suborder setObject:[NSNumber numberWithInteger:model.sessionTime] forKey:@"time"];
+        [suborder setObject:order.stadium forKey:@"stadium"];
+        [suborder setObject:model.sportField forKey:@"sportField"];
+        [suborder setObject:[NSNumber numberWithInteger:model.price] forKey:@"pricce"];
+        [suborder setObject:order.user forKey:@"user"];
+        [suborder setObject:[NSNumber numberWithBool:NO] forKey:@"isPaid"];
+        if ([suborder save])
+            [suborders addObject:suborder];
+        else{
+            [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
+            return;
+        }
+    }
+    
+    AVRelation *relation = [order relationforKey:@"suborders"];
+    for (ReservationSuborder *suborder in suborders)
+        [relation addObject:suborder];
+    [order saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            [SVProgressHUD dismiss];
+            PaymentViewController *paymentVC = [[PaymentViewController alloc] initWithReservationOrder:order];
+            [self.navigationController pushViewController:paymentVC animated:YES];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
+        }
+    }];
 }
 
 @end

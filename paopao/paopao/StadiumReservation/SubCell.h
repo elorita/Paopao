@@ -8,21 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-@class HeadView;
+@class SubCell;
 
-@protocol HeadViewDelegate <NSObject>
+@protocol SubCellDelegate <NSObject>
 
--(void)headView:(HeadView *)headView isSelected:(BOOL)selected;
+-(void)subCell:(SubCell *)subCell isSelected:(BOOL)selected;
 
 @end
 
-@interface HeadView : UIView {
+@interface SubCell : UIView {
     BOOL isReservationable;
 }
 @property (nonatomic,strong) NSString *name;
 @property (nonatomic) NSInteger sportFieldIndex;
-@property (nonatomic,assign) id <HeadViewDelegate> delegate;
+@property (nonatomic,assign) id <SubCellDelegate> delegate;
 
+- (id)initWithFrame:(CGRect)frame isHeadCell:(BOOL)isHeadCell;
 - (void)setIsReservationable:(BOOL)value;
 
 @end
