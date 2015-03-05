@@ -12,6 +12,10 @@
 
 #define COUNT_PER_LOADING 10
 
+@interface StadiumTableViewDND() 
+
+@end
+
 @implementation StadiumTableViewDND {
     NSInteger _loadedCount;
 }
@@ -132,6 +136,7 @@
 //        [_delegate callOwner: owner];
 //    }
 //}
+
 
 
 @end

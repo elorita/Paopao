@@ -18,13 +18,13 @@
     self.title = nil;
     self.imageFile = nil;
 }
-- (id)initWithTitle:(NSString *)title image:(AVFile *)imageFile tag:(NSInteger)tag
+- (id)initWithTitle:(NSString *)title imageFile:(AVFile *)file tag:(NSInteger)tag
 {
     self = [super init];
     if (self) {
         self.title = title;
-        self.imageFile = imageFile;
         self.tag = tag;
+        self.imageFile = file;
     }
     
     return self;
@@ -38,7 +38,6 @@
         if ([dict isKindOfClass:[NSDictionary class]])
         {
             self.title = [dict objectForKey:@"title"];
-            self.imageFile = [dict objectForKey:@"image"];
             self.tag = tag;
         }
     }

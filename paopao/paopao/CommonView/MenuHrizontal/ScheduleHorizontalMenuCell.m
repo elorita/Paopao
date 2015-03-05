@@ -12,6 +12,7 @@
 #import "Stadium.h"
 #import "ReservationSuborder.h"
 #import "DateTimeHelper.h"
+#import "SVProgressHUD.h"
 
 @implementation ScheduleHorizontalMenuCell {
     UILabel *dateLabel;
@@ -34,6 +35,7 @@
     dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 8, kScheduleHorizontalMenuCellWidth, 15)];
     [dateLabel setTextAlignment:NSTextAlignmentCenter];
     [dateLabel setTextColor:[UIColor grayColor]];
+    [dateLabel setFont:[UIFont systemFontOfSize:14]];
     [self addSubview:dateLabel];
     
     remainCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, dateLabel.frame.origin.y + dateLabel.height + 4, kScheduleHorizontalMenuCellWidth, 15)];
@@ -44,31 +46,38 @@
     UILabel *reservationButtonLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, remainCountLabel.frame.origin.y + remainCountLabel.height + 9, 78, 24)];
     [reservationButtonLabel setBackgroundColor:[UIColor orangeColor]];
     [reservationButtonLabel setTextColor:[UIColor whiteColor]];
-    [reservationButtonLabel setFont:[UIFont systemFontOfSize:15]];
+    [reservationButtonLabel setFont:[UIFont systemFontOfSize:12]];
     [reservationButtonLabel setTextAlignment:NSTextAlignmentCenter];
     [reservationButtonLabel setText:@"预订"];
     reservationButtonLabel.layer.cornerRadius = 4;
     reservationButtonLabel.layer.masksToBounds = YES;
     [self addSubview:reservationButtonLabel];
     
-    [self updateCellWithStadium:stadium withDate:date];
+    //[self updateCellWithStadium:stadium withDate:date];
 }
 
 - (void)updateCellWithStadium:(Stadium *)stadium withDate:(NSDate *)date {
+    date = [DateTimeHelper getZeroHour:date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    if (![DateTimeHelper date:[NSDate date] isEqualOtherDate:date]) {
+    if (![DateTimeHelper date:[NSDate date] isEqualOtherDate:[DateTimeHelper getZeroHour:date]]) {
         [dateFormatter setDateFormat:@"EEE/M.d"];
     } else {
         [dateFormatter setDateFormat:@"今天/M.d"];
     }
     [dateLabel setText:[dateFormatter stringFromDate:date]];
     
+    [SVProgressHUD showWithStatus:@"正在更新场地空位"];
     AVQuery *query = [ReservationSuborder query];
     [query whereKey:@"stadium" equalTo:stadium];
-    [query whereKey:@"date" equalTo:date];
+    [query whereKey:@"date" greaterThanOrEqualTo:date];
+    [query whereKey:@"date" lessThan:[date dateByAddingTimeInterval:1]];
+    [query whereKey:@"generateDateTime" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-60 * 15]];
     [query countObjectsInBackgroundWithBlock:^(NSInteger number, NSError *error) {
         if (!error) {
             [remainCountLabel setText:[NSString stringWithFormat:@"空场 %ld/%ld", stadium.availableSessionCount - number, stadium.availableSessionCount]];
+            [SVProgressHUD dismiss];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"网络故障，场地空位查询失败" duration:2];
         }
     }];
     [self addSubview:remainCountLabel];

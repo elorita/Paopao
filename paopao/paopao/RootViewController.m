@@ -74,6 +74,8 @@
     
     //显示引导页面
     [self buildIntro];
+    
+    [self menuItemSelectedOnIndex:1];//默认显示场馆页面
 }
 
 //-(void)viewDidAppear:(BOOL)animated{

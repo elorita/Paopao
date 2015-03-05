@@ -100,7 +100,7 @@
 		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setAMSymbol:@"上午"];
 		[formatter setPMSymbol:@"下午"];
-		[formatter setDateFormat:@"MM/dd/yyyy hh:mm:a"];
+		[formatter setDateFormat:@"yyyy-MM-dd hh:mm a"];
 		_lastUpdatedLabel.text = [NSString stringWithFormat:@"最后刷新: %@", [formatter stringFromDate:date]];
 		[[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:@"EGORefreshTableView_LastRefresh"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -165,7 +165,7 @@
             //Do a series of 5 quarter turns for a total of a 1.25 turns
             //(2PI is a full turn, so pi/2 is a quarter turn)
             [rotate setToValue: [NSNumber numberWithFloat: M_PI / 2]];
-            rotate.repeatCount = 11;
+            rotate.repeatCount = FLT_MAX;
             
             rotate.duration = 0.25;
 //            rotate.beginTime = start;

@@ -12,16 +12,31 @@
 #import "Defines.h"
 #import "ScheduleHorizontalMenu.h"
 #import "ReservationViewController.h"
+#import "SVProgressHUD.h"
+#import "TelHelper.h"
+#import "CustomLocationManager.h"
+#import "Bulletin.h"
+#import "SGFocusImageFrame.h"
+#import "SGFocusImageItem.h"
+#import "StadiumImage.h"
+#import "ImgShowViewController.h"
 
-#define SubViewSpace 1
+#define SubViewSpace 5
 #define MENUHEIHT 40
+#define lXMargin 10
+#define lYMargin 10
+#define lBannerHeight 180
 
-@interface StadiumDetailViewController () <NormalNavigationDelegate, MenuHrizontalDelegate> {
+@interface StadiumDetailViewController () <NormalNavigationDelegate, MenuHrizontalDelegate, SGFocusImageFrameDelegate> {
     ScheduleHorizontalMenu *mMenuHriZontal;
+    SGFocusImageFrame *_bannerView;
+    NSMutableArray *_headImageSGItemArray;
+    NSMutableArray *_headImageArray;
 }
 
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
 @property (nonatomic, strong) Stadium *curStadium;
+@property (nonatomic, strong) UILabel *distanceLabel;
 
 @end
 
@@ -45,71 +60,143 @@
     self.navigationBar.delegate = self;
     [self.view addSubview:self.navigationBar];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, _navigationBar.height, self.view.width, 180)];
-    [self.view addSubview:imageView];
-    [stadium.image getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-        if (!error) {
-            [imageView setImage:[UIImage imageWithData:data]];
-        }
-    }];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _navigationBar.bottom, self.view.width, self.view.height - _navigationBar.bottom)];
+    [self.view addSubview:scrollView];
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 180)];
+//    [scrollView addSubview:imageView];
+//    [stadium.image getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+//        if (!error) {
+//            [imageView setImage:[UIImage imageWithData:data]];
+//        }
+//    }];
+    [SVProgressHUD showWithStatus:@"正在查询场馆概况"];
+    _bannerView = [[SGFocusImageFrame alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 180) delegate:self imageItems:nil isAuto:NO];
+    [scrollView addSubview:_bannerView];
+    [self loadHeaderImages];
     
-    UIView *titleBackground = [[UIView alloc] initWithFrame:CGRectMake(0, imageView.frame.origin.y + imageView.frame.size.height - 32, imageView.frame.size.width, 32)];
+    UIView *titleBackground = [[UIView alloc] initWithFrame:CGRectMake(0, lBannerHeight - 32, _bannerView.width, 32)];
     [titleBackground setBackgroundColor:[UIColor blackColor]];
     [titleBackground setAlpha:0.3f];
-    [self.view addSubview:titleBackground];
+    [scrollView addSubview:titleBackground];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titleBackground.frame.origin.y + 6, titleBackground.width - 20, 20)];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setText:stadium.name];
-    [self.view addSubview:titleLabel];
+    [scrollView addSubview:titleLabel];
     
-    UIView *addressView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.origin.x, imageView.frame.origin.y + imageView.height, self.view.width, 44)];
-    addressView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:addressView];
+    UIView *orderView = [[UIView alloc] initWithFrame:CGRectMake(self.view.x, lBannerHeight, self.view.width, 90)];
+    [orderView setBackgroundColor:NORMAL_BACKGROUND_COLOR];
+    [scrollView addSubview:orderView];
+    [self initReservationViewWithContainer:orderView];
     
-    UIImageView *addressIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [addressIcon setImage:[UIImage imageNamed:@"location_green.png"]];
-    [addressIcon setContentMode:UIViewContentModeCenter];
-    [addressView addSubview:addressIcon];
+    //显示场馆评分、地址、电话等
+    UIView *summaryView = [[UIView alloc] initWithFrame:CGRectMake(self.view.x, orderView.bottom, self.view.width, 90)];
+    summaryView.backgroundColor = [UIColor whiteColor];
+    [scrollView addSubview:summaryView];
     
-    UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 14, addressView.width - 44 - 44, 16)];
-    [addressLabel setFont:[UIFont systemFontOfSize:15]];
-    [addressLabel setTextColor:[UIColor darkTextColor]];
-    [addressLabel setText:stadium.address];
-    [addressView addSubview:addressLabel];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(lXMargin, lYMargin, summaryView.width - 80, 18)];
+    [nameLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    [nameLabel setTextColor:[UIColor darkGrayColor]];
+    [nameLabel setText:stadium.name];
+    [summaryView addSubview:nameLabel];
     
-    UIImageView *showMapIcon = [[UIImageView alloc] initWithFrame:CGRectMake(addressView.width - 44, 0, 44, 44)];
-    [showMapIcon setImage:[UIImage imageNamed:@"go_normal.png"]];
-    [showMapIcon setContentMode:UIViewContentModeCenter];
-    [addressView addSubview:showMapIcon];
-    
-    UIView *telNoView = [[UIView alloc] initWithFrame:CGRectMake(addressView.frame.origin.x, addressView.frame.origin.y + addressView.height + SubViewSpace, addressView.width, 44)];
-    [telNoView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:telNoView];
-    
-    UILabel *telNoLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 14, telNoView.width - 44 - 44, 16)];
-    [telNoLabel setFont:[UIFont systemFontOfSize:15]];
-    [telNoLabel setTextColor:[UIColor darkTextColor]];
-    [telNoView addSubview:telNoLabel];
-    
-    if (stadium.telNo && ![stadium.telNo isEqual: @""]) {
-        [telNoLabel setText:stadium.telNo];
+    NSInteger nextStarOriginX = lXMargin;
+    for (int i = 0; i < _curStadium.professionalRating; i++) {
+        UIImageView *starImageView = [[UIImageView alloc] initWithFrame:CGRectMake(nextStarOriginX, nameLabel.bottom + lYMargin, 20, 20)];
+        [starImageView setImage:[UIImage imageNamed:@"star_bordered.png"]];
+        starImageView.contentMode = UIViewContentModeCenter;
+        [summaryView addSubview:starImageView];
         
-        UIImageView *callIcon = [[UIImageView alloc] initWithFrame:CGRectMake(addressView.width - 44, 0, 44, 44)];
-        [callIcon setImage:[UIImage imageNamed:@"go_normal.png"]];
-        [callIcon setContentMode:UIViewContentModeCenter];
-        [telNoView addSubview:callIcon];
-        
-        //todo:增加view点击时间
-    } else {
-        [telNoLabel setText:@"暂无电话"];
+        nextStarOriginX += 24;
     }
     
-    UIView *orderView = [[UIView alloc] initWithFrame:CGRectMake(telNoView.frame.origin.x, telNoView.frame.origin.y + telNoView.height + SubViewSpace, telNoView.width, 90)];
-    [orderView setBackgroundColor:NORMAL_BACKGROUND_COLOR];
-    [self.view addSubview:orderView];
-    [self initReservationViewWithContainer:orderView];
+    _distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryView.width - 44 * 2 - lXMargin - 80, nameLabel.bottom + lYMargin, 80, 20)];
+    [_distanceLabel setFont:[UIFont systemFontOfSize:14]];
+    [_distanceLabel setTextColor:NORMAL_TEXT_COLOR];
+    [_distanceLabel setTextAlignment:NSTextAlignmentRight];
+    [summaryView addSubview:_distanceLabel];
+    
+    UIView *verSplitterView = [[UIView alloc] initWithFrame:CGRectMake(_distanceLabel.right + lXMargin, lYMargin, 0.5, nameLabel.bottom + 20)];
+    verSplitterView.backgroundColor = SPLITTER_COLOR;
+    [summaryView addSubview:verSplitterView];
+    
+    UIButton *mapButton = [[UIButton alloc] initWithFrame:CGRectMake(summaryView.width - 44, 0, 44, 44)];
+    [mapButton setImage:[UIImage imageNamed:@"map_normal.png"] forState:UIControlStateNormal];
+    [mapButton setContentMode:UIViewContentModeCenter];
+    [summaryView addSubview:mapButton];
+    
+    UIButton *telButton = [[UIButton alloc] initWithFrame:CGRectMake(mapButton.x - 44, 0, 44, 44)];
+    [telButton setImage:[UIImage imageNamed:@"callout_normal.png"] forState:UIControlStateNormal];
+    [telButton setContentMode:UIViewContentModeCenter];
+    [telButton addTarget:self action:@selector(doCall) forControlEvents:UIControlEventTouchUpInside];
+    [summaryView addSubview:telButton];
+    
+    UILabel *addressLabel = [[UILabel alloc] init];
+    [addressLabel setFont:[UIFont systemFontOfSize:14]];
+    [addressLabel setTextColor:NORMAL_TEXT_COLOR];
+    [addressLabel setText:stadium.address];
+    NSDictionary *attribute = @{NSFontAttributeName:addressLabel.font};
+    CGSize boundingSize = CGSizeMake(summaryView.width - lXMargin * 2, 100);
+    CGSize requiredSize = [addressLabel.text boundingRectWithSize:boundingSize options:NSStringDrawingTruncatesLastVisibleLine |
+                           NSStringDrawingUsesLineFragmentOrigin |
+                           NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    [addressLabel setFrame:CGRectMake(lXMargin, nameLabel.bottom + 32 + lYMargin, requiredSize.width, requiredSize.height)];
+    addressLabel.numberOfLines = 0;
+    [summaryView addSubview:addressLabel];
+    
+    [summaryView setHeight:addressLabel.bottom + lYMargin];
+    [self addTopBottomBorderOnView:summaryView];
+    
+    UIView *describeView = [[UIView alloc] init];//显示场馆简介
+    describeView.backgroundColor = [UIColor whiteColor];
+    [scrollView addSubview:describeView];
+    
+    //UILabel *describeTitleLabel = [
+    
+    AVQuery *query = [Bulletin query];
+    [query whereKey:@"stadium" equalTo:_curStadium];
+    [query orderByDescending:@"timeInForce"];
+    [query whereKey:@"timeToFailure" greaterThan:[NSDate date]];
+    query.limit = 1;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error && objects.count > 0) {
+            UIView *bulletinView = [[UIView alloc] init];
+            bulletinView.backgroundColor = [UIColor whiteColor];
+            [scrollView addSubview:bulletinView];
+            
+            UILabel *bulletinLabel = [[UILabel alloc] init];
+            [bulletinLabel setFont:[UIFont systemFontOfSize:13]];
+            [bulletinLabel setTextColor:NORMAL_TEXT_COLOR];
+            [bulletinLabel setText:[NSString stringWithFormat:@"最新公告：%@", ((Bulletin *)[objects objectAtIndex:0]).content]];
+            bulletinLabel.numberOfLines = 0;
+            NSDictionary *attribute = @{NSFontAttributeName:bulletinLabel.font};
+            CGSize boundingSize = CGSizeMake(scrollView.width - lXMargin * 2, 100);
+            CGSize requiredSize = [bulletinLabel.text boundingRectWithSize:boundingSize options:NSStringDrawingTruncatesLastVisibleLine |
+                                   NSStringDrawingUsesLineFragmentOrigin |
+                                   NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+            [bulletinLabel setFrame:CGRectMake(lXMargin, lYMargin, requiredSize.width, requiredSize.height)];
+            [bulletinView setFrame:CGRectMake(0, lBannerHeight, scrollView.width, bulletinLabel.height + lYMargin * 2)];
+            [self addTopBottomBorderOnView:bulletinView];
+            [bulletinView addSubview:bulletinLabel];
+            
+            [orderView setY:orderView.y + bulletinView.height];
+            [summaryView setY:summaryView.y + bulletinView.height];
+        }
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLocationChanged:) name:KNOTIFICATION_LOCATIONUPDATED object:nil];
+    [[CustomeLocationManager defaultManager] updateLocation];
+}
+
+- (void)addTopBottomBorderOnView:(UIView *)view {
+    UIView *topBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, view.width, 0.5)];
+    topBorderView.backgroundColor = SPLITTER_COLOR;
+    [view addSubview:topBorderView];
+    
+    UIView *bottomBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, view.height - 0.5, view.width, 0.5)];
+    bottomBorderView.backgroundColor = SPLITTER_COLOR;
+    [view addSubview:bottomBorderView];
 }
 
 #pragma mark UI初始化
@@ -142,6 +229,68 @@
 
 - (void)doReturn {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onLocationChanged:(NSNotification *)notification {
+    double dist = [[CustomeLocationManager defaultManager] getDIstanceFromHereToAVDest:_curStadium.location];
+    if (dist > 1)
+        [_distanceLabel setText:[NSString stringWithFormat:@"%0.0f千米", dist / 1000]];
+    else
+        [_distanceLabel setText:[NSString stringWithFormat:@"%0.1f米", dist]];
+}
+
+- (void)doCall {
+    if (![_curStadium.telNo isEqualToString:@""]) {
+        [TelHelper callWithParentView:self.view phoneNo:_curStadium.telNo];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该商家暂未登记电话" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+}
+
+#pragma mark SGFocusImageFrameDelegate
+- (void)loadHeaderImages {
+    AVQuery *query = [StadiumImage query];
+    [query whereKey:@"stadium" equalTo:_curStadium];
+    [query orderByAscending:@"order"];
+    query.limit = 6;
+    query.cachePolicy = kAVCachePolicyNetworkElseCache;
+    query.maxCacheAge = 3600 * 24 * 7;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (objects.count > 0) {
+            self->_headImageSGItemArray = [NSMutableArray arrayWithCapacity:objects.count + 2];
+            self->_headImageArray = [NSMutableArray arrayWithCapacity:objects.count];
+            
+            if (objects.count > 1) {//图片数大于1张时，获取最后一张图片，添加到图片列表的第一位，用于滚动
+                StadiumImage *stadiumImage = (StadiumImage *)[objects objectAtIndex:objects.count - 1];
+                SGFocusImageItem *firstItem = [[SGFocusImageItem alloc] initWithTitle:@"title" imageFile:stadiumImage.image tag:objects.count - 1];
+                [self->_headImageSGItemArray addObject:firstItem];
+            }
+            
+            for (int i = 0; i < objects.count; i++) {
+                StadiumImage *stadiumImage = (StadiumImage *)[objects objectAtIndex:i];
+                SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithTitle:@"title" imageFile:stadiumImage.image tag:i];
+                [self->_headImageSGItemArray addObject:item];
+                [self->_headImageArray addObject:stadiumImage.image];
+            }
+            
+            if (objects.count > 1) {//图片数大于1张时，获取第一张图片，添加到图片列表的最后一位，用于滚动
+                StadiumImage *stadiumImage = (StadiumImage *)[objects objectAtIndex:0];
+                SGFocusImageItem *lastItem = [[SGFocusImageItem alloc] initWithTitle:@"title" imageFile:stadiumImage.image tag:0];
+                [self->_headImageSGItemArray addObject:lastItem];
+            }
+            [_bannerView changeImageViewsContent:_headImageSGItemArray];
+        }
+    }];
+}
+- (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame didSelectItem:(SGFocusImageItem *)item
+{
+    ImgShowViewController *imgShowVC = [[ImgShowViewController alloc] initWithSourceData:_headImageArray withIndex:item.tag];
+    [self.navigationController pushViewController:imgShowVC animated:YES];
+}
+- (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame currentItem:(int)index;
+{
+    //    NSLog(@"%s \n scrollToIndex===>%d",__FUNCTION__,index);
 }
 
 @end

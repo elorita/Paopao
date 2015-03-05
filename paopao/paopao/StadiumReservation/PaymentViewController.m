@@ -232,8 +232,10 @@
         return;
     }
     
-    NSString *amountStr = [NSString stringWithFormat:@"%lld", [curOrder.amount longLongValue]];
+    NSString *amountStr = [NSString stringWithFormat:@"%lld", [curOrder.amount longLongValue] * 100];
     NSDictionary* dict = @{
+                           @"subject" : [[AVUser currentUser] username],
+                           @"orderNo" : curOrder.objectId,
                            @"channel" : channel,
                            @"amount"  : amountStr
                            };

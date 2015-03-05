@@ -278,7 +278,7 @@
     [query whereKey:@"stadium" equalTo:curStadium];
     selectedDate = [beginDate dateByAddingTimeInterval:3600 * 24 * offset];
     [query whereKey:@"date" greaterThanOrEqualTo:selectedDate];
-    [query whereKey:@"date" lessThanOrEqualTo:[selectedDate dateByAddingTimeInterval:1]];
+    [query whereKey:@"date" lessThan:[selectedDate dateByAddingTimeInterval:1]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             subOrderSessions = [[NSMutableArray alloc] init];

@@ -37,6 +37,9 @@
     
     LocationView *locationView = [[LocationView alloc] initWithFrame:CGRectMake(0, self.contentView.height - [LocationView getViewHeight], self.contentView.width, [LocationView getViewHeight])];
     [self.contentView addSubview:locationView];
+    
+    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+    [self.menuTableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)didReceiveMemoryWarning {

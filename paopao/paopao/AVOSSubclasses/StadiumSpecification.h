@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) AVFile *image;
-@property (nonatomic, strong) Stadium *stadium;
+@property (nonatomic, weak) Stadium *stadium;
+@property (nonatomic, strong) NSNumber *order;
 
 @end

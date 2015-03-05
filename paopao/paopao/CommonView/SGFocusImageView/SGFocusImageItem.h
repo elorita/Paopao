@@ -15,6 +15,6 @@
 @property (nonatomic, retain)  AVFile      *imageFile;
 @property (nonatomic, assign)  NSInteger     tag;
 
-- (id)initWithTitle:(NSString *)title image:(AVFile *)imageFile tag:(NSInteger)tag;
+- (id)initWithTitle:(NSString *)title imageFile:(AVFile *)file tag:(NSInteger)tag;
 - (id)initWithDict:(NSDictionary *)dict tag:(NSInteger)tag;
 @end

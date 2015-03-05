@@ -13,12 +13,12 @@
 
 @property (nonatomic, strong) NSDate *generateDateTime;
 @property (nonatomic, strong) NSDate *date;
-@property (nonatomic, strong) Stadium *stadium;
+@property (nonatomic, weak) Stadium *stadium;
 @property (nonatomic, strong) NSString *pingppOrderID;
 @property (nonatomic, strong) AVRelation *suborders;
 @property (nonatomic, strong) NSDate *payDateTime;
 @property (nonatomic, strong) NSNumber *paymentChannel;
 @property (nonatomic, strong) NSNumber *amount;
-@property (nonatomic, strong) AVUser *user;
+@property (nonatomic, weak) AVUser *user;
 
 @end

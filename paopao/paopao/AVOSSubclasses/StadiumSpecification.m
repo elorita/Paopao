@@ -10,7 +10,7 @@
 
 @implementation StadiumSpecification
 
-@synthesize content, image, stadium;
+@synthesize content, image, stadium, order;
 
 + (NSString *)parseClassName {
     return @"stadiumSpecification";

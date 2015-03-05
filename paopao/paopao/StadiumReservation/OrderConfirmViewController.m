@@ -146,7 +146,7 @@
 //    order.stadium = orderStadium;
 //    order.user = [AVUser currentUser];
     [order setObject:[NSDate date] forKey:@"generateDateTime"];
-    [order setObject:orderDate forKey:@"date"];
+    [order setObject:[orderDate dateByAddingTimeInterval:1] forKey:@"date"];
     [order setObject:orderStadium forKey:@"stadium"];
     [order setObject:[NSNumber numberWithInteger:amount] forKey:@"amount"];
     [order setObject:[AVUser currentUser] forKey:@"user"];
@@ -167,7 +167,7 @@
         [suborder setObject:[NSNumber numberWithInteger:model.sessionTime] forKey:@"time"];
         [suborder setObject:order.stadium forKey:@"stadium"];
         [suborder setObject:model.sportField forKey:@"sportField"];
-        [suborder setObject:[NSNumber numberWithInteger:model.price] forKey:@"pricce"];
+        [suborder setObject:[NSNumber numberWithInteger:model.price] forKey:@"price"];
         [suborder setObject:order.user forKey:@"user"];
         [suborder setObject:[NSNumber numberWithBool:NO] forKey:@"isPaid"];
         if ([suborder save])

@@ -36,12 +36,28 @@
     [LogOutButton setTitle:@"登出账户" forState:UIControlStateNormal];
     [LogOutButton addTarget:self action:@selector(doLogout:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:LogOutButton];
+    
+    UIButton *clearFileCacheButton = [[UIButton alloc] init];
+    clearFileCacheButton.width = 200;
+    clearFileCacheButton.height = 40;
+    clearFileCacheButton.x = LogOutButton.x;
+    clearFileCacheButton.y = LogOutButton.bottom + 20;
+    [clearFileCacheButton setBackgroundColor:[UIColor grayColor]];
+    [clearFileCacheButton setTitle:@"清空缓存" forState:UIControlStateNormal];
+    [clearFileCacheButton addTarget:self action:@selector(doClear:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:clearFileCacheButton];
+    
+    
 }
 
 - (void)doLogout:(id)sender {
     [SVProgressHUD showSuccessWithStatus:@"已退出当前账户" duration:2];
     [AVUser logOut];
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:self];
+}
+
+- (void)doClear:(id)sender {
+    [AVFile clearAllCachedFiles];
 }
 
 - (void)doReturn {
