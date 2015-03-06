@@ -20,4 +20,6 @@
 
 - (CLLocationDistance)getDIstanceFromHereToAVDest:(AVGeoPoint *)dest;
 
+- (CLLocation *)lastLocation;
+
 @end

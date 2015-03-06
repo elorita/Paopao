@@ -101,4 +101,8 @@ static CustomeLocationManager *instance;
     return [self getDistanceFromOrigin:origin toDest:cdest];
 }
 
+- (CLLocation *)lastLocation{
+    return [ShareInstances getLastLocation];
+}
+
 @end

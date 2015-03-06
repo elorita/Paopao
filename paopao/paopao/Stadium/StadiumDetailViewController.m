@@ -20,6 +20,7 @@
 #import "SGFocusImageItem.h"
 #import "StadiumImage.h"
 #import "ImgShowViewController.h"
+#import "PreNavigationViewController.h"
 
 #define SubViewSpace 5
 #define MENUHEIHT 40
@@ -124,6 +125,7 @@
     UIButton *mapButton = [[UIButton alloc] initWithFrame:CGRectMake(summaryView.width - 44, 0, 44, 44)];
     [mapButton setImage:[UIImage imageNamed:@"map_normal.png"] forState:UIControlStateNormal];
     [mapButton setContentMode:UIViewContentModeCenter];
+    [mapButton addTarget:self action:@selector(doShowMap) forControlEvents:UIControlEventTouchUpInside];
     [summaryView addSubview:mapButton];
     
     UIButton *telButton = [[UIButton alloc] initWithFrame:CGRectMake(mapButton.x - 44, 0, 44, 44)];
@@ -246,6 +248,11 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"该商家暂未登记电话" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
         [alertView show];
     }
+}
+
+- (void)doShowMap {
+    PreNavigationViewController *pnVC = [[PreNavigationViewController alloc] initWithLocation:_curStadium.location withTargetPortrait:_curStadium.portrait withTitle:_curStadium.name withSubTitle:[NSString stringWithFormat:@"电话号码:%@", _curStadium.telNo]];
+    [self.navigationController pushViewController:pnVC animated:YES];
 }
 
 #pragma mark SGFocusImageFrameDelegate

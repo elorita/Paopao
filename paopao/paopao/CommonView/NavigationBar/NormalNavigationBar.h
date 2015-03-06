@@ -12,13 +12,17 @@
 
 @required
 - (void)doReturn;
-
+@optional
+- (void)rightButtonClick;
 @end
 
 @interface NormalNavigationBar : UIView
 
+@property (nonatomic, strong) UIButton *backButton;
+@property (nonatomic, strong) UIButton *rightButton;
 @property (nonatomic, weak) id<NormalNavigationDelegate> delegate;
 
 - (instancetype)initWithTitle:(NSString *)title;
+- (instancetype)initWithTitle:(NSString *)title withRightButtonTitle:(NSString *)rightButtonTitle;
 
 @end
