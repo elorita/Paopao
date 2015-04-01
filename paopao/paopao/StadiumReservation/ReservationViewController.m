@@ -287,8 +287,8 @@
                 if (suborder.isPaid || interval < 60 * 15){//未支付订单能锁定场次15分钟
                     SessionModel *model = [[SessionModel alloc] init];
                     model.sessionTime = suborder.time;
-                    model.sportField = suborder.sportField;
-                    model.sportFieldIndex = [self indexOfSportsField:suborder.sportField];
+                    model.sportField = [suborder objectForKey:@"sportField"];//suborder.sportField;
+                    model.sportFieldIndex = [self indexOfSportsField:model.sportField];//[self indexOfSportsField:suborder.sportField];
                     [subOrderSessions addObject:model];
                 }
             }

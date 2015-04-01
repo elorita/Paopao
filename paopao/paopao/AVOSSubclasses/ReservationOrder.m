@@ -10,7 +10,7 @@
 
 @implementation ReservationOrder
 
-@synthesize generateDateTime, date, stadium, payDateTime, suborders, paymentChannel, pingppOrderID, user, amount;
+@synthesize generateDateTime, date, stadium, payDateTime, suborders, paymentChannel, pingppOrderID, user, amount, isPaid, captcha, suborderCount;
 
 + (NSString *)parseClassName {
     return @"reservationOrder";

@@ -168,5 +168,9 @@
     [stadiumTableView forceToFreshData];
 }
 
+- (void)forceRefresh {
+    [stadiumTableView forceToFreshData];
+}
+
 
 @end

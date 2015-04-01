@@ -25,4 +25,10 @@
 + (CLLocation *)getLastLocation;
 + (AVGeoPoint *)getLastGeoPoint;
 
++ (void)loadPortraitOnView:(UIImageView *)view withDefaultImageName:(NSString *)imageName;
++ (void)setCurPortrait:(UIImage *)image;
+//视图修饰方法
++ (void)addRightArrowOnView:(UIView *)view;
++ (void)addTopBottomBorderOnView:(UIView *)view;
+
 @end

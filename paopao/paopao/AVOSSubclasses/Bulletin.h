@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSDate *timeInForce;
 @property (nonatomic, strong) NSDate *timeToFailure;
 @property (nonatomic, strong) NSString *content;
-@property (nonatomic, weak) AVUser *user;
+@property (nonatomic, strong) AVUser *user;
 
 @end

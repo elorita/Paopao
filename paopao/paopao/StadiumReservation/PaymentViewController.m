@@ -34,6 +34,7 @@
 #define kResult           @"支付结果：%@"
 
 #define kUrlScheme      @"YOUR-APP-URL-SCHEME"
+//#define kUrlScheme      @"paopao"
 #define kUrl            @"http://elorita.sinaapp.com/example/pay.php"
 
 @interface PaymentViewController() <NormalNavigationDelegate>

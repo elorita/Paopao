@@ -149,43 +149,45 @@
     [order setObject:[orderDate dateByAddingTimeInterval:1] forKey:@"date"];
     [order setObject:orderStadium forKey:@"stadium"];
     [order setObject:[NSNumber numberWithInteger:amount] forKey:@"amount"];
+    [order setObject:[NSNumber numberWithInteger:orderedSessions.count] forKeyedSubscript:@"suborderCount"];
     [order setObject:[AVUser currentUser] forKey:@"user"];
-    [SVProgressHUD showWithStatus:@"生成订单"];
+    [SVProgressHUD showWithStatus:@"正在生成订单"];
     
-    NSMutableArray *suborders = [[NSMutableArray alloc] init];
-    for (SessionModel *model in orderedSessions) {
-        ReservationSuborder *suborder = [[ReservationSuborder alloc] init];
-//        suborder.generateDateTime = order.generateDateTime;
-//        suborder.date = order.date;
-//        suborder.time = model.sessionTime;
-//        suborder.stadium = order.stadium;
-//        suborder.sportField = model.sportField;
-//        suborder.user = order.user;
-//        suborder.isPaid = false;
-        [suborder setObject:order.generateDateTime forKey:@"generateDateTime"];
-        [suborder setObject:order.date forKey:@"date"];
-        [suborder setObject:[NSNumber numberWithInteger:model.sessionTime] forKey:@"time"];
-        [suborder setObject:order.stadium forKey:@"stadium"];
-        [suborder setObject:model.sportField forKey:@"sportField"];
-        [suborder setObject:[NSNumber numberWithInteger:model.price] forKey:@"price"];
-        [suborder setObject:order.user forKey:@"user"];
-        [suborder setObject:[NSNumber numberWithBool:NO] forKey:@"isPaid"];
-        if ([suborder save])
-            [suborders addObject:suborder];
-        else{
-            [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
-            return;
-        }
-    }
-    
-    AVRelation *relation = [order relationforKey:@"suborders"];
-    for (ReservationSuborder *suborder in suborders)
-        [relation addObject:suborder];
     [order saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
             [SVProgressHUD dismiss];
-            PaymentViewController *paymentVC = [[PaymentViewController alloc] initWithReservationOrder:order];
-            [self.navigationController pushViewController:paymentVC animated:YES];
+            [SVProgressHUD showWithStatus:@"正在锁定场次"];
+            
+            AVRelation *suborderRelation = [order relationforKey:@"suborders"];
+            for (SessionModel *model in orderedSessions) {
+                ReservationSuborder *suborder = [[ReservationSuborder alloc] init];
+                [suborder setObject:order.generateDateTime forKey:@"generateDateTime"];
+                [suborder setObject:order.date forKey:@"date"];
+                [suborder setObject:[NSNumber numberWithInteger:model.sessionTime] forKey:@"time"];
+                [suborder setObject:order.stadium forKey:@"stadium"];
+                [suborder setObject:model.sportField forKey:@"sportField"];
+                [suborder setObject:[NSNumber numberWithInteger:model.price] forKey:@"price"];
+                [suborder setObject:order.user forKey:@"user"];
+                [suborder setObject:[NSNumber numberWithBool:NO] forKey:@"isPaid"];
+                if ([suborder save])
+                    [suborderRelation addObject:suborder];
+                else{
+                    [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
+                    return;
+                }
+            }
+            
+            [order saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (!error) {
+                    [SVProgressHUD dismiss];
+                    PaymentViewController *paymentVC = [[PaymentViewController alloc] initWithReservationOrder:order];
+                    [self.navigationController pushViewController:paymentVC animated:YES];
+                }
+                else{
+                    [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
+                    return;
+                }
+            }];
         } else {
             [SVProgressHUD showErrorWithStatus:@"网络故障，请稍后重试" duration:2];
         }

@@ -10,8 +10,8 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import "ShareInstances.h"
 #import "Defines.h"
+#import "UIView+XD.h"
 
-static UIImage *headPortraitCache;
 static NSInteger welcomeLabelHeight = 60;
 
 @interface UserSummaryView ()
@@ -30,6 +30,13 @@ static NSInteger welcomeLabelHeight = 60;
     [self initUserStatu];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChange:) name:KNOTIFICATION_LOGINCHANGE object:nil];
     [self setBackgroundColor:MAIN_COLOR];
+    
+    CGRect frame = CGRectMake(200, 20, 44, welcomeLabelHeight);
+    UIImageView *goImageView = [[UIImageView alloc] initWithFrame:frame];
+    [goImageView setImage:[UIImage imageNamed:@"go_white.png"]];
+    [goImageView setContentMode:UIViewContentModeCenter];
+    [self addSubview:goImageView];
+    
     return self;
 }
 
@@ -40,10 +47,10 @@ static NSInteger welcomeLabelHeight = 60;
         [ShareInstances setCurrentUserHeadPortraitWithUserName:curUser.username];
     
     [self addSubview:self.portraitImageView];
-    [self loadPortrait];
+    [ShareInstances loadPortraitOnView:_portraitImageView withDefaultImageName:DEFAULT_PORTRAIT_INVERSE];
     
     if (welcomeLabel == nil) {
-        welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 160, welcomeLabelHeight)];
+        welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, 120, welcomeLabelHeight)];
         [self addSubview:welcomeLabel];
         
         UIButton *loginButton = [[UIButton alloc] initWithFrame:welcomeLabel.frame];
@@ -54,6 +61,7 @@ static NSInteger welcomeLabelHeight = 60;
     welcomeLabel.font = [UIFont systemFontOfSize:15];
     welcomeLabel.textAlignment = NSTextAlignmentLeft;
     welcomeLabel.text = curUser == nil ? @"Hi 你好 点击登录" : [NSString stringWithFormat:@"Hi %@", [curUser objectForKey:@"nickname"]];
+    
 }
 
 - (void)initUserStatu {
@@ -67,30 +75,6 @@ static NSInteger welcomeLabelHeight = 60;
 
 -(void)loginStateChange:(NSNotification *)notification {
     [self refreshSignStatu];
-}
-
-- (void)loadPortrait {
-    AVUser *curUser = [AVUser currentUser];
-    if (curUser != nil) {
-        if (headPortraitCache == nil){
-            AVFile *imageFile = [curUser objectForKey:@"headPortrait"];
-            if (imageFile != nil) {
-                [imageFile getThumbnail:YES width:150 height:150 withBlock:^(UIImage * image, NSError *error) {
-                    if (!error) {
-                        headPortraitCache = image;
-                    } else {
-                        headPortraitCache = [UIImage imageNamed:@"mzwyyc.jpg"];
-                    }
-                    self.portraitImageView.image = headPortraitCache;
-                }];
-            } else {
-                headPortraitCache = [UIImage imageNamed:@"mzwyyc.jpg"];
-                _portraitImageView.image = headPortraitCache;
-            }
-        }
-    } else {
-        _portraitImageView.image = [UIImage imageNamed:@"mzwyyc.jpg"];
-    }
 }
 
 #pragma mark portraitImageView getter

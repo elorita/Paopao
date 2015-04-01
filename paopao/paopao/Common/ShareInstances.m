@@ -7,7 +7,10 @@
 //
 
 #import "ShareInstances.h"
+#import "Defines.h"
+#import "UIView+XD.h"
 
+static AVUser *lastUser;
 static UIImage *currentUserHeadPortrait;
 static UIImage *currentUserHeadPortraitThumbnail;
 
@@ -84,6 +87,58 @@ static CLLocation *lastLocation;
     point.latitude = lastLocation.coordinate.latitude;
     point.longitude = lastLocation.coordinate.longitude;
     return point;
+}
+
++ (void)loadPortraitOnView:(UIImageView *)view withDefaultImageName:(NSString *)imageName {
+    AVUser *curUser = [AVUser currentUser];
+    if (curUser != nil) {
+        if (curUser != lastUser) {
+            AVFile *imageFile = [curUser objectForKey:@"headPortrait"];
+            if (imageFile != nil) {
+                [imageFile getThumbnail:YES width:150 height:150 withBlock:^(UIImage * image, NSError *error) {
+                    if (!error) {
+                        currentUserHeadPortrait = image;
+                        view.image = currentUserHeadPortrait;
+                        lastUser = curUser;
+                    } else {
+                        view.image = [UIImage imageNamed:imageName];
+                    }
+                }];
+            } else {
+                view.image = [UIImage imageNamed:imageName];
+            }
+        } else {
+            if (currentUserHeadPortrait != nil) {
+                view.image = currentUserHeadPortrait;
+            } else
+                view.image = [UIImage imageNamed:imageName];
+        }
+    } else {
+        view.image = [UIImage imageNamed:imageName];
+    }
+}
+
++ (void)setCurPortrait:(UIImage *)image {
+    lastUser = [AVUser currentUser];
+    currentUserHeadPortrait = image;
+}
+
+//为视图右侧增加一个箭头图片
++ (void)addRightArrowOnView:(UIView *)view {
+    UIImageView *goAccountDetail = [[UIImageView alloc] initWithFrame:CGRectMake(view.width - 44, 0, 44, view.height)];
+    [goAccountDetail setImage:[UIImage imageNamed:@"go_normal.png"]];
+    [goAccountDetail setContentMode:UIViewContentModeCenter];
+    [view addSubview:goAccountDetail];
+}
+//为视图添加上下0.5宽的边框
++ (void)addTopBottomBorderOnView:(UIView *)view {
+    UIView *topBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, view.width, 0.5)];
+    topBorderView.backgroundColor = SPLITTER_COLOR;
+    [view addSubview:topBorderView];
+    
+    UIView *bottomBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, view.height - 0.5, view.width, 0.5)];
+    bottomBorderView.backgroundColor = SPLITTER_COLOR;
+    [view addSubview:bottomBorderView];
 }
 
 @end

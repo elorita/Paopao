@@ -12,7 +12,7 @@
 @interface StadiumImage : AVObject<AVSubclassing>
 
 @property (nonatomic, strong) AVFile *image;
-@property (nonatomic, weak) Stadium *stadium;
+@property (nonatomic, strong) Stadium *stadium;
 @property (nonatomic, strong) NSNumber *order;
 
 @end

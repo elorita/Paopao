@@ -13,6 +13,8 @@
 
 - (id)initWithFrame:(CGRect)frame withController:(UIViewController *)controller;
 
+- (void)forceRefresh;
+
 @property(nonatomic,weak) RootViewController *homeViewController;
 
 @end

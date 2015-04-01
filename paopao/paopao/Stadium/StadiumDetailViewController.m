@@ -21,6 +21,7 @@
 #import "StadiumImage.h"
 #import "ImgShowViewController.h"
 #import "PreNavigationViewController.h"
+#import "ShareInstances.h"
 
 #define SubViewSpace 5
 #define MENUHEIHT 40
@@ -148,7 +149,7 @@
     [summaryView addSubview:addressLabel];
     
     [summaryView setHeight:addressLabel.bottom + lYMargin];
-    [self addTopBottomBorderOnView:summaryView];
+    [ShareInstances addTopBottomBorderOnView:summaryView];
     
     UIView *describeView = [[UIView alloc] init];//显示场馆简介
     describeView.backgroundColor = [UIColor whiteColor];
@@ -179,7 +180,7 @@
                                    NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
             [bulletinLabel setFrame:CGRectMake(lXMargin, lYMargin, requiredSize.width, requiredSize.height)];
             [bulletinView setFrame:CGRectMake(0, lBannerHeight, scrollView.width, bulletinLabel.height + lYMargin * 2)];
-            [self addTopBottomBorderOnView:bulletinView];
+            [ShareInstances addTopBottomBorderOnView:bulletinView];
             [bulletinView addSubview:bulletinLabel];
             
             [orderView setY:orderView.y + bulletinView.height];
@@ -189,16 +190,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLocationChanged:) name:KNOTIFICATION_LOCATIONUPDATED object:nil];
     [[CustomeLocationManager defaultManager] updateLocation];
-}
-
-- (void)addTopBottomBorderOnView:(UIView *)view {
-    UIView *topBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, view.width, 0.5)];
-    topBorderView.backgroundColor = SPLITTER_COLOR;
-    [view addSubview:topBorderView];
-    
-    UIView *bottomBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, view.height - 0.5, view.width, 0.5)];
-    bottomBorderView.backgroundColor = SPLITTER_COLOR;
-    [view addSubview:bottomBorderView];
 }
 
 #pragma mark UI初始化

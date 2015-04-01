@@ -58,12 +58,12 @@
     
     self.sidebarVC = [[SidebarViewController alloc] init];
     [self.sidebarVC setBgRGB:0x000000];
-    NSArray *items = @[@{@"title":@"精选",@"imagenormal":@"featured_normal.png",@"imagehighlight":@"featured_highlight.png"},
+    NSArray *items = @[//@{@"title":@"精选",@"imagenormal":@"featured_normal.png",@"imagehighlight":@"featured_highlight.png"},
                        @{@"title":@"场馆",@"imagenormal":@"stadium_normal.png",@"imagehighlight":@"stadium_highlight.png"},
-                       @{@"title":@"团队",@"imagenormal":@"team_normal.png",@"imagehighlight":@"team_highlight.png"},
-                       @{@"title":@"教练",@"imagenormal":@"coach_normal.png",@"imagehighlight":@"coach_highlight.png"},
-                       @{@"title":@"赛事",@"imagenormal":@"competition_normal.png",@"imagehighlight":@"competition_highlight.png"},
-                       @{@"title":@"资讯",@"imagenormal":@"news_normal.png",@"imagehighlight":@"news_highlight.png"},
+                       //@{@"title":@"团队",@"imagenormal":@"team_normal.png",@"imagehighlight":@"team_highlight.png"},
+                       //@{@"title":@"教练",@"imagenormal":@"coach_normal.png",@"imagehighlight":@"coach_highlight.png"},
+                       //@{@"title":@"赛事",@"imagenormal":@"competition_normal.png",@"imagehighlight":@"competition_highlight.png"},
+                       //@{@"title":@"资讯",@"imagenormal":@"news_normal.png",@"imagehighlight":@"news_highlight.png"},
                        @{@"title":@"设置",@"imagenormal":@"setting_normal.png",@"imagehighlight":@"setting_highlight.png"}];
     [self.sidebarVC setItems:items];
     self.sidebarVC.signInDelegate = self;
@@ -75,7 +75,7 @@
     //显示引导页面
     [self buildIntro];
     
-    [self menuItemSelectedOnIndex:1];//默认显示场馆页面
+    [self menuItemSelectedOnIndex:0];//默认显示场馆页面
 }
 
 //-(void)viewDidAppear:(BOOL)animated{
@@ -187,15 +187,21 @@
     UIView *newView = nil;
     NSString *title = nil;
     switch (index) {
-        case 1:
+        case 0:
             if (_stadiumView == nil) {
                 CGRect frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
                 _stadiumView = [[StadiumView alloc] initWithFrame:frame withController:self];
+                //[_stadiumView forceRefresh];
             }
             newView = _stadiumView;
             title = @"找场馆";
             break;
-            
+//        case 1:
+//            if (true) {
+//                UserHomeViewController *userHomeVC = [[UserHomeViewController alloc] init];
+//                [self.navigationController pushViewController:userHomeVC animated:YES];
+//            }
+//            break;
         default:
             break;
     }
