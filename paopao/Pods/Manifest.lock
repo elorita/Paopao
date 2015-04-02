@@ -1,6 +1,6 @@
 PODS:
-  - AVOSCloud (2.6.11.2)
-  - AVOSCloudSNS (2.6.11.2):
+  - AVOSCloud (3.0.2)
+  - AVOSCloudSNS (3.0.2):
     - AVOSCloud
   - Pingpp (2.0.3)
 
@@ -14,8 +14,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/PingPlusPlus/pingpp-ios.git
 
 SPEC CHECKSUMS:
-  AVOSCloud: c4e261f5d68f42c6e4c4a64934490b2f38c9cff7
-  AVOSCloudSNS: bbeb6d2e21cb7971850565e41e0b4c0f2a9ce7d5
+  AVOSCloud: eeacd471d18b3e24c3cb0d089110453261084489
+  AVOSCloudSNS: 7d83ffbd3738b92c9ece62e93a65fa593587274b
   Pingpp: 4d5da462fed8817abbf4ee484904e8289a586b5f
 
 COCOAPODS: 0.34.2

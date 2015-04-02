@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SexSelectionViewDelegate <NSObject>
+
+@required
+- (void)sexChanged;
+
+@end
+
 @interface SexSelectionViewController : UIViewController
+
+- (void)setInitSex:(NSInteger)sex;
+
+@property (nonatomic, weak) id<SexSelectionViewDelegate> delegate;
 
 @end

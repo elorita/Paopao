@@ -45,7 +45,9 @@
     rightButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width - NAVIGATION_BUTTON_RESPONSE_WIDTH, STATU_BAR_HEIGHT, NAVIGATION_BUTTON_RESPONSE_WIDTH, NAVIGATION_BUTTON_HEIGHT)];
     [rightButton setTitle:rightButtonTitle forState:UIControlStateNormal];
     [rightButton setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
-    [rightButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+    [rightButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    rightButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20);
     [rightButton addTarget:self action:@selector(doRightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:rightButton];
     

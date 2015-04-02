@@ -30,5 +30,6 @@
 //视图修饰方法
 + (void)addRightArrowOnView:(UIView *)view;
 + (void)addTopBottomBorderOnView:(UIView *)view;
++ (void)addAllBorderOnView:(UIView *)view;
 
 @end

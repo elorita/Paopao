@@ -27,6 +27,8 @@
 		D8483C211ACAAD7C001856E0 /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8483C201ACAAD7C001856E0 /* right@2x.png */; };
 		D8483C251ACB0A7A001856E0 /* InputPhoneNoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8483C241ACB0A7A001856E0 /* InputPhoneNoViewController.m */; };
 		D8483C281ACB0EAF001856E0 /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8483C271ACB0EAF001856E0 /* ResetPasswordViewController.m */; };
+		D8483C2F1ACC1C51001856E0 /* CustomDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8483C2E1ACC1C51001856E0 /* CustomDatePickerView.m */; };
+		D8483C321ACC29FE001856E0 /* CustomTextInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8483C311ACC29FE001856E0 /* CustomTextInputViewController.m */; };
 		D85E27B41A78F2C300B50C2B /* StadiumTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E27B21A78F2C300B50C2B /* StadiumTableViewCell.m */; };
 		D85E27B51A78F2C300B50C2B /* StadiumTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D85E27B31A78F2C300B50C2B /* StadiumTableViewCell.xib */; };
 		D85E27B81A792AF900B50C2B /* mzwyyc.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D85E27B71A792AF900B50C2B /* mzwyyc.jpg */; };
@@ -91,6 +93,7 @@
 		D86D400A1A870D2A00474618 /* CheckMarkWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40061A870D2A00474618 /* CheckMarkWhite.png */; };
 		D86D400B1A870D2A00474618 /* ForkImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40071A870D2A00474618 /* ForkImage.png */; };
 		D86D400C1A870D2A00474618 /* HeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D86D40081A870D2A00474618 /* HeaderImage.png */; };
+		D874A2C01ACD76980095268F /* IndustrySettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D874A2BF1ACD76980095268F /* IndustrySettingViewController.m */; };
 		D87CA11B1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */; };
 		D87CA11E1A9DBD4D00141EA0 /* DateTimeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA11D1A9DBD4D00141EA0 /* DateTimeHelper.m */; };
 		D87CA1211A9F0E3500141EA0 /* OrderConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87CA1201A9F0E3500141EA0 /* OrderConfirmViewController.m */; };
@@ -148,6 +151,7 @@
 		D8C7A1911A811E3A006E927E /* CustomLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C7A1901A811E3A006E927E /* CustomLocationManager.m */; };
 		D8C7A1951A81B08E006E927E /* location_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C7A1941A81B08E006E927E /* location_small@2x.png */; };
 		D8C7A1971A81B40E006E927E /* star_small_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C7A1961A81B40E006E927E /* star_small_yellow@2x.png */; };
+		D8EDCEB41ACD4AEF002313EF /* SelectableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EDCEB31ACD4AEF002313EF /* SelectableTableViewCell.m */; };
 		D8EF0E8E1AA0B99F00A01851 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EF0E8D1AA0B99F00A01851 /* PaymentViewController.m */; };
 		D8FE63C91AB3D5880016E058 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8FE63C71AB3D5880016E058 /* calendar@2x.png */; };
 		D8FE63CA1AB3D5880016E058 /* favorite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D8FE63C81AB3D5880016E058 /* favorite@2x.png */; };
@@ -203,6 +207,10 @@
 		D8483C261ACB0EAF001856E0 /* ResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
 		D8483C271ACB0EAF001856E0 /* ResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPasswordViewController.m; sourceTree = "<group>"; };
 		D8483C2B1ACB8ED2001856E0 /* MyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderViewController.h; sourceTree = "<group>"; };
+		D8483C2D1ACC1C51001856E0 /* CustomDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomDatePickerView.h; sourceTree = "<group>"; };
+		D8483C2E1ACC1C51001856E0 /* CustomDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomDatePickerView.m; sourceTree = "<group>"; };
+		D8483C301ACC29FE001856E0 /* CustomTextInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextInputViewController.h; sourceTree = "<group>"; };
+		D8483C311ACC29FE001856E0 /* CustomTextInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTextInputViewController.m; sourceTree = "<group>"; };
 		D85E27B11A78F2C300B50C2B /* StadiumTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StadiumTableViewCell.h; sourceTree = "<group>"; };
 		D85E27B21A78F2C300B50C2B /* StadiumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StadiumTableViewCell.m; sourceTree = "<group>"; };
 		D85E27B31A78F2C300B50C2B /* StadiumTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StadiumTableViewCell.xib; sourceTree = "<group>"; };
@@ -293,6 +301,8 @@
 		D86D40061A870D2A00474618 /* CheckMarkWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CheckMarkWhite.png; sourceTree = "<group>"; };
 		D86D40071A870D2A00474618 /* ForkImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ForkImage.png; sourceTree = "<group>"; };
 		D86D40081A870D2A00474618 /* HeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HeaderImage.png; sourceTree = "<group>"; };
+		D874A2BE1ACD76980095268F /* IndustrySettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndustrySettingViewController.h; sourceTree = "<group>"; };
+		D874A2BF1ACD76980095268F /* IndustrySettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndustrySettingViewController.m; sourceTree = "<group>"; };
 		D87CA1191A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleHorizontalMenuLite.h; sourceTree = "<group>"; };
 		D87CA11A1A9CC7C000141EA0 /* ScheduleHorizontalMenuLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleHorizontalMenuLite.m; sourceTree = "<group>"; };
 		D87CA11C1A9DBD4D00141EA0 /* DateTimeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTimeHelper.h; sourceTree = "<group>"; };
@@ -394,6 +404,8 @@
 		D8C7A1901A811E3A006E927E /* CustomLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLocationManager.m; sourceTree = "<group>"; };
 		D8C7A1941A81B08E006E927E /* location_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_small@2x.png"; sourceTree = "<group>"; };
 		D8C7A1961A81B40E006E927E /* star_small_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_small_yellow@2x.png"; sourceTree = "<group>"; };
+		D8EDCEB21ACD4AEF002313EF /* SelectableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectableTableViewCell.h; sourceTree = "<group>"; };
+		D8EDCEB31ACD4AEF002313EF /* SelectableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectableTableViewCell.m; sourceTree = "<group>"; };
 		D8EF0E8C1AA0B99F00A01851 /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
 		D8EF0E8D1AA0B99F00A01851 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
 		D8FE63C71AB3D5880016E058 /* calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar@2x.png"; sourceTree = "<group>"; };
@@ -469,6 +481,14 @@
 				D8483C1B1AC99227001856E0 /* CustomSettingViewController.m */,
 				D8483C1D1ACAAB0D001856E0 /* SexSelectionViewController.h */,
 				D8483C1E1ACAAB0D001856E0 /* SexSelectionViewController.m */,
+				D8483C2D1ACC1C51001856E0 /* CustomDatePickerView.h */,
+				D8483C2E1ACC1C51001856E0 /* CustomDatePickerView.m */,
+				D8483C301ACC29FE001856E0 /* CustomTextInputViewController.h */,
+				D8483C311ACC29FE001856E0 /* CustomTextInputViewController.m */,
+				D8EDCEB21ACD4AEF002313EF /* SelectableTableViewCell.h */,
+				D8EDCEB31ACD4AEF002313EF /* SelectableTableViewCell.m */,
+				D874A2BE1ACD76980095268F /* IndustrySettingViewController.h */,
+				D874A2BF1ACD76980095268F /* IndustrySettingViewController.m */,
 			);
 			path = CustomSettings;
 			sourceTree = "<group>";
@@ -1207,6 +1227,7 @@
 				D8483C1C1AC99227001856E0 /* CustomSettingViewController.m in Sources */,
 				D8825AAD1AA82F4C004A7D27 /* ImgShowViewController.m in Sources */,
 				D88D25BF1A98CB6700B715D2 /* ScheduleHorizontalMenuCell.m in Sources */,
+				D874A2C01ACD76980095268F /* IndustrySettingViewController.m in Sources */,
 				D847F4FF1AAE80090043F515 /* VPImageCropperViewController.m in Sources */,
 				D88D25DE1A9B110500B715D2 /* TimeView.m in Sources */,
 				D8483C101AC6FE5C001856E0 /* WatchedStadiumTableViewCell.m in Sources */,
@@ -1243,6 +1264,7 @@
 				D86D3FE21A824FB100474618 /* LocationView.m in Sources */,
 				D88D25DD1A9B110500B715D2 /* TimeCell.m in Sources */,
 				D8483C251ACB0A7A001856E0 /* InputPhoneNoViewController.m in Sources */,
+				D8483C321ACC29FE001856E0 /* CustomTextInputViewController.m in Sources */,
 				D86D40021A870D0400474618 /* MYIntroductionPanel.m in Sources */,
 				D85E27E51A79370800B50C2B /* Stadium.m in Sources */,
 				D8AE96F71A7B988000884E51 /* ShareInstances.m in Sources */,
@@ -1259,6 +1281,7 @@
 				D8FE63D51AB53B500016E058 /* NotPaidOrderTableViewDND.m in Sources */,
 				D8825AB71AA93A13004A7D27 /* PreNavigationViewController.m in Sources */,
 				D8AE96F41A7B96D500884E51 /* UIImage+ImageEffects.m in Sources */,
+				D8483C2F1ACC1C51001856E0 /* CustomDatePickerView.m in Sources */,
 				D8C7A17C1A7F7E38006E927E /* UserHomeViewController.m in Sources */,
 				D85E27C71A79331600B50C2B /* CustomTableView.m in Sources */,
 				D85E27B41A78F2C300B50C2B /* StadiumTableViewCell.m in Sources */,
@@ -1270,6 +1293,7 @@
 				D8AE97021A7BCCD900884E51 /* UIView+XD.m in Sources */,
 				D8C7A1911A811E3A006E927E /* CustomLocationManager.m in Sources */,
 				D88D25C21A99B89D00B715D2 /* SpecialDay.m in Sources */,
+				D8EDCEB41ACD4AEF002313EF /* SelectableTableViewCell.m in Sources */,
 				D88D25C81A99BB5100B715D2 /* ReservationSuborder.m in Sources */,
 				D86D3FFF1A870D0400474618 /* MYBlurIntroductionView.m in Sources */,
 			);

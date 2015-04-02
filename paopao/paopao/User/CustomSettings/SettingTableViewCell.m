@@ -9,6 +9,7 @@
 #import "SettingTableViewCell.h"
 #import "Defines.h"
 #import "UIView+XD.h"
+#import "ShareInstances.h"
 
 @interface SettingTableViewCell()
 
@@ -47,6 +48,8 @@
     [_valueLabel setTextAlignment:NSTextAlignmentRight];
     [_valueLabel setText:value];
     [_bgView addSubview:_valueLabel];
+    
+    [ShareInstances addTopBottomBorderOnView:_bgView];
 }
 
 - (void)setKey:(NSString *)key withImage:(UIImage *)image{
@@ -58,6 +61,7 @@
     [_bgView addSubview:_headPortrait];
     
     [_bgView setHeight:70];
+    [ShareInstances addTopBottomBorderOnView:_bgView];
     [_keyLabel setY:23];
 }
 

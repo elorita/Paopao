@@ -12,8 +12,18 @@
 #import "UIView+XD.h"
 #import "SettingTableViewCell.h"
 #import <AVOSCloud/AVOSCloud.h>
+#import "SexSelectionViewController.h"
+#import "ImgShowViewController.h"
+#import "VPImageCropperViewController.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "SVProgressHUD.h"
+#import "CustomDatePickerView.h"
+#import "CustomTextInputViewController.h"
+#import "IndustrySettingViewController.h"
 
-@interface CustomSettingViewController()<NormalNavigationDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+#define ORIGINAL_MAX_WIDTH 640.0f
+
+@interface CustomSettingViewController()<NormalNavigationDelegate, UITableViewDataSource, UITableViewDelegate, SexSelectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, VPImageCropperDelegate, UIActionSheetDelegate, CustomDatePickerViewDelegate, CustomTextInputViewDelegate, IndustrySettingViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
@@ -39,8 +49,6 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
-    
-    [self initPickerViewsArray];
 }
 
 #pragma mark NormalNavigationDelegate
@@ -100,9 +108,17 @@
         case 4:
             [vCell setKey:@"签名" withValue:[curUser objectForKey:@"signature"]];
             break;
-        case 5:
-            [vCell setKey:@"行业" withValue:@"无"];
+        case 5:{
+            AVObject *industry = [curUser objectForKey:@"industry"];
+            [vCell setKey:@"行业" withValue:[industry objectForKey:@"categoryName"]];
+//            [industry fetchIfNeededInBackgroundWithBlock:^(AVObject *object, NSError *error) {
+//                if (!error){
+//                    [vCell setKey:@"行业" withValue:[object objectForKey:@"categoryName"]];
+//                    [self industryChanged];
+//                }
+//            }];
             break;
+        }
         case 6:
             [vCell setKey:@"爱好运动" withValue:@"无"];
             break;
@@ -114,83 +130,309 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
-        case 2:{
-            UIPickerView *pickerView = [[UIPickerView alloc] init];
-            pickerView.tag = 2;
-            pickerView.delegate = self;
-            pickerView.dataSource = self;
-            pickerView.hidden = NO;
-            [self.view addSubview:pickerView];
+        case 0:
+            [self editPortrait];
             break;
+        case 1:{
+            NSString *nickname = [[AVUser currentUser] objectForKey:@"nickname"];
+            CustomTextInputViewController *customTextInputVC = [[CustomTextInputViewController alloc] initWithTitle:@"修改昵称" withRow:1 withOriginText:nickname withEditKey:@"nickname"];
+            customTextInputVC.delegate = self;
+            [self.navigationController pushViewController:customTextInputVC animated:YES];
+            break;
+        }
+        case 2:{
+            SexSelectionViewController *sexSelectionVC = [[SexSelectionViewController alloc] init];
+            NSNumber *sex = [[AVUser currentUser] objectForKey:@"sex"];
+            [sexSelectionVC setInitSex:[sex integerValue]];
+            sexSelectionVC.delegate = self;
+            [self.navigationController pushViewController:sexSelectionVC animated:YES];
+            break;
+        }
+        case 3:{
+            CustomDatePickerView *customDatePickerView = [[CustomDatePickerView alloc] initWithFrame:self.view.frame withDefaultDate:[[AVUser currentUser] objectForKey:@"birthday"]];
+            customDatePickerView.delegate = self;
+            [self.view addSubview:customDatePickerView];
+            break;
+        }
+        case 4:{
+            NSString *signature = [[AVUser currentUser] objectForKey:@"signature"];
+            CustomTextInputViewController *signatureTextInputVC = [[CustomTextInputViewController alloc] initWithTitle:@"修改签名" withRow:4 withOriginText:signature withEditKey:@"signature"];
+            signatureTextInputVC.delegate = self;
+            [self.navigationController pushViewController:signatureTextInputVC animated:YES];
+            break;
+        }
+        case 5:{
+            IndustrySettingViewController *industrySettingVC = [[IndustrySettingViewController alloc] init];
+            industrySettingVC.delegate = self;
+            [self.navigationController pushViewController:industrySettingVC animated:YES];
         }
         default:
             break;
     }
 }
 
-- (void)initPickerViewsArray
-{
-    sexArray = [NSArray arrayWithObjects:@"男",
-             @"女", nil];
+- (void)sexChanged{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:2 inSection:0];
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
 }
 
-// UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件包含多少列
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView*)pickerView
-{
-    switch (pickerView.tag) {
-        case 2:
-            return 1;
-            break;
-        default:
-            return 0;
-            break;
+- (void)dateChanged{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:3 inSection:0];
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)textChangedOnRow:(NSInteger)row{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:row inSection:0];
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)industryChanged{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:5 inSection:0];
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark 头像编辑代码开始
+- (void)editPortrait {
+    AVUser *curUser = [AVUser currentUser];
+    if (curUser != nil) {
+        UIActionSheet *choiceSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"取消"
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"拍照", @"从相册中选取", @"查看大图", nil];
+        [choiceSheet showInView:self.view];
     }
 }
-// UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件指定列包含多少个列表项
-- (NSInteger)pickerView:(UIPickerView *)pickerView
-numberOfRowsInComponent:(NSInteger)component
-{
-    // 由于该控件只包含一列，因此无须理会列序号参数component
-    // 该方法返回books.count，表明books包含多少个元素，该控件就包含多少行
-    switch (pickerView.tag) {
-        case 2:
-            return sexArray.count;
-            break;
-        default:
-            return 0;
-            break;
+
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        // 拍照
+        [self showCamera];
+    } else if (buttonIndex == 1) {
+        // 从相册中选取
+        [self showImagePicker];
+    } else if (buttonIndex == 2) {
+        [self showCurUserFullHeadPortrait];
     }
 }
-// UIPickerViewDelegate中定义的方法，该方法返回的NSString将作为UIPickerView
-// 中指定列和列表项的标题文本
-- (NSString *)pickerView:(UIPickerView *)pickerView
-             titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    // 由于该控件只包含一列，因此无须理会列序号参数component
-    // 该方法根据row参数返回books中的元素，row参数代表列表项的编号，
-    // 因此该方法表示第几个列表项，就使用books中的第几个元素
-    switch (pickerView.tag) {
-        case 2:
-            return [sexArray objectAtIndex:row];
-            break;
-        default:
-            return @"";
-            break;
+
+#pragma ShowUserCellDelegate
+- (void)showImagePicker {
+    if ([self isPhotoLibraryAvailable]) {
+        UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+        controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+        [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+        controller.mediaTypes = mediaTypes;
+        controller.delegate = self;
+        [self presentViewController:controller
+                           animated:YES
+                         completion:^(void){
+                             NSLog(@"Picker View Controller is presented");
+                         }];
     }
 }
-// 当用户选中UIPickerViewDataSource中指定列和列表项时激发该方法
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:
-(NSInteger)row inComponent:(NSInteger)component
-{
-    // 使用一个UIAlertView来显示用户选中的列表项
-    UIAlertView* alert = [[UIAlertView alloc]
-                          initWithTitle:@"提示"
-                          message:[NSString stringWithFormat:@"你选中的性别是：%@"
-                                   , [sexArray objectAtIndex:row]]
-                          delegate:nil
-                          cancelButtonTitle:@"确定"
-                          otherButtonTitles:nil];
-    [alert show];
+
+- (void)showCamera {
+    if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
+        UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+        if ([self isFrontCameraAvailable]) {
+            controller.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        }
+        NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+        [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+        controller.mediaTypes = mediaTypes;
+        controller.delegate = self;
+        [self presentViewController:controller
+                           animated:YES
+                         completion:^(void){
+                             NSLog(@"Picker View Controller is presented");
+                         }];
+    }
 }
+
+- (void)showCurUserFullHeadPortrait {
+    AVUser *curUser = [AVUser currentUser];
+    AVFile *imageFile = [curUser objectForKey:@"headPortrait"];
+    NSMutableArray *images = [NSMutableArray arrayWithObject:imageFile];
+    ImgShowViewController *imageShowVC = [[ImgShowViewController alloc] initWithSourceData:images withIndex:0];
+    [self.navigationController pushViewController:imageShowVC animated:YES];
+}
+
+#pragma mark VPImageCropperDelegate
+- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
+    [self setPortaintImage: editedImage];
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+        // TO DO
+    }];
+}
+
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController {
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+    }];
+}
+
+- (void)setPortaintImage: (UIImage *)image {
+    NSData *imageData = UIImagePNGRepresentation(image);
+    AVFile *imageFile = [AVFile fileWithName:@"headPortrait.png" data:imageData];
+    [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            AVUser *curUser = [AVUser currentUser];
+            [curUser setObject:imageFile forKey:@"headPortrait"];
+            [curUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (!error) {
+                    [SVProgressHUD showSuccessWithStatus:@"修改成功，头像稍后刷新" duration:2];
+                    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:0];
+                    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+                }
+            }];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"头像保存失败" duration:2];
+        }
+    }];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:^() {
+        UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        portraitImg = [self imageByScalingToMaxSize:portraitImg];
+        //裁剪
+        VPImageCropperViewController *imgEditorVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
+        imgEditorVC.delegate = self;
+        [self presentViewController:imgEditorVC animated:YES completion:^{
+            // TO DO
+        }];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^(){
+    }];
+}
+
+
+#pragma mark camera utility
+- (BOOL) isCameraAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+
+- (BOOL) isRearCameraAvailable{
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+}
+
+- (BOOL) isFrontCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+}
+
+- (BOOL) doesCameraSupportTakingPhotos {
+    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
+}
+
+- (BOOL) isPhotoLibraryAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:
+            UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (BOOL) canUserPickVideosFromPhotoLibrary{
+    return [self
+            cameraSupportsMedia:(__bridge NSString *)kUTTypeMovie sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (BOOL) canUserPickPhotosFromPhotoLibrary{
+    return [self
+            cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+- (BOOL) cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType{
+    __block BOOL result = NO;
+    if ([paramMediaType length] == 0) {
+        return NO;
+    }
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
+    [availableMediaTypes enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *mediaType = (NSString *)obj;
+        if ([mediaType isEqualToString:paramMediaType]){
+            result = YES;
+            *stop= YES;
+        }
+    }];
+    return result;
+}
+
+#pragma mark image scale utility
+- (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage {
+    if (sourceImage.size.width < ORIGINAL_MAX_WIDTH) return sourceImage;
+    CGFloat btWidth = 0.0f;
+    CGFloat btHeight = 0.0f;
+    if (sourceImage.size.width > sourceImage.size.height) {
+        btHeight = ORIGINAL_MAX_WIDTH;
+        btWidth = sourceImage.size.width * (ORIGINAL_MAX_WIDTH / sourceImage.size.height);
+    } else {
+        btWidth = ORIGINAL_MAX_WIDTH;
+        btHeight = sourceImage.size.height * (ORIGINAL_MAX_WIDTH / sourceImage.size.width);
+    }
+    CGSize targetSize = CGSizeMake(btWidth, btHeight);
+    return [self imageByScalingAndCroppingForSourceImage:sourceImage targetSize:targetSize];
+}
+
+- (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize {
+    UIImage *newImage = nil;
+    CGSize imageSize = sourceImage.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    CGFloat targetWidth = targetSize.width;
+    CGFloat targetHeight = targetSize.height;
+    CGFloat scaleFactor = 0.0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
+    if (CGSizeEqualToSize(imageSize, targetSize) == NO)
+    {
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor > heightFactor)
+            scaleFactor = widthFactor; // scale to fit height
+        else
+            scaleFactor = heightFactor; // scale to fit width
+        scaledWidth  = width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        // center the image
+        if (widthFactor > heightFactor)
+        {
+            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
+        }
+        else
+            if (widthFactor < heightFactor)
+            {
+                thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
+            }
+    }
+    UIGraphicsBeginImageContext(targetSize); // this will crop
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width  = scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    if(newImage == nil) NSLog(@"could not scale image");
+    
+    //pop the context to get back to the default
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+}
+#pragma mark 头像编辑代码结束
 
 @end

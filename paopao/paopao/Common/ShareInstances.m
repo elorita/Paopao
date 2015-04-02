@@ -140,5 +140,16 @@ static CLLocation *lastLocation;
     bottomBorderView.backgroundColor = SPLITTER_COLOR;
     [view addSubview:bottomBorderView];
 }
++ (void)addAllBorderOnView:(UIView *)view{
+    [ShareInstances addTopBottomBorderOnView:view];
+    
+    UIView *leftBorderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.5, view.height)];
+    leftBorderView.backgroundColor = SPLITTER_COLOR;
+    [view addSubview:leftBorderView];
+    
+    UIView *rightBorderView = [[UIView alloc] initWithFrame:CGRectMake(view.width - 0.5, 0, 0.5, view.height)];
+    rightBorderView.backgroundColor = SPLITTER_COLOR;
+    [view addSubview:rightBorderView];
+}
 
 @end
