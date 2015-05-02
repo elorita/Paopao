@@ -14,14 +14,15 @@
 #import "LoginViewController.h"
 #import "UserHomeViewController.h"
 #import "StadiumView.h"
+#import "SettingHomeView.h"
 #import "StadiumTableViewDND.h"
 #import "StadiumDetailViewController.h"
+#import "CityListViewController.h"
+#import "EAIntroView.h"
+#import "SorryView.h"
 
-#import "MYBlurIntroductionView.h"
-#import "MYCustomPanel.h"
-
-@interface RootViewController () <SignInDelegate, SidebarViewDelegate, MYIntroductionDelegate,
-    StadiumOuterDelegate> {
+@interface RootViewController () <SignInDelegate, SidebarViewDelegate,
+    StadiumOuterDelegate, CityListDelegate> {
     UIView *navigationBar;
     UIScrollView *scrollView;
     UILabel *titleLabel;
@@ -30,6 +31,9 @@
 
 @property (nonatomic, strong) SidebarViewController* sidebarVC;
 @property (nonatomic, strong) StadiumView *stadiumView;
+@property (nonatomic, strong) SettingHomeView *settingHomeView;
+@property (nonatomic, strong) SorryView *sorryView;
+@property (nonatomic, strong) UIButton *cityButton;
 
 @end
 
@@ -58,10 +62,10 @@
     
     self.sidebarVC = [[SidebarViewController alloc] init];
     [self.sidebarVC setBgRGB:0x000000];
-    NSArray *items = @[//@{@"title":@"精选",@"imagenormal":@"featured_normal.png",@"imagehighlight":@"featured_highlight.png"},
+    NSArray *items = @[@{@"title":@"活动",@"imagenormal":@"featured_normal.png",@"imagehighlight":@"featured_highlight.png"},
                        @{@"title":@"场馆",@"imagenormal":@"stadium_normal.png",@"imagehighlight":@"stadium_highlight.png"},
-                       //@{@"title":@"团队",@"imagenormal":@"team_normal.png",@"imagehighlight":@"team_highlight.png"},
-                       //@{@"title":@"教练",@"imagenormal":@"coach_normal.png",@"imagehighlight":@"coach_highlight.png"},
+                       @{@"title":@"团队",@"imagenormal":@"team_normal.png",@"imagehighlight":@"team_highlight.png"},
+                       @{@"title":@"赛事",@"imagenormal":@"coach_normal.png",@"imagehighlight":@"coach_highlight.png"},
                        //@{@"title":@"赛事",@"imagenormal":@"competition_normal.png",@"imagehighlight":@"competition_highlight.png"},
                        //@{@"title":@"资讯",@"imagenormal":@"news_normal.png",@"imagehighlight":@"news_highlight.png"},
                        @{@"title":@"设置",@"imagenormal":@"setting_normal.png",@"imagehighlight":@"setting_highlight.png"}];
@@ -73,9 +77,12 @@
     // 左侧边栏结束
     
     //显示引导页面
-    [self buildIntro];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+        [self showIntroWithCrossDissolve];
+    }
     
-    [self menuItemSelectedOnIndex:0];//默认显示场馆页面
+    [self.sidebarVC setSelectedIndex:1 withSection:0];
+    [self menuItemSelectedOnIndex:1];//默认显示场馆页面
 }
 
 //-(void)viewDidAppear:(BOOL)animated{
@@ -88,34 +95,41 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)buildIntro{
-    //Create Stock Panel with header
-    UIView *headerView = [[NSBundle mainBundle] loadNibNamed:@"TestHeader" owner:nil options:nil][0];
-    MYIntroductionPanel *panel1 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"为你私人定制的运动处方" description:@"运动处方的概念最早是美国生理学家卡波维奇在20世纪50年代提出的。20世纪60年代以来，随着康复医学的发展及对冠心病等的康复训练的开展，运动处方开始受到重视。1969年世界卫生组织开始使用运动处方术语，从而在国际上得到认可。" image:[UIImage imageNamed:@"HeaderImage.png"] header:headerView];
+- (void)showIntroWithCrossDissolve {
+    EAIntroPage *page1 = [EAIntroPage page];
+    page1.title = @"约运动，上跑跑";
+    page1.desc = @"跑跑是一款运动社交应用，运动是一种时尚，更是一种生活方式";
+    page1.bgImage = [UIImage imageNamed:@"1"];
+    page1.titleImage = [UIImage imageNamed:@"original"];
     
-    //Create Stock Panel With Image
-    MYIntroductionPanel *panel2 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) title:@"分享你的运动乐趣" description:@"无论你是运动爱好者，专业教练，还是职业运动员。无论你爱好跑步、骑行、瑜伽、郑多燕、Insanity、滑板、潜水，都可以把你做过的、想做的、想了解的与爱运动的大家交流，一个纯粹运动爱好者聚集的社区，等着你来发现更多的运动乐趣!" image:[UIImage imageNamed:@"ForkImage.png"]];
+    EAIntroPage *page2 = [EAIntroPage page];
+    page2.title = @"约运动，上跑跑";
+    page2.desc = @"查找附近的球队、对手、美女，热点信息一览无余，线上约运动，简单快捷！";
+    page2.bgImage = [UIImage imageNamed:@"2"];
+    page2.titleImage = [UIImage imageNamed:@"supportcat"];
     
-    //Create Panel From Nib
-    MYIntroductionPanel *panel3 = [[MYIntroductionPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"TestPanel3"];
+    EAIntroPage *page3 = [EAIntroPage page];
+    page3.title = @"约运动，上跑跑";
+    page3.desc = @"找教练，照片、资质、价格、评价、级别等信息一应俱全，资源丰富，价格透明！";
+    page3.bgImage = [UIImage imageNamed:@"3"];
+    page3.titleImage = [UIImage imageNamed:@"femalecodertocat"];
     
-    //Create custom panel with events
-    MYCustomPanel *panel4 = [[MYCustomPanel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) nibNamed:@"MYCustomPanel"];
+    EAIntroPage *page4 = [EAIntroPage page];
+    page4.title = @"约运动，上跑跑";
+    page4.desc = @"找场地，位置、规模、环境、价格、评价等信息尽收眼底，线上支付，一锤定音！";
+    page4.bgImage = [UIImage imageNamed:@"1"];
+    page4.titleImage = [UIImage imageNamed:@"original"];
     
-    //Add panels to an array
-    NSArray *panels = @[panel1, panel2, panel3, panel4];
+    EAIntroPage *page5 = [EAIntroPage page];
+    page5.title = @"约运动，上跑跑";
+    page5.desc = @"发布组队需求，一呼百应；寻找“组织”，快速回归！";
+    page5.bgImage = [UIImage imageNamed:@"2"];
+    page5.titleImage = [UIImage imageNamed:@"supportcat"];
     
-    //Create the introduction view and set its delegate
-    MYBlurIntroductionView *introductionView = [[MYBlurIntroductionView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    introductionView.delegate = self;
-    introductionView.BackgroundImageView.image = [UIImage imageNamed:@"Toronto, ON.jpg"];
-    //introductionView.LanguageDirection = MYLanguageDirectionRightToLeft;
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:@[page1,page2,page3,page4,page5]];
     
-    //Build the introduction with desired panels
-    [introductionView buildIntroductionWithPanels:panels];
-    
-    //Add the introduction to your view
-    [self.view addSubview:introductionView];
+    [intro setDelegate:self];
+    [intro showInView:self.view animateDuration:0.0];
 }
 
 
@@ -141,11 +155,16 @@
         [showMenuButton setContentMode:UIViewContentModeLeft];
         [self->navigationBar addSubview:showMenuButton];
         
-        UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.origin.x + self.view.frame.size.width - NAVIGATION_BUTTON_RESPONSE_WIDTH, STATU_BAR_HEIGHT,NAVIGATION_BUTTON_RESPONSE_WIDTH, NAVIGATION_BUTTON_HEIGHT)];
-        [searchButton setImage:[UIImage imageNamed:@"search.png"] forState:UIControlStateNormal];
-        [searchButton setImageEdgeInsets:UIEdgeInsetsMake(0, NAVIGATION_BUTTON_RESPONSE_WIDTH-NAVIGATION_RBUTTON_MARGIN_RIGHT-NAVIGATION_BUTTON_WIDTH, 0, NAVIGATION_RBUTTON_MARGIN_RIGHT)];
-        [searchButton addTarget:self action:@selector(doPopMainMenu:) forControlEvents:UIControlEventTouchUpInside];
-        [self->navigationBar addSubview:searchButton];
+        _cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.origin.x + self.view.frame.size.width - NAVIGATION_BUTTON_RESPONSE_WIDTH, STATU_BAR_HEIGHT,NAVIGATION_BUTTON_RESPONSE_WIDTH, NAVIGATION_BUTTON_HEIGHT)];
+        [_cityButton setImage:[UIImage imageNamed:@"down_normal.png"] forState:UIControlStateNormal];
+        [_cityButton setImageEdgeInsets:UIEdgeInsetsMake(0, NAVIGATION_BUTTON_RESPONSE_WIDTH-NAVIGATION_BUTTON_WIDTH + 15, 0, 0)];
+        [_cityButton setTitle:[[AVUser currentUser] objectForKey:@"city"] forState:UIControlStateNormal];
+        [_cityButton setTitleColor:MAIN_COLOR forState:UIControlStateNormal];
+        //searchButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [_cityButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [_cityButton setTitleEdgeInsets:UIEdgeInsetsMake(15, 0, 15, 25)];
+        [_cityButton addTarget:self action:@selector(doSelectCity) forControlEvents:UIControlEventTouchUpInside];
+        [self->navigationBar addSubview:_cityButton];
         
         titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.origin.x + (self.view.frame.size.width - NAVIGATION_TITLE_WIDTH) / 2, STATU_BAR_HEIGHT, NAVIGATION_TITLE_WIDTH, NAVIGATION_TITLE_HEIGHT)];
         [titleLabel setTextColor:[UIColor darkTextColor]];
@@ -158,20 +177,10 @@
     [self.sidebarVC showHideSidebar];
 }
 
-#pragma mark - MYIntroduction Delegate
--(void)introduction:(MYBlurIntroductionView *)introductionView didChangeToPanel:(MYIntroductionPanel *)panel withIndex:(NSInteger)panelIndex{
-    NSLog(@"Introduction did change to panel %ld", (long)panelIndex);
-    
-    //You can edit introduction view properties right from the delegate method!
-    //If it is the first panel, change the color to green!
-    if (panelIndex == 0) {
-        [introductionView setBackgroundColor:[UIColor colorWithRed:90.0f/255.0f green:175.0f/255.0f blue:113.0f/255.0f alpha:1]];
-    }
-    //If it is the second panel, change the color to blue!
-    else if (panelIndex == 1){
-        [introductionView setBackgroundColor:[UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:1]];
-    }
-    
+- (void)doSelectCity {
+    CityListViewController *cityListVC = [[CityListViewController alloc] init];
+    cityListVC.delegate = self;
+    [self.navigationController pushViewController:cityListVC animated:YES];
 }
 
 #pragma mark CommonMainMenuDelegate
@@ -187,7 +196,7 @@
     UIView *newView = nil;
     NSString *title = nil;
     switch (index) {
-        case 0:
+        case 1:
             if (_stadiumView == nil) {
                 CGRect frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
                 _stadiumView = [[StadiumView alloc] initWithFrame:frame withController:self];
@@ -196,14 +205,26 @@
             newView = _stadiumView;
             title = @"找场馆";
             break;
-//        case 1:
-//            if (true) {
-//                UserHomeViewController *userHomeVC = [[UserHomeViewController alloc] init];
-//                [self.navigationController pushViewController:userHomeVC animated:YES];
-//            }
-//            break;
-        default:
+        case 4:
+            if (_settingHomeView == nil) {
+                CGRect frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
+                _settingHomeView = [[SettingHomeView alloc] initWithFrame:frame];
+                _settingHomeView.homeViewController = self;
+            }
+            newView = _settingHomeView;
+            title = @"系统设置";
             break;
+        default:
+            //if (_sorryView == nil) {
+                _sorryView = [[SorryView alloc] initWithFrame:scrollView.bounds withController:self];
+            //}
+            newView = _sorryView;
+            if(index == 0)
+                title = @"找活动";
+            else if (index == 2)
+                title = @"找团队";
+            else if (index == 3)
+                title = @"精彩赛事";
     }
 
     if (currentActiveView != newView) {
@@ -231,6 +252,11 @@
     StadiumDetailViewController *sdVC = [[StadiumDetailViewController alloc] init];
     [sdVC initializeWithStadium:stadium];
     [self.navigationController pushViewController:sdVC animated:YES];
+}
+
+#pragma mark CityListDelegate
+- (void)citySelected:(NSString *)cityName {
+    [_cityButton setTitle:cityName forState:UIControlStateNormal];
 }
 
 @end

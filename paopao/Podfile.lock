@@ -2,7 +2,7 @@ PODS:
   - AVOSCloud (3.0.2)
   - AVOSCloudSNS (3.0.2):
     - AVOSCloud
-  - Pingpp (2.0.3)
+  - Pingpp (2.0.4)
 
 DEPENDENCIES:
   - AVOSCloud
@@ -16,6 +16,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AVOSCloud: eeacd471d18b3e24c3cb0d089110453261084489
   AVOSCloudSNS: 7d83ffbd3738b92c9ece62e93a65fa593587274b
-  Pingpp: 4d5da462fed8817abbf4ee484904e8289a586b5f
+  Pingpp: 293b841940168d2a70021c6e47ea7a27c2bd80a0
 
 COCOAPODS: 0.34.2

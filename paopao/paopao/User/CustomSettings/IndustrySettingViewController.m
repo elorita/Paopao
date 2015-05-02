@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UILabel *selectedLabel;
 
 @end
 
@@ -37,17 +36,6 @@
     _navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"行业类别" withRightButtonTitle:@"确定"];
     self.navigationBar.delegate = self;
     [self.view addSubview:self.navigationBar];
-    
-//    UIView *selectedView = [[UIView alloc] initWithFrame:CGRectMake(0, _navigationBar.bottom + 5, self.view.width, 44)];
-//    [selectedView setBackgroundColor:[UIColor whiteColor]];
-//    [ShareInstances addTopBottomBorderOnView:selectedView];
-//    [self.view addSubview:selectedView];
-//    
-//    _selectedLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 15, selectedView.width - 20, 14)];
-//    [_selectedLabel setTextColor:MAIN_COLOR];
-//    [_selectedLabel setTextAlignment:NSTextAlignmentLeft];
-//    [_selectedLabel setFont:[UIFont systemFontOfSize:14]];
-//    [selectedView addSubview:_selectedLabel];
     
     industryArray = [[NSMutableArray alloc] init];
     AVQuery *query = [AVQuery queryWithClassName:@"IndustryCategory"];

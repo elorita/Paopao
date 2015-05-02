@@ -9,25 +9,32 @@
 #import "UserHomeViewController.h"
 #import "UIView+XD.h"
 #import <AVOSCloud/AVOSCloud.h>
-#import "NormalNavigationBar.h"
 #import "Defines.h"
 #import "SVProgressHUD.h"
 #import "UIView+XD.h"
 #import "ShareInstances.h"
-
+#import "ImgShowViewController.h"
+#import "VPImageCropperViewController.h"
 
 
 #import "MyOrderViewController.h"
 #import "CustomSettingViewController.h"
 #import "WatchedStadiumViewController.h"
+#import "DynamicWaveView.h"
+#import "CustomSettingViewController.h"
+#import "ModifyPasswordViewController.h"
 
 #define lMargin 10
 #define lNormalTextSize 13.0f
 
-@interface UserHomeViewController()<NormalNavigationDelegate>
+@interface UserHomeViewController()<CustomSettingViewDelegate>
 
-@property (nonatomic, strong) NormalNavigationBar *navigationBar;
 @property (nonatomic, strong) UIImageView *portraitImageView;
+@property (nonatomic, strong) UILabel *nicknameLabel;
+@property (nonatomic, strong) UIImageView *sexImageView;
+@property (nonatomic, strong) UILabel *ageLabel;
+@property (nonatomic, strong) UILabel *signatureLabel;
+@property (nonatomic, strong) UIView *nicknameAndSexView;
 
 @end
 
@@ -38,15 +45,26 @@
     
     self.view.backgroundColor = NORMAL_BACKGROUND_COLOR;
     
-    self.navigationBar = [[NormalNavigationBar alloc] initWithTitle:[[AVUser currentUser] objectForKey:@"nickname"]];
-    self.navigationBar.delegate = self;
-    [self.view addSubview:self.navigationBar];
-    
-    UIView *accountView = [[UIView alloc] initWithFrame:CGRectMake(0, _navigationBar.bottom, self.view.width, 74)];
-    accountView.backgroundColor = [UIColor whiteColor];
+    DynamicWaveView *accountView = [[DynamicWaveView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 224)];
+    accountView.backgroundColor = MAIN_COLOR;
     [self.view addSubview:accountView];
+    //导航返回按钮
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, STATU_BAR_HEIGHT, NAVIGATION_BUTTON_RESPONSE_WIDTH, NAVIGATION_BUTTON_HEIGHT)];
+    [backButton setImage:[UIImage imageNamed:@"back_round.png"] forState:UIControlStateNormal];
+    [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, NAVIGATION_LBUTTON_MARGIN_LEFT, 0, NAVIGATION_BUTTON_RESPONSE_WIDTH-NAVIGATION_LBUTTON_MARGIN_LEFT-NAVIGATION_BUTTON_WIDTH)];
+    [backButton addTarget:self action:@selector(doReturn) forControlEvents:UIControlEventTouchUpInside];
+    [accountView addSubview:backButton];
+    
+    //编辑个人信息按钮
+    UIButton *userInfoEditButton = [[UIButton alloc] initWithFrame:CGRectMake(accountView.width - NAVIGATION_BUTTON_RESPONSE_WIDTH, STATU_BAR_HEIGHT, NAVIGATION_BUTTON_RESPONSE_WIDTH, NAVIGATION_BUTTON_HEIGHT)];
+    [userInfoEditButton setImage:[UIImage imageNamed:@"edit_round.png"] forState:UIControlStateNormal];
+    [userInfoEditButton setImageEdgeInsets:UIEdgeInsetsMake(0, NAVIGATION_LBUTTON_MARGIN_LEFT, 0, NAVIGATION_BUTTON_RESPONSE_WIDTH-NAVIGATION_LBUTTON_MARGIN_LEFT-NAVIGATION_BUTTON_WIDTH)];
+    [userInfoEditButton addTarget:self action:@selector(doEditUserInfo) forControlEvents:UIControlEventTouchUpInside];
+    //[userInfoEditButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    [userInfoEditButton setImageEdgeInsets:UIEdgeInsetsMake(0, userInfoEditButton.width - NAVIGATION_BUTTON_HEIGHT, 0, 5)];
+    [accountView addSubview:userInfoEditButton];
     //头像图片视图
-    _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(lMargin, 5, 64, 64)];
+    _portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake((accountView.width - 72) / 2, 35, 72, 72)];
     [_portraitImageView.layer setCornerRadius:(_portraitImageView.frame.size.height/2)];
     [_portraitImageView.layer setMasksToBounds:YES];
     [_portraitImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -55,55 +73,34 @@
     _portraitImageView.layer.shadowOffset = CGSizeMake(4, 4);
     _portraitImageView.layer.shadowOpacity = 0.5;
     _portraitImageView.layer.shadowRadius = 2.0;
-//    _portraitImageView.layer.borderColor = [MAIN_COLOR CGColor];
-//    _portraitImageView.layer.borderWidth = 0.5f;
     _portraitImageView.userInteractionEnabled = YES;
     _portraitImageView.backgroundColor = [UIColor clearColor];
-//    UITapGestureRecognizer *portraitTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editPortrait)];
-//    [_portraitImageView addGestureRecognizer:portraitTap];
+    UITapGestureRecognizer *portraitTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showCurUserFullHeadPortrait)];
+    [_portraitImageView addGestureRecognizer:portraitTap];
     [accountView addSubview:_portraitImageView];
-    [ShareInstances loadPortraitOnView:_portraitImageView withDefaultImageName:DEFAULT_PORTRAIT];
-    //昵称标签视图
-    AVUser *curUser = [AVUser currentUser];
-    NSString *nickname = [curUser objectForKey:@"nickname"];
-    UILabel *nicknameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_portraitImageView.right + lMargin, 15, 17 * [nickname length], 17)];
-    [nicknameLabel setFont:[UIFont systemFontOfSize:17]];
-    [nicknameLabel setTextColor:NORMAL_TEXT_COLOR];
-    [nicknameLabel setText:nickname];
-    [accountView addSubview:nicknameLabel];
-    //显示性别和年龄的背景视图
-    UIView *sexNAgeView = [[UIView alloc] initWithFrame:CGRectMake(nicknameLabel.right + lMargin, nicknameLabel.y + 2, 60, 13)];
-    [sexNAgeView setBackgroundColor:MAIN_COLOR];
-    [accountView addSubview:sexNAgeView];
+    //昵称标签和性别视图
+    _nicknameAndSexView = [[UIView alloc] initWithFrame:CGRectMake(0, _portraitImageView.bottom + lMargin, 0, 17)];
+    [_nicknameAndSexView setBackgroundColor:[UIColor clearColor]];
+    [accountView addSubview:_nicknameAndSexView];
+    //昵称标签
+    _nicknameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 17)];
+    [_nicknameLabel setFont:[UIFont systemFontOfSize:17]];
+    [_nicknameLabel setTextColor:[UIColor whiteColor]];
+    [_nicknameAndSexView addSubview:_nicknameLabel];
     //性别图片视图
-    UIImageView *sexImageView = [[UIImageView alloc] initWithFrame:CGRectMake(1, 1, sexNAgeView.height - 2, sexNAgeView.height - 2)];
-    NSInteger sex = [(NSNumber *)[curUser objectForKey:@"sex"] integerValue];
-    switch (sex) {
-        case 1://男
-            [sexImageView setImage:[UIImage imageNamed:@"male.png"]];
-            break;
-        case 2://女
-            [sexImageView setImage:[UIImage imageNamed:@"female.png"]];
-        default:
-            break;
-    }
-    [sexImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [sexNAgeView addSubview:sexImageView];
+    _sexImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nicknameLabel.right + lMargin, 3, _nicknameAndSexView.height - 6, _nicknameAndSexView.height - 6)];
+    [_sexImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [_nicknameAndSexView addSubview:_sexImageView];
     //年龄标签
-    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(sexImageView.right + 5, 0, 15, sexNAgeView.height)];
-    [ageLabel setFont:[UIFont systemFontOfSize:13]];
-    [ageLabel setTextColor:[UIColor whiteColor]];
-    NSDate *birthday = [curUser objectForKey:@"birthday"];
-    NSInteger age = [[NSDate date] timeIntervalSinceDate:birthday] / (3600 * 24 * 365.25);
-    [ageLabel setText:[NSString stringWithFormat:@"%ld", age]];
-    [sexNAgeView addSubview:ageLabel];
-    [sexNAgeView setWidth:ageLabel.right];
+    _ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(_sexImageView.right + 5, 2, 15, 13)];
+    [_ageLabel setFont:[UIFont systemFontOfSize:13]];
+    [_ageLabel setTextColor:[UIColor whiteColor]];
     //签名标签
-    UILabel *signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(_portraitImageView.right + lMargin, _portraitImageView.bottom - lMargin - 12, self.view.width - _portraitImageView.right - 44 - lMargin, 12)];
-    [signatureLabel setFont:[UIFont systemFontOfSize:12]];
-    [signatureLabel setTextColor:MAIN_COLOR];
-    [signatureLabel setText:[curUser objectForKey:@"signature"]];
-    [accountView addSubview:signatureLabel];
+    _signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(lMargin, _nicknameAndSexView.bottom + lMargin, accountView.width - lMargin * 2, 12)];
+    [_signatureLabel setFont:[UIFont systemFontOfSize:12]];
+    [_signatureLabel setTextColor:LIGHT_BACKGROUND_COLOR];
+    [_signatureLabel setTextAlignment:NSTextAlignmentCenter];
+    [accountView addSubview:_signatureLabel];
     
     [ShareInstances addRightArrowOnView:accountView];
     
@@ -173,28 +170,69 @@
     [importantOperView addSubview:myOrderView];
     
     [ShareInstances addTopBottomBorderOnView:importantOperView];
-
     
+    UIView *modifyPasswordView = [[UIView alloc] initWithFrame:CGRectMake(0, importantOperView.bottom + lMargin, self.view.width, 44)];
+    [modifyPasswordView setBackgroundColor:[UIColor whiteColor]];
+    [ShareInstances addTopBottomBorderOnView:modifyPasswordView];
+    [self.view addSubview:modifyPasswordView];
     
-    UIButton *LogOutButton = [[UIButton alloc] init];
-    LogOutButton.width = 200;
-    LogOutButton.height = 40;
-    LogOutButton.centerX = self.view.frame.size.width * 0.5;
-    LogOutButton.centerY = self.view.frame.size.height *0.5;
-    [LogOutButton setBackgroundColor:[UIColor orangeColor]];
+    UITapGestureRecognizer *modifyTapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doModifyPassword)];
+    [modifyPasswordView addGestureRecognizer:modifyTapGR];
+    
+    UILabel *modifyPasswordLable = [[UILabel alloc] initWithFrame:CGRectMake(20, 13, 120, 16)];
+    [modifyPasswordLable setFont:[UIFont systemFontOfSize:16]];
+    [modifyPasswordLable setText:@"修改密码"];
+    [modifyPasswordLable setTextAlignment:NSTextAlignmentLeft];
+    [modifyPasswordLable setTextColor:NORMAL_TEXT_COLOR];
+    [modifyPasswordView addSubview:modifyPasswordLable];
+    
+    UIImageView *modifyPasswordIV = [[UIImageView alloc] initWithFrame:CGRectMake(modifyPasswordView.width - 44, 0, 44, modifyPasswordView.height)];
+    [modifyPasswordIV setImage:[UIImage imageNamed:@"go_normal.png"]];
+    [modifyPasswordIV setContentMode:UIViewContentModeCenter];
+    [modifyPasswordView addSubview:modifyPasswordIV];
+    
+    UIButton *LogOutButton = [[UIButton alloc] initWithFrame:CGRectMake(0, modifyPasswordView.bottom + lMargin, self.view.width, 44)];
+    [LogOutButton setBackgroundColor:DARK_BACKGROUND_COLOR];
     [LogOutButton setTitle:@"登出账户" forState:UIControlStateNormal];
+    [LogOutButton setTitleColor:NORMAL_TEXT_COLOR forState:UIControlStateNormal];
     [LogOutButton addTarget:self action:@selector(doLogout:) forControlEvents:UIControlEventTouchUpInside];
+    [ShareInstances addTopBottomBorderOnView:LogOutButton];
     [self.view addSubview:LogOutButton];
     
-    UIButton *clearFileCacheButton = [[UIButton alloc] init];
-    clearFileCacheButton.width = 200;
-    clearFileCacheButton.height = 40;
-    clearFileCacheButton.x = LogOutButton.x;
-    clearFileCacheButton.y = LogOutButton.bottom + 20;
-    [clearFileCacheButton setBackgroundColor:[UIColor grayColor]];
-    [clearFileCacheButton setTitle:@"清空缓存" forState:UIControlStateNormal];
-    [clearFileCacheButton addTarget:self action:@selector(doClear:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:clearFileCacheButton];
+    [self setAccountInfo];
+}
+
+- (void)setAccountInfo{
+    [ShareInstances loadPortraitOnView:_portraitImageView withDefaultImageName:DEFAULT_PORTRAIT forceReload:YES];
+    AVUser *curUser = [AVUser currentUser];
+    NSString *nickname = [curUser objectForKey:@"nickname"];
+    [_nicknameLabel setWidth:17 * [nickname length]];
+    [_nicknameLabel setText:nickname];
+    NSInteger sex = [(NSNumber *)[curUser objectForKey:@"sex"] integerValue];
+    switch (sex) {
+        case 1://男
+            [_sexImageView setImage:[UIImage imageNamed:@"male.png"]];
+            break;
+        case 2://女
+            [_sexImageView setImage:[UIImage imageNamed:@"female.png"]];
+        default:
+            break;
+    }
+    [_sexImageView setX:_nicknameLabel.right + lMargin];
+    NSDate *birthday = [curUser objectForKey:@"birthday"];
+    NSInteger age = [[NSDate date] timeIntervalSinceDate:birthday] / (3600 * 24 * 365.25);
+    [_ageLabel setText:[NSString stringWithFormat:@"%ld", age]];
+    [_ageLabel setX:_sexImageView.right + 5];
+    [_nicknameAndSexView addSubview:_ageLabel];
+    [_nicknameAndSexView setWidth:_ageLabel.right];
+    [_nicknameAndSexView setX:(self.view.width - _nicknameAndSexView.width) / 2];
+
+    [_signatureLabel setText:[curUser objectForKey:@"signature"]];
+}
+
+- (void)doModifyPassword{
+    ModifyPasswordViewController *modifyPassword = [[ModifyPasswordViewController alloc] init];
+    [self.navigationController pushViewController:modifyPassword animated:YES];
 }
 
 - (void)doLogout:(id)sender {
@@ -204,12 +242,18 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (void)doClear:(id)sender {
-    [AVFile clearAllCachedFiles];
-}
-
 - (void)doReturn {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)doEditUserInfo{
+    CustomSettingViewController *customeSettingVC = [[CustomSettingViewController alloc] init];
+    customeSettingVC.delegate = self;
+    [self.navigationController pushViewController:customeSettingVC animated:YES];
+}
+
+- (void)userSettingChanged{
+    [self setAccountInfo];
 }
 
 //点击“我的收藏”
@@ -228,6 +272,15 @@
 - (void)SettingsOnTouch {
     CustomSettingViewController *aboutUsVC = [[CustomSettingViewController alloc] init];
     [self.navigationController pushViewController:aboutUsVC animated:YES];
+}
+
+//显示头像大图
+- (void)showCurUserFullHeadPortrait {
+    AVUser *curUser = [AVUser currentUser];
+    AVFile *imageFile = [curUser objectForKey:@"headPortrait"];
+    NSMutableArray *images = [NSMutableArray arrayWithObject:imageFile];
+    ImgShowViewController *imageShowVC = [[ImgShowViewController alloc] initWithSourceData:images withIndex:0];
+    [self.navigationController pushViewController:imageShowVC animated:YES];
 }
 
 

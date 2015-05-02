@@ -12,7 +12,7 @@
 
 @implementation NormalNavigationBar
 
-@synthesize backButton, rightButton;
+@synthesize backButton, rightButton, titleLabel;
 
 - (instancetype)initWithTitle:(NSString *)title {
     self = [super init];
@@ -30,7 +30,7 @@
     [backButton setContentMode:UIViewContentModeLeft];
     [self addSubview:backButton];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.origin.x + (self.frame.size.width - NAVIGATION_TITLE_WIDTH) / 2, STATU_BAR_HEIGHT, NAVIGATION_TITLE_WIDTH, NAVIGATION_TITLE_HEIGHT)];
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.origin.x + (self.frame.size.width - NAVIGATION_TITLE_WIDTH) / 2, STATU_BAR_HEIGHT, NAVIGATION_TITLE_WIDTH, NAVIGATION_TITLE_HEIGHT)];
     [titleLabel setText:title];
     [titleLabel setTextColor:[UIColor darkTextColor]];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -52,6 +52,10 @@
     [self addSubview:rightButton];
     
     return self;
+}
+
+- (void)setTitle:(NSString *)title{
+    [titleLabel setText:title];
 }
 
 - (void)doBack:(id)sender {

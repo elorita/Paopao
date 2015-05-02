@@ -18,8 +18,9 @@
 #import "SMSVerifyViewController.h"
 #import "Defines.h"
 #import "InputPhoneNoViewController.h"
+#import "CustomSettingViewController.h"
 
-@interface LoginViewController()<UITextFieldDelegate, NormalNavigationDelegate>
+@interface LoginViewController()<UITextFieldDelegate, NormalNavigationDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
 
@@ -209,7 +210,13 @@
         if (user != nil) {
             [SVProgressHUD dismissWithSuccess:@"登陆成功"];
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:self];
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            
+            if (![self userSettingIsCompletion]) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"完善个人资料" message:@"您的个人资料尚有未完善之处，为了让跑跑更好的为您服务，请再恩赐一点点时间吧" delegate:self cancelButtonTitle:@"下次吧" otherButtonTitles:@"立即完善", nil];
+                [alertView show];
+            } else{
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
         } else {
             NSInteger errorCode = error.code;
             if (errorCode == 215) {
@@ -217,9 +224,25 @@
                 SMSVerifyViewController *SMSVerifyVC = [[SMSVerifyViewController alloc] init];
                 [SMSVerifyVC regetVerifySMS:username];
                 [self.navigationController pushViewController:SMSVerifyVC animated:YES];
+            } else if (errorCode == 210){
+                [SVProgressHUD dismissWithError:@"手机号或密码错误，登陆失败" afterDelay:2];
+            } else {
+                [SVProgressHUD dismissWithError:@"登陆失败" afterDelay:2];
             }
         }
     }];
+}
+
+- (BOOL)userSettingIsCompletion{
+    AVUser *user = [AVUser currentUser];
+    BOOL completion = ([user objectForKey:@"sex"] != nil);
+    completion = completion && ([user objectForKey:@"industry"] != nil);
+    completion = completion && ([user objectForKey:@"signature"] != nil);
+    completion = completion  && ([user objectForKey:@"nickname"] != nil);
+    completion = completion  && ([user objectForKey:@"birthday"] != nil);
+    completion = completion  && ([user objectForKey:@"headPortrait"] != nil);
+    completion = completion  && ([user relationforKey:@"favoriteSport"] != nil);
+    return completion;
 }
 
 -(void)doRetrievePassword {
@@ -236,6 +259,17 @@
 - (void)setUserNameText:(NSString *)userName{
     _userText.text = userName;
     [self textFieldShouldBeginEditing:_userText];
+}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        CustomSettingViewController *customSettingVC = [[CustomSettingViewController alloc] init];
+        customSettingVC.settingMode = 999;
+        [self.navigationController pushViewController:customSettingVC animated:YES];
+    } else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 @end

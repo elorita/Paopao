@@ -26,10 +26,17 @@
 + (AVGeoPoint *)getLastGeoPoint;
 
 + (void)loadPortraitOnView:(UIImageView *)view withDefaultImageName:(NSString *)imageName;
++ (void)loadPortraitOnView:(UIImageView *)view withDefaultImageName:(NSString *)imageName forceReload:(BOOL)forceRaload;
 + (void)setCurPortrait:(UIImage *)image;
 //视图修饰方法
 + (void)addRightArrowOnView:(UIView *)view;
 + (void)addTopBottomBorderOnView:(UIView *)view;
 + (void)addAllBorderOnView:(UIView *)view;
++ (void)addTopBorderOnView:(UIView *)view;
++ (void)addBottomBorderOnView:(UIView *)view;
++ (void)addBottomSepratorBorderOnView:(UIView *)view;
+
+
++ (void)NormalNetworkErrorHUD;
 
 @end

@@ -221,14 +221,14 @@
 {
     NSInteger tag = ((UIButton*)sender).tag;
     if (tag == 1) {
-        channel = @"wx";
+        channel = @"wx_wap";
         //[self normalPayAction:nil];
     } else if (tag == 2) {
-        channel = @"alipay";
+        channel = @"alipay_wap";
     } else if (tag == 3) {
-        channel = @"upacp";
+        channel = @"upacp_wap";
     } else if (tag == 4) {
-        channel = @"bfb";
+        channel = @"bfb_wap";
     } else {
         return;
     }

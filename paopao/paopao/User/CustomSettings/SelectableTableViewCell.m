@@ -9,6 +9,7 @@
 #import "SelectableTableViewCell.h"
 #import "Defines.h"
 #import "UIView+XD.h"
+#import "ShareInstances.h"
 
 @interface SelectableTableViewCell()
 
@@ -28,8 +29,9 @@
     
     [self setBackgroundColor:NORMAL_BACKGROUND_COLOR];
     
-    _bgView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.width, 44)];
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.width - 10, 44)];
     [_bgView setBackgroundColor:[UIColor whiteColor]];
+    [ShareInstances addAllBorderOnView:_bgView];
     [self addSubview:_bgView];
     UITapGestureRecognizer *bgViewTapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bgViewOnTouch)];
     [_bgView addGestureRecognizer:bgViewTapGR];

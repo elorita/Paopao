@@ -20,10 +20,12 @@
 #import "CustomDatePickerView.h"
 #import "CustomTextInputViewController.h"
 #import "IndustrySettingViewController.h"
+#import "FavoriteSportSettingViewController.h"
+#import "ShareInstances.h"
 
 #define ORIGINAL_MAX_WIDTH 640.0f
 
-@interface CustomSettingViewController()<NormalNavigationDelegate, UITableViewDataSource, UITableViewDelegate, SexSelectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, VPImageCropperDelegate, UIActionSheetDelegate, CustomDatePickerViewDelegate, CustomTextInputViewDelegate, IndustrySettingViewDelegate>
+@interface CustomSettingViewController()<NormalNavigationDelegate, UITableViewDataSource, UITableViewDelegate, SexSelectionViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, VPImageCropperDelegate, UIActionSheetDelegate, CustomDatePickerViewDelegate, CustomTextInputViewDelegate, IndustrySettingViewDelegate, FavoriteSportSettingViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
@@ -32,6 +34,8 @@
 
 @implementation CustomSettingViewController{
     NSArray *sexArray;
+    
+    NSMutableString *favoriteSportDescription;
 }
 
 - (void)viewDidLoad{
@@ -39,7 +43,12 @@
     
     self.view.backgroundColor = NORMAL_BACKGROUND_COLOR;
     
-    _navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"修改资料"];
+    if (_settingMode != 999) {
+        _navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"修改资料"];
+    }else {
+        _navigationBar = [[NormalNavigationBar alloc] initWithTitle:@"完善个人资料"];
+    }
+    
     self.navigationBar.delegate = self;
     [self.view addSubview:self.navigationBar];
     
@@ -53,7 +62,14 @@
 
 #pragma mark NormalNavigationDelegate
 - (void)doReturn {
-    [self.navigationController popViewControllerAnimated:YES];
+    if ([_delegate respondsToSelector:@selector(userSettingChanged)]) {
+        [_delegate userSettingChanged];
+    }
+    if (_settingMode == 999) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark UITableViewDelegate and UiTableViewDataSource
@@ -111,16 +127,30 @@
         case 5:{
             AVObject *industry = [curUser objectForKey:@"industry"];
             [vCell setKey:@"行业" withValue:[industry objectForKey:@"categoryName"]];
-//            [industry fetchIfNeededInBackgroundWithBlock:^(AVObject *object, NSError *error) {
-//                if (!error){
-//                    [vCell setKey:@"行业" withValue:[object objectForKey:@"categoryName"]];
-//                    [self industryChanged];
-//                }
-//            }];
             break;
         }
         case 6:
-            [vCell setKey:@"爱好运动" withValue:@"无"];
+            if (favoriteSportDescription != nil) {
+                [vCell setKey:@"钟爱运动" withValue:favoriteSportDescription];
+            } else {
+                favoriteSportDescription = [[NSMutableString alloc] init];
+                AVRelation *relation = [[AVUser currentUser] relationforKey:@"favoriteSport"];
+                AVQuery *query = [relation query];
+                [query orderByAscending:@"order"];
+                [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    if (!error) {
+                        for (AVObject *sport in objects) {
+                            [favoriteSportDescription appendFormat:@"%@  ", [sport objectForKey:@"categoryName"]];
+                        }
+                    } else {
+                        [favoriteSportDescription appendString:@"网络不给力，没获取到哦..."];
+                    }
+                    
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:6 inSection:0];
+                    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+            }
+            
             break;
         default:
             break;
@@ -165,6 +195,13 @@
             IndustrySettingViewController *industrySettingVC = [[IndustrySettingViewController alloc] init];
             industrySettingVC.delegate = self;
             [self.navigationController pushViewController:industrySettingVC animated:YES];
+            break;
+        }
+        case 6:{
+            FavoriteSportSettingViewController *favoriteSportSettingVC = [[FavoriteSportSettingViewController alloc] init];
+            favoriteSportSettingVC.delegate = self;
+            [self.navigationController pushViewController:favoriteSportSettingVC animated:YES];
+            break;
         }
         default:
             break;
@@ -189,6 +226,12 @@
 - (void)industryChanged{
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:5 inSection:0];
     [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)favoriteSportChanged{
+    favoriteSportDescription = nil;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:6 inSection:0];
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark 头像编辑代码开始
@@ -277,19 +320,22 @@
 - (void)setPortaintImage: (UIImage *)image {
     NSData *imageData = UIImagePNGRepresentation(image);
     AVFile *imageFile = [AVFile fileWithName:@"headPortrait.png" data:imageData];
+    [SVProgressHUD showSuccessWithStatus:@"正在更新头像"];
     [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             AVUser *curUser = [AVUser currentUser];
             [curUser setObject:imageFile forKey:@"headPortrait"];
             [curUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error) {
-                    [SVProgressHUD showSuccessWithStatus:@"修改成功，头像稍后刷新" duration:2];
                     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:0];
                     [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+                    [SVProgressHUD dismiss];
+                } else {
+                    [ShareInstances NormalNetworkErrorHUD];
                 }
             }];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"头像保存失败" duration:2];
+            [ShareInstances NormalNetworkErrorHUD];
         }
     }];
 }

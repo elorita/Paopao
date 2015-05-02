@@ -17,10 +17,9 @@
 #define lMargin 10
 #define lTableViewCellHeight 44
 
-@interface AboutUsViewController()<NormalNavigationDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface AboutUsViewController()<NormalNavigationDelegate>
 
 @property (nonatomic, strong) NormalNavigationBar *navigationBar;
-@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -51,11 +50,6 @@
     [ShareInstances addTopBottomBorderOnView:tableBGView];
     [self.view addSubview:tableBGView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0.5f, tableBGView.width, tableBGView.height - 1)];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    [tableBGView addSubview:_tableView];
-    
     UILabel *copyRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bottom - lCopyRightTextSize - lMargin, self.view.width, lCopyRightTextSize)];
     [copyRightLabel setFont:[UIFont systemFontOfSize:lCopyRightTextSize]];
     [copyRightLabel setTextColor:LIGHT_TEXT_COLOR];
@@ -63,49 +57,12 @@
     [copyRightLabel setText:@"成都时代智云科技有限公司 版权所有"];
     [self.view addSubview:copyRightLabel];
     
-    UILabel *protocolLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, copyRightLabel.y - lProtocolTextSize - lMargin, self.view.width, lProtocolTextSize)];
+    UILabel *protocolLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, copyRightLabel.y - lProtocolTextSize - lMargin, self.view.width, lProtocolTextSize + 2)];
     [protocolLabel setFont:[UIFont systemFontOfSize:lProtocolTextSize]];
     [protocolLabel setTextColor:LINK_TEXT_COLOR];
     [protocolLabel setTextAlignment:NSTextAlignmentCenter];
-    [protocolLabel setText:@"查看跑跑Running软件许可及服务协议"];
+    [protocolLabel setText:@"查看Running跑跑软件许可及服务协议"];
     [self.view addSubview:protocolLabel];
-}
-
-#pragma mark UITableViewDelegate and UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return lTableViewCellHeight;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *vCellIdentify = @"AboutUsTableViewCell";
-    UITableViewCell *vCell = [tableView dequeueReusableCellWithIdentifier:vCellIdentify];
-    if (vCell == nil) {
-        vCell = [[UITableViewCell alloc] init];
-        vCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        [vCell.textLabel setTextColor:NORMAL_TEXT_COLOR];
-    }
-    switch (indexPath.row) {
-        case 0:
-            [vCell.textLabel setText:@"去AppStore评价"];
-            break;
-        case 1:
-            [vCell.textLabel setText:@"功能简介"];
-            break;
-        case 2:
-            [vCell.textLabel setText:@"系统通知"];
-            break;
-        case 3:
-            [vCell.textLabel setText:@"成都时代智云科技有限公司"];
-            break;
-        default:
-            break;
-    }
-    
-    return vCell;
 }
 
 - (void)doReturn {

@@ -29,9 +29,17 @@
     // Override point for customization after application launch.
     [AVOSCloud setApplicationId:@"ud3ao2b6rnw5xihu3aahls5npw6b6egm8mprynt9mwhdnhy1"
                       clientKey:@"yuslkj2voplq7sb02k524oj3f3j7zlzawg6tt09rxsqlctnp"];
-    [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    
+    [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];    
     [AVSubclassesHelper RegisterSubclasses];
+    
+    //判定是否第一次启动的变量
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+    }
+    else{
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+    }
     
     [[CustomeLocationManager defaultManager] updateLocation];//访问一次
     

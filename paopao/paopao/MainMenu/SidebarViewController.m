@@ -51,6 +51,11 @@
     _items = items;
 }
 
+- (void)setSelectedIndex:(NSInteger)index withSection:(NSInteger)section{
+    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:section];
+    [self.menuTableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
 #pragma mark - TableView
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 80;

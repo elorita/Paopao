@@ -11,6 +11,7 @@
 #import "CustomLocationManager.h"
 #import "SVProgressHUD.h"
 #import "Defines.h"
+#import "ShareInstances.h"
 
 static NSInteger cellHeight = 180;
 static NSInteger titleBackgroundHeight = 44;
@@ -62,10 +63,10 @@ static NSInteger summaryFontSize = 12;
 }
 
 - (void)initialize {
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 4, self.frame.size.width - 8 * 2, self.frame.size.height - 4 * 2)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     [self addSubview:imageView];
     
-    UIView *titleBackground = [[UIView alloc] initWithFrame:CGRectMake(8, imageView.frame.origin.y + imageView.frame.size.height - titleBackgroundHeight, imageView.frame.size.width, titleBackgroundHeight)];
+    UIView *titleBackground = [[UIView alloc] initWithFrame:CGRectMake(0, imageView.frame.origin.y + imageView.frame.size.height - titleBackgroundHeight, imageView.frame.size.width, titleBackgroundHeight)];
     [titleBackground setBackgroundColor:[UIColor blackColor]];
     [titleBackground setAlpha:0.3f];
     [self addSubview:titleBackground];
@@ -85,7 +86,7 @@ static NSInteger summaryFontSize = 12;
     [distanceLabel setTextColor:[UIColor yellowColor]];
     [self addSubview:distanceLabel];
     
-    UIImageView *watchImageView = [[UIImageView alloc] initWithFrame:CGRectMake(260, self.frame.origin.y + 8, 44, 44)];
+    UIImageView *watchImageView = [[UIImageView alloc] initWithFrame:CGRectMake(268, self.frame.origin.y + 8, 44, 44)];
     watchImageView.contentMode = UIViewContentModeCenter;
     [watchImageView setImage:[UIImage imageNamed:@"followbg.png"]];
     [watchImageView setAlpha:0.3f];
@@ -94,6 +95,8 @@ static NSInteger summaryFontSize = 12;
     watchButton = [[UIButton alloc] initWithFrame:watchImageView.frame];
     [watchButton addTarget:self action:@selector(watchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:watchButton];
+    
+    [ShareInstances addBottomBorderOnView:self];
 }
 
 - (void)setStadium:(Stadium *)stadium {

@@ -16,6 +16,7 @@
 #import "ReservationSuborder.h"
 #import "SVProgressHUD.h"
 #import "PaymentViewController.h"
+#import <Pingpp.h>
 
 #define kMargin 10
 #define kSplitterHeight 1
@@ -23,6 +24,9 @@
 #define kTextSize 14
 #define kTitleLabelHeight 42
 #define kButtonHeight 40
+
+#define kUrlScheme      @"paopao"
+#define kUrl            @"http://elorita.sinaapp.com/example/pay.php"
 
 @interface OrderConfirmViewController() <NormalNavigationDelegate> {
     Stadium *orderStadium;
@@ -158,6 +162,7 @@
             [SVProgressHUD dismiss];
             [SVProgressHUD showWithStatus:@"正在锁定场次"];
             
+            NSMutableArray *subordersContent = [[NSMutableArray alloc] init];
             AVRelation *suborderRelation = [order relationforKey:@"suborders"];
             for (SessionModel *model in orderedSessions) {
                 ReservationSuborder *suborder = [[ReservationSuborder alloc] init];
